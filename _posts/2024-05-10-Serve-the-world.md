@@ -211,7 +211,7 @@ introduction: 스타서빙 이효찬, 세상을 서빙하다.
 
 참고 영상
 
-- [세바시: 세상을 서빙하다 이효찬 스타서빙](https://youtu.be/Yo2Gpa7j4ug?si=SPnY-jJM95aVBzSe9Q1Q2Q)
+- [세바시 세상을 서빙하다 이효찬 스타서빙](https://youtu.be/Yo2Gpa7j4ug?si=SPnY-jJM95aVBzSe9Q1Q2Q)
 
 ---
 
