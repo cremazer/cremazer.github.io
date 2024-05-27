@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cremazer.github.io/sitemap.xml
