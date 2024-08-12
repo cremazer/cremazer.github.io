@@ -1,0 +1,5118 @@
+> 당신은 두 가지 이유로 이 책을 읽고 있다.
+하나, 당신은 프로그래머이다.
+둘, 당신은 더 나은 프로그래머가 되고 싶어한다.
+그렇다면 잘 됐다. 우리는 더 나은 프로그래머가 필요하다.
+
+## 코드가 있을지어다 ##
+- 코드에 관한 책은 구시대적이고, 곧 명세를 기준으로 코드가 자동생성될 것이라는 생각은 틀렸다.
+  - 언어의 추상화 레벨(고급/저급언어의 관점에서)이 올라가고 domain specific한 언어는 증가할지라도 코드는 사라지지 않는다.
+  - 기계가 실행할 수 있을만큼 자세한 명세는 그 자체로 코드이기 때문이다.
+
+## 나쁜 코드 ##
+- Killer app 하나로 대박난 회사가 머지 않아 망한 일이 있었다. 그 원인은 나쁜 코드였다.  
+- 일정에 맞추기 위해 나쁜 코드들을 방치하고는 '나중에 고쳐야지'라고 생각한 경험이 다들 있을 것이다. 하지만 
+  - Later equals never - LeBlanc's law (나중은 절대 오지 않는다 - 르블랑의 법칙)
+
+## 난장판을 품는 데에 드는 비용 ##
+- 초기에는 매우 빠른 속도로 진행되던 프로젝트가 1~2년 만에 달팽이처럼 느린 페이스로 진행되게 되는 것을 볼 수 있다.
+  - 나쁜 코드로 짠 프로그램에 가해지는 변경사항은 어느것 하나 사소하지 않다.
+- 나쁜 코드가 쌓일 수록 그 팀의 생산성은 떨어지고 이윽고 0에 수렴한다.
+  - 관리팀은 인력을 추가하려 한다.
+  - 하지만 새 팀원은 구조를 이해하지 못한다.
+  - 거기다 그 팀은 '새 인력을 투입했으므로 생산성이 늘겠지'라는 압박을 받는다.
+  - 결과, 나쁜 코드는 더 쌓인다.
+
+#### 환상의 "장대한 재디자인" ####
+- 팀은 봉기한다. 재디자인을 요구한다.
+- 달갑지는 않지만 관리팀 또한 개발팀의 생산성이 바닥을 기는 것을 알고 있으므로 허가하게 된다.
+- 새 tiger team이 setup되고 기존의 프로덕트의 스펙 + 새로운 기능을 맡게 된다. 기존의 팀원들은 기존의 코드를 유지보수하게 된다.
+- 두 팀은 오래 동안 경쟁한다.
+- tiger team이 기존의 프로젝트를 거의 따라잡을 즈음, tiger team의 초기 맴버들은 대부분 새 맴버들로 교체되어 있다.
+- 그리고 그들은 다시 재디자인을 요구한다...
+
+> 깨끗한 코드는 효율적일 뿐 아니라 생존과 직결되는 문제이다.
+
+#### 마음가짐 ####
+- 한시간이면 될 변경을 1주일이 넘도록 보고 있다던지, 한줄만 바꾸면 될 문제를 가지고 수백개의 모듈을 건드린다던지 하는 증상은 흔하다.
+  - 왜 좋은 코드는 그렇게도 빠르게 나쁜 코드로 바뀌는 것일까?
+- 초기와 다른 스펙, 스케쥴, 멍청한 매니저, 참을성 없는 고객, 쓸데없는 마케팅 인간들을 비난할 지도 모른다. 하지만 그건 우리 잘못이다.
+  - 대부분은 매니저들은 우리 생각보다 더 진실을 원하고 있다.
+   - 그들 또한 좋은 코드를 원한다. 그와 동시에 스케쥴 또한 지키고 싶어한다.
+   - 그와 마찬가지로, 좋은 코드를 지키는 것 또한 우리의 몫이다.
+ 
+#### 태고의 난제 ####
+- 더러운 코드는 생산성을 저하시킨다. 그와 동시에 개발자들은 기한을 맞추기 위해 더러운 코드를 짠다. 하지만, 더러운 코드를 만들어서는 절대 기한을 맞추지 못한다.
+- 빨리 가기 위한 단 하나의 방법은 "최대한 깨끗한 코드를 항상 유지하는 것"이다.
+
+#### Clean Code의 미학이란? ####
+- 클린코드란 예술작품과 같다. 어떤 코드가 클린코드 인지 아닌지를 구분하는 것과 클린코드를 쓸 수 있는지는 다른 문제이다.
+- 클린코드를 작성하려면 피를 토해가며 얻은 클린코드에 대한 감각을 사용해 무수하게 많은 작은 기술들을 적용해야 한다.
+
+#### Clean Code란 무엇인가? ####
+<details>
+  <summary>
+    <b> Bjarne Stroustrup, inventor of C++ and author of The C++ Programming Language </b>
+  </summary>
+
+> *I like my code to be elegant and efficient. The logic should be straightforward to make it hard for bugs to hide, the dependencies minimal to ease maintenance, error handling complete according to an articulated strategy, and performance close to optimal so as not to tempt people to make the code messy with unprincipled optimizations. Clean code does one thing well.*
+</details>
+
+- 코드는 즐겁게 읽혀야 한다.
+- 효율적인 코드라야 한다. 이는 성능적 측면 뿐만 아니라 나쁜 코드는 난장판을 더 키우기 때문이다.(깨진 유리창 이론)<sup> [1](#fn1)</sup>
+- 에러 핸들링, 메모리 누수, 경쟁상태, 일관되지 않은 네이밍 등 디테일을 신경쓰라.
+- 나쁜 코드는 여러가지 일을 하려고 한다. 나쁜 코드는 애매한 의도와 모호한 목적을 포함한다. 클린코드는 한 가지에 집중한다. **클린코드는 한 가지 일을 잘 한다.**
+
+
+<details>
+  <summary>
+    <b> Grady Booch, author of Object Oriented Analysis and Design with Applications </b>
+  </summary>
+
+> *Clean code is simple and direct. Clean code reads like well-written prose. Clean code never obscures the designer’s intent but rather is full of crisp abstractions and straightforward lines of control.*
+</details>
+
+- 클린코드는 하나의 잘 쓰여진 산문처럼 읽혀야 한다. 소설의 기승전결처럼 문제를 제시하고 명쾌한 해답을 제시해야 한다.
+- 명백한 추상: 코드는 추측 대신 실제를 중시, 필요한 것만 포함하며 독자로 하여금 결단을 내렸다고 생각하게 해야 한다.
+
+
+<details>
+  <summary>
+    <b> “Big” Dave Thomas, founder of OTI, godfather of the Eclipse strategy </b>
+  </summary>
+
+> *Clean code can be read, and enhanced by a developer other than its original author. It has unit and acceptance tests. It has meaningful names. It provides one way rather than many ways for doing one thing. It has minimal dependencies, which are explicitly defined, and provides a clear and minimal API. Code should be literate since depending on the language, not all necessary information can be expressed clearly in code alone.*
+</details>
+
+- 다른 이가 수정하기 쉬워야 한다.
+- 테스트를 해야 한다.
+- 코드는 간결할 수록 좋다.(Smaller is better)
+- 코드는 세련되어야 한다.
+
+
+<details>
+  <summary>
+    <b> Michael Feathers, author of Working Effectively with Legacy Code </b>
+  </summary>
+
+> *I could list all of the qualities that I notice in clean code, but there is one overarching quality that leads to all of them. Clean code always looks like it was written by someone who cares. There is nothing obvious that you can do to make it better. All of those things were thought about by the code’s author, and if you try to imagine improvements, you’re led back to where you are, sitting in appreciation of the code someone left for you—code left by someone who cares deeply about the craft.*
+</details>
+
+- 코드를 **care**하라.(주의, 관심을 가지고 작성하라)
+
+
+<details>
+  <summary>
+    <b> Ron Jeffries, author of Extreme Programming Installed and Extreme Programming Adventures in C# </b>
+  </summary>
+
+> *In recent years I begin, and nearly end, with Beck’s rules of simple code. In priority order, simple code:*  
+>   *- Runs all the tests;*  
+>   *- Contains no duplication;*  
+>   *- Expresses all the design ideas that are in the system;*  
+>   *- Minimizes the number of entities such as classes, methods, functions, and the like.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*Of these, I focus mostly on duplication. When the same thing is done over and over, it’s a sign that there is an idea in our mind that is not well represented in the code. I try to figure out what it is. Then I try to express that idea more clearly. Expressiveness to me includes meaningful names, and I am likely to change the names of things several times before I settle in. With modern coding tools such as Eclipse, renaming is quite inexpensive, so it doesn’t trouble me to change.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*Expressiveness goes beyond names, however. I also look at whether an object or method is doing more than one thing. If it’s an object, it probably needs to be broken into two or more objects. If it’s a method, I will always use the Extract Method refactoring on it, resulting in one method that says more clearly what it does, and some submethods saying how it is done.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*Duplication and expressiveness take me a very long way into what I consider clean code, and improving dirty code with just these two things in mind can make a huge difference. There is, however, one other thing that I’m aware of doing, which is a bit harder to explain.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*After years of doing this work, it seems to me that all programs are made up of very similar elements. One example is “find things in a collection.” Whether we have a database of employee records, or a hash map of keys and values, or an array of items of some kind, we often find ourselves wanting a particular item from that collection. When I find that happening, I will often wrap the particular implementation in a more abstract method or class. That gives me a couple of interesting advantages.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*I can implement the functionality now with something simple, say a hash map, but since now all the references to that search are covered by my little abstraction, I can change the implementation any time I want. I can go forward quickly while preserving my ability to change later.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*In addition, the collection abstraction often calls my attention to what’s “really” going on, and keeps me from running down the path of implementing arbitrary collection behavior when all I really need is a few fairly simple ways of finding what I want.*  
+> &nbsp;&nbsp;&nbsp;&nbsp;*Reduced duplication, high expressiveness, and early building of simple abstractions. That’s what makes clean code for me.*
+</details>
+
+- 중복을 없애라
+- 클래스/메서드는 한 가지 일만 하게 하라
+- 메서드의 이름 등으로 코드가 하는 일을 명시하라
+- (메서드 등을) 일찍 추상화해서 프로젝트를 빠르게 진행할 수 있게 하라
+
+
+<details>
+  <summary>
+    <b> Ward Cunningham, inventor of Wiki, inventor of Fit, coinventor of eXtreme Programming. Motive force behind Design Patterns. Smalltalk and OO thought leader. The godfather of all those who care about code. </b>
+  </summary>
+
+> *You know you are working on clean code when each routine you read turns out to be pretty much what you expected. You can call it beautiful code when the code also makes it look like the language was made for the problem.*
+</details>
+
+- 읽고, 끄덕이고, 다음으로 넘어갈 수 있는 코드를 작성하라.
+- 당신이 사용하는 언어를 탓하지 말라. 코드를 아름답게 만드는 것은 프로그래머이다.
+
+
+## 학파 ##
+필자는 본 책의 내용(의견)을 절대적인 것으로써 전달할 것이다. 우리에겐, 적어도 우리 커리어의 현시점에서는, 그게 절대적이기 때문이다. **이것은 클린코드에 대한 우리의 학파이다.**
+
+모든 무술가들이 동의하는 "최고의 무술", 혹은 "최고의 기술"은 없다. 무술의 달인들은 자신의 학파를 만들고 문하생을 받아 가르친다. 그러기에 브라질 Gracie家의 Gracie Jiu Jitsu, 도쿄 奥山龍峰(오쿠야마 류우호우)의 八光流(팔광류) Jiu Jitsu, 미국의 이소룡의 절권도가 존재하는 것이다.
+
+이 책을 "클린코드에 대한 객체 멘토 학파"라고 생각하라. 이 책에서 설명하는 기술과 가르침은 "우리"가 "우리의" 예술을 실행하는 방법이다. 당신이 이 가르침을 따른다면, 당신은 우리가 우리가 즐긴(enjoyed) 이점을 즐길 수 있을 것이며 깨끗하고 프로페셔널한 코드 작성법을 배울 것이다. 하지만 우리가 절대적으로 "옳다"라고는 여기지 말라. 우리 이외에도 우리만큼이나 스스로를 프로페셔널하다고 생각하는 학파와 마스터들이 있다. 그들에게서도 배움을 얻어 마땅하다.
+
+정말, 이 책에 나오는 많은 내용들은 논란거리이다. 당신도 모든 내용을 수긍하지도 않을 거니와 어떤 내용은 심하게 부정할 지도 모른다. 그건 괜찮다. 결정은 당신이 해야 한다. 하지만, 이 책에서 추천하는 내용은 우리가 긴 시간 힘들게 고민한 내용이다. 이 내용은 우리가 수십년간의 경험과 시행착오의 반복으로 얻은 것이다. 당신이 동의하던 아니던 당신이 우리의 관점을 이해하고 존중해 주길 바란다.
+
+
+## 우리는 작가들이다 ##
+JavaDoc의 @author필드는 우리가 누구인지 이야기해 준다. 우리는 작가들이다. 작가에게는 독자가 있다. 작가는 독자와 제대로 소통할 의무가 있다. 다음에 코드를 작성할 일이 있다면 당신은 당신의 노력을 평가할 독자를 위해 글을 쓰는 작가임을 명심하라.
+
+어쩌면 당신은 코드를 읽는 시간보다 작성하는 데에 더 많은 시간이 필요하다고 생각할지 모른다. 하지만 실상은 그 반대이다. 아래의 예를 보자.
+
+```
+Bob이 모듈을 열었다.
+수정이 필요한 함수로 스크롤한다.
+잠시 멈춘 뒤, 어떻게 할지 고민한다.
+음, 그가 모듈의 최상단으로 스크롤해 변수의 초기화를 확인한다. 그리고는 다시 돌아가 타이핑하기 시작한다.
+앗, 쓰고 있던 내용을 지운다!
+그 내용을 다시 적는다.
+적은 내용을 또 다시 지운다!
+다른 무언가를 적다가 또 다시 지운다!
+지금 수정하고 있는 함수를 부르는 다른 함수로 스크롤해 수정중인 함수가 어떻게 호출되는지 확인한다.
+다시 수정중인 함수로 돌아가서는, 방금 전에 지운 내용을 다시 적는다.
+잠시 멈춘다.
+적던 코드를 또 다시 지운다!
+다른 창을 띄워서 subclass를 확인한다. 이 함수 override된 함수인가? 
+...
+```
+
+실제로 읽기와 쓰기에 들이는 시간은 대략 10:1 정도이다. 새 코드를 작성하기 위해서는 옛 코드들을 읽어야 하기 때문이다.  
+그러므로, **빨리 가고 싶다면, 쉽게 코드를 작성하고 싶다면, "읽기 쉽게 작성하라"**.
+
+
+## 보이스카우트 규칙 ##
+시간이 지날 수록 더러워지는 코드를 본 적이 있을 것이다. 미국 보이스카우트에는 이러한 상황에 사용할 수 있는 단순한 규칙이 하나 있다.
+
+> "Leave the campground cleaner than you found it."
+
+우리가 본 코드를 그 순간보다 조금만 더 개선한다면 코드는 더러워질 수가 없다. 거창하게 생각할 필요는 없다. 변수의 명명, 너무 긴 코드의 분할, 작은 중복의 제거, 복합 if문 하나의 개선 정도만 해 보라.
+
+
+## 프리퀄, 그리고 원칙 ##
+여러모로 봐서 이 책은 내가 지난 2002년에 쓴 책 Agile Software Development: Principles, Patterns, and Practices (PPP) 의 프리퀄이다. SRP, OCP, DIP등 PPP에서 설명하는 객체지향 디자인의 원칙과 실제에 대한 설명이 종종 나오기 때문에 같이 읽어보면 좋을 것이다.
+
+
+## 정리 ##
+이 책은 당신을 예술가로 만들어줄 수는 없다. 다만, 다른 아티스트가 사용했던 툴, 기술, 사고방식 등을 전달해줄 수 있을 뿐이다.  
+예술 교본과 마찬가지로 이 책은 당신에게 많은 (좋은/나쁜)코드를 보여줄 것이다. 나쁜 코드들이 좋은 코드로 바뀌는 것도 볼 것이다. 많은 휴리스틱, 규율, 태크닉을 볼 것이다. 예제, 그리고 더 많은 예제들을 볼 것이다. 그 다음은 당신의 몫이다.  
+공연에 지각한 콘서트 바이올리니스트에 대한 옛 농담을 기억하는가? 그는 코너에 있던 한 노인을 불러 세우고는 카네기 홀 까지의 길을 물었다. 노인은 그와 그의 바이올린을 쳐다보고는 말했다. **"연습해 젊은이. 연습!"**
+
+---
+
+#### 참조 ####  
+##### 1. 깨진 유리창 이론
+https://ko.wikipedia.org/wiki/깨진_유리창_이론  
+
+
+## 의도를 분명히 밝혀라  
+- 변수의 존재 이유, 기능, 사용법 등이 변수/함수/클래스명에 드러나야 한다. 따로 주석이 필요하지 않을 정도로.  
+- 의미를 함축하거나 독자(코드를 읽는 사람)가 사전지식을 가지고 있다고 가정하지 말자.
+- 예시 1
+  - Bad
+    - int d; // elapsed time in days
+  - Good
+    - int elapsedTimeInDays;
+    - int daysSinceCreation;
+    - int daysSinceModification;
+    - int fileAgeInDays;
+- 예시 2
+
+```java
+// Bad
+public List<int[]> getThem() {
+    List<int[]> list1 = new ArrayList<int[]>();
+    for (int[] x : theList) {
+        if (x[0] == 4) {
+            list1.add(x);
+        }
+    }
+    return list1;
+}
+```
+ 
+```java
+// Good
+public List<int[]> getFlaggedCells() {
+    List<int[]> flaggedCells = new ArrayList<int[]>();
+    for (int[] cell : gameBoard) {
+        if (cell[STATUS_VALUE] == FLAGGED) {
+            flaggedCells.add(cell);
+        }
+    }
+    return flaggedCells;
+}
+```
+
+## 그릇된 정보를 피하라  
+- 중의적으로 해석될 수 있는 이름 지양하기.  
+- 개발자에게는 특수한 의미를 가지는 단어(List 등)는 실제 컨테이너가 List가 아닌 이상 accountList와 같이 변수명에 붙이지 말자. 차라리 accountGroup, bunchOfAccounts, accounts등으로 명명하자  
+- 비슷해 보이는 명명에 주의하자.  
+
+## 의미 있게 구분하라(불용어-noise word-를 쓰지 말자)  
+- 말이 안되는 단어(한 글자만 바꾼다던지 한 단어), [a1, a2, …]과 같이 숫자로 구분하는 경우 주의  
+- 클래스 이름에 Info, Data와 같은 불용어를 붙이지 말자. 정확한 개념 구분이 되지 않음  
+- 예시  
+ - `Name` VS `NameString`
+ - `getActiveAccount()` VS `getActiveAccounts()` VS `getActiveAccountInfo()` (이들이 혼재할 경우 서로의 역할을 정확히 구분하기 어렵다.)
+ - `money` VS `moneyAmount`
+ - `message` VS `theMessage`
+
+## 발음하기 쉬운 이름을 사용하라  
+
+```java
+// Bad
+class DtaRcrd102 {
+    private Date genymdhms;
+    private Date modymdhms;
+    private final String pszqint = "102";
+    /* ... */
+};
+```
+ 
+```java
+// Good
+class Customer {
+    private Date generationTimestamp;
+    private Date modificationTimestamp;
+    private final String recordId = "102";
+    /* ... */
+};
+```
+
+## 검색하기 쉬운 이름을 사용하라  
+- 상수는 static final과 같이 정의해 쓰자.  
+- 변수 이름의 길이는 변수의 범위에 비례해서 길어진다.  
+
+## 인코딩을 피하라(변수에 부가 정보를 덧붙여 표기하는 것을 뜻함.)  
+- 헝가리안 표기법
+  - 변수명에 해당 변수의 타입(String, Int 등)을 적지 말자
+- 맴버 변수 접두어 
+  - 맴버 변수 접두어를 붙이지 말자(???)  
+- 인터페이스와 구현
+  - 인터페이스 클래스와 구현 클래스를 나눠야 한다면 구현 클래스의 이름에 정보를 인코딩하자.  
+ 
+| Do / Don't | Interface class | Concrete(Implementation) class |
+| ---------- | --------------- | ------------------------------ |
+| Don't      | IShapeFactory   | ShapeFactory                   |
+| Do         | ShapeFactory    | ShapeFactoryImp                |
+| Do         | ShapeFactory    | CShapeFactory                  |
+
+## 자신의 기억력을 자랑하지 마라  
+- 독자가 머리속으로 한번 더 생각해 변환해야 할만한 변수명을 쓰지 말라.(eg, URL에서 호스트와 프로토콜을 제외한 소문자 주소를 r이라는 변수로 명명하는 일 등)  
+- 똑똑한 프로그래머와 전문가 프로그래머를 나누는 기준 한가지는 "Clarity(명료함)"이다.  
+
+## 클래스 이름  
+- 명사 혹은 명사구를 사용하라.(Customer, WikiPage, Account, AddressParser)  
+- Manager, Processor, Data, Info와 같은 단어는 피하자  
+- 동사는 사용하지 않는다.  
+
+## 메서드 이름  
+- 동사 혹은 동사구를 사용하라.(postPayment, deletePayment, deletePage, save 등)  
+- 접근자, 변경자, 조건자는 get, set, is로 시작하자.  (추가: should, has 등도 가능)
+- 생성자를 오버로드할 경우 정적 팩토리 메서드를 사용하고 해당 생성자를 private으로 선언한다.
+
+```java 
+// 첫번째 보다 두 번째 방법이 더 좋다.  
+Complex fulcrumPoint = new Complex(23.0);  
+Complex fulcrumPoint = Complex.FromRealNumber(23.0);  
+```
+
+## 기발한 이름은 피하라  
+- 특정 문화에서만 사용되는 재미있는 이름보다 의도를 분명히 표현하는 이름을 사용하라  
+  - HolyHandGrenade → DeleteItems  
+  - whack() → kill()  
+
+## 한 개념에 한 단어를 사용하라  
+- 추상적인 개념 하나에 단어 하나를 사용하자.  
+  - fetch, retrieve, get  
+  - controller, manager, driver  
+
+## 말장난을 하지 마라(위 내용에 이어)  
+- 한 단어를 두 가지 목적으로 사용하지 말자. 아래와 같은 경우에는 ii를 append 혹은 insert로 바꾸는게 옳겠다.
+
+```java
+public static String add(String message, String messageToAppend)  
+public List<Element> add(Element element)  
+```
+
+## 해법 영역(Solution Domain) 용어를 사용하자  
+- 개발자라면 당연히 알고 있을 `JobQueue`, `AccountVisitor(Visitor pattern)`등을 사용하지 않을 이유는 없다. 전산용어, 알고리즘 이름, 패턴 이름, 수학 용어 등은 사용하자.  
+
+## 문제 영역(Problem Domain) 용어를 사용하자  
+- 적절한 프로그래머 용어(위 13)가 없거나 문제영역과 관련이 깊은 용어의 경우 문제 영역 용어를 사용하자.  
+
+## 의미 있는 맥락을 추가하라  
+- 클래스, 함수, namespace등으로 감싸서 맥락(Context)을 표현하라  
+- 그래도 불분명하다면 접두어를 사용하자.  
+
+```java
+// Bad
+private void printGuessStatistics(char candidate, int count) {
+    String number;
+    String verb;
+    String pluralModifier;
+    if (count == 0) {  
+        number = "no";  
+        verb = "are";  
+        pluralModifier = "s";  
+    }  else if (count == 1) {
+        number = "1";  
+        verb = "is";  
+        pluralModifier = "";  
+    }  else {
+        number = Integer.toString(count);  
+        verb = "are";  
+        pluralModifier = "s";  
+    }
+    String guessMessage = String.format("There %s %s %s%s", verb, number, candidate, pluralModifier );
+
+    print(guessMessage);
+}
+```
+
+```java
+// Good
+public class GuessStatisticsMessage {
+    private String number;
+    private String verb;
+    private String pluralModifier;
+
+    public String make(char candidate, int count) {
+        createPluralDependentMessageParts(count);
+        return String.format("There %s %s %s%s", verb, number, candidate, pluralModifier );
+    }
+
+    private void createPluralDependentMessageParts(int count) {
+        if (count == 0) {
+            thereAreNoLetters();
+        } else if (count == 1) {
+            thereIsOneLetter();
+        } else {
+            thereAreManyLetters(count);
+        }
+    }
+
+    private void thereAreManyLetters(int count) {
+        number = Integer.toString(count);
+        verb = "are";
+        pluralModifier = "s";
+    }
+
+    private void thereIsOneLetter() {
+        number = "1";
+        verb = "is";
+        pluralModifier = "";
+    }
+
+    private void thereAreNoLetters() {
+        number = "no";
+        verb = "are";
+        pluralModifier = "s";
+    }
+}
+```
+
+## 불필요한 맥락을 없애라  
+- `Gas Station Delux` 이라는 어플리케이션을 작성한다고 해서 클래스 이름의 앞에 GSD를 붙이지는 말자. G를 입력하고 자동완성을 누를 경우 모든 클래스가 나타나는 등 효율적이지 못하다.  
+위 a처럼 접두어를 붙이는 것은 모듈의 재사용 관점에서도 좋지 못하다. 재사용하려면 이름을 바꿔야 한다.(eg, `GSDAccountAddress` 대신 `Address`라고만 해도 충분하다.)  
+
+
+> 두려워하지 말고 서로의 명명을 지적하고 고치자. 그렇게 하면 이름을 외우는 것에 시간을 빼앗기지 않고 "자연스럽게 읽히는 코드"를 짜는 데에 더 집중할 수 있다.  
+
+
+## Intro
+
+어떤 프로그램이든 기본적인 단위가 함수다.
+
+길이가 길고, 중복된 코드에, 괴상한 문자열에, 낯설고 모호한 자료 유형의 코드로 이루어진 함수는 이해하기에 많은 어려움이 따른다. 그렇다면 읽시 쉽고 이해하기 쉬운 함수는 어떻게 작성해야하는가?
+
+
+## 작게 만들어라!
+
+#### 함수를 만들 때 최대한 ‘작게!’ 만들어라.
+```java
+public static String renderPageWithSetupsAndTeardowns( PageData pageData, boolean isSuite) throws Exception {
+	boolean isTestPage = pageData.hasAttribute("Test");
+	if (isTestPage) {
+		WikiPage testPage = pageData.getWikiPage();
+		StringBuffer newPageContent = new StringBuffer();
+		includeSetupPages(testPage, newPageContent, isSuite);
+		newPageContent.append(pageData.getContent());
+		includeTeardownPages(testPage, newPageContent, isSuite);
+		pageData.setContent(newPageContent.toString());
+	}
+	return pageData.getHtml();
+}
+```
+ 위 코드도 길다. 되도록 한 함수당 3~5줄 이내로 줄이는 것을 권장한다
+ ```java
+public static String renderPageWithSetupsAndTeardowns( PageData pageData, boolean isSuite) throws Exception {
+	if (isTestPage(pageData))
+		includeSetupAndTeardownPages(pageData, isSuite);
+	return pageData.getHtml();
+}
+```
+
+#### 블록과 들여쓰기
+중첩구조(if/else, while문 등)에 들어가는 블록은 한 줄이어야 한다. 각 함수 별 들여쓰기 수준이 2단을 넘어서지 않고,  각 함수가 명백하다면 함수는 더욱 읽고 이해하기 쉬워진다.
+
+
+## 한 가지만 해라
+
+함수는 한가지를 해야 한다. 그 한가지를 잘 해야 한다. 그 한가지만을 해야 한다.
+
+지정된 함수 이름 아래에서 추상화 수준이 하나인 단계만 수행한다면 그 함수는 한 가지 작업만 하는 것이다.
+
+함수가 한 가지 이상의 일을 하는지 확인할 수 있는 좋은 방법은, `했던 말을 거의 다시 되뇌이지 않는` 단계로 더 추상화할 수 있는지 확인하는 것이다.
+
+#### 함수 내 섹션
+함수를 여러 섹션으로 나눌 수 있다면 그 함수는 여러작업을 하는 셈이다.
+
+
+## 함수 당 추상화 수준은 하나로
+함수가 ‘한가지’ 작업만 하려면 함수 내 모든 문장의 추상화 수준이 동일해야 된다.
+
+만약 한 함수 내에 추상화 수준이 섞이게 된다면 읽는 사람이 헷갈린다.
+
+#### 위에서 아래로 코드 읽기:내려가기 규칙
+코드는 위에서 아래로 이야기처럼 읽혀야 좋다.
+
+함수 추상화 부분이 한번에 한단계씩 낮아지는 것이 가장 이상적이다.(내려가기 규칙)
+
+
+## Switch문
+
+```java
+public Money calculatePay(Employee e) throws InvalidEmployeeType {
+	switch (e.type) {
+		case COMMISSIONED:
+			return calculateCommissionedPay(e);
+		case HOURLY:
+			return calculateHourlyPay(e);
+		case SALARIED:
+			return calculateSalariedPay(e);
+		default:
+			throw new InvalidEmployeeType(e.type);
+	}
+}
+```
+
+switch문은 작게 만들기 어렵지만(if/else의 연속 도 마찬가지!), 다형성을 이용하여 switch문을 abstract factory에 숨겨 다형적 객체를 생성하는 코드 안에서만 switch를 사용하도록 한다.
+
+```java
+public abstract class Employee {
+	public abstract boolean isPayday();
+	public abstract Money calculatePay();
+	public abstract void deliverPay(Money pay);
+}
+-----------------
+public interface EmployeeFactory {
+	public Employee makeEmployee(EmployeeRecord r) throws InvalidEmployeeType;
+}
+-----------------
+public class EmployeeFactoryImpl implements EmployeeFactory {
+	public Employee makeEmployee(EmployeeRecord r) throws InvalidEmployeeType {
+		switch (r.type) {
+			case COMMISSIONED:
+				return new CommissionedEmployee(r) ;
+			case HOURLY:
+				return new HourlyEmployee(r);
+			case SALARIED:
+				return new SalariedEmploye(r);
+			default:
+				throw new InvalidEmployeeType(r.type);
+		}
+	}
+}
+```
+하지만 switch문은 불가피하게 써야될 상황이 많으므로, 상황에 따라서는 사용 할 수도 있다.
+
+
+## 서술적인 이름을 사용하라!
+> “코드를 읽으면서 짐작했던 기능을 각 루틴이 그대로 수행한다면 깨끗한 코드라 불러도 되겠다” - 워드
+
+작은 함수는 그 기능이 명확하므로 이름을 붙이기가 더 쉬우며, 일관성 있는 서술형 이름을 사용한다면 코드를 순차적으로 이해하기도 쉬워진다.
+
+## 함수 인수
+함수에서 이상적인 인수 개수는 0개(무항).
+인수는 코드 이해에 방해가 되는 요소이므로 최선은 0개이고, 차선은 1개뿐인 경우이다.
+출력인수(함수의 반환 값이 아닌 입력 인수로 결과를 받는 경우)는 이해하기 어려우므로 왠만하면 쓰지 않는 것이 좋겠다.
+
+#### 많이 쓰는 단항 형식
+  - 인수에 질문을 던지는 경우
+	`boolean fileExists(“MyFile”);`
+  - 인수를 뭔가로 변환해 결과를 변환하는 경우
+	`InputStream fileOpen(“MyFile”);`
+  - 이벤트 함수일 경우 (이 경우에는 이벤트라는 사실이 코드에 명확하게 드러나야 한다.)
+
+위의 3가지가 아니라면 단항 함수는 가급적 피하는 것이 좋다.
+
+#### 플래그 인수
+플래그 인수는 추하다. 쓰지마라. bool 값을 넘기는 것 자체가 그 함수는 한꺼번에 여러가지 일을 처리한다고 공표하는 것과 마찬가지다.
+
+#### 이항 함수
+단항 함수보다 이해하기가 어렵다.
+
+다만 Point 클래스와 같은 두 인수간의 자연적인 순서가 있는 경우에는 이항 함수가 적절하다.
+```
+Point p = new Point(x,y);
+```
+
+무조건 나쁜 것은 아니지만, 인수가 2개이니 만큼 이해가 어렵고 위험이 따르므로 가능하면 단항으로 바꾸도록 한다.
+
+#### 삼항 함수
+이항 함수보다 이해하기가 훨씬 어려우므로, 위험도 2배 이상 늘어난다.
+삼항 함수를 만들 때는 신중히 고려하라.
+
+#### 인수 객체
+인수가 많이 필요할 경우, 일부 인수를 독자적인 클래스 변수로 선언할 가능성을 살펴보자
+x,y를 인자로 넘기는 것보다 Point를 넘기는 것이 더 낫다.
+
+#### 인수 목록
+때로는 String.format같은 함수들처럼 인수 개수가 가변적인 함수도 필요하다.
+String.format의 인수는 List형 인수이기 때문에 이항함수라고 할 수 있다.
+
+#### 동사와 키워드
+단항 함수는 함수와 인수가 동사/명사 쌍을 이뤄야한다.
+`writeField(name);`
+함수이름에 키워드(인수 이름)을 추가하면 인수 순서를 기억할 필요가 없어진다.
+`assertExpectedEqualsActual(expected, actual);`
+
+## 부수 효과를 일으키지 마라!
+부수효과는 거짓말이다. 함수에서 한가지를 하겠다고 약속하고는 남몰래 다른 짓을 하는 것이므로, 한 함수에서는 딱 한가지만 수행할 것!
+
+아래 코드에서 `Session.initialize();`는 함수명과는 맞지 않는 부수효과이다.
+```java
+public class UserValidator {
+	private Cryptographer cryptographer;
+	public boolean checkPassword(String userName, String password) {
+		User user = UserGateway.findByName(userName);
+		if (user != User.NULL) {
+			String codedPhrase = user.getPhraseEncodedByPassword();
+			String phrase = cryptographer.decrypt(codedPhrase, password);
+			if ("Valid Password".equals(phrase)) {
+				Session.initialize();
+				return true;
+			}
+		}
+		return false;
+	}
+}
+```
+
+#### 출력인수
+일반적으로 출력 인수는 피해야 한다.
+
+함수에서 상태를 변경해야 한다면 함수가 속한 객체 상태를 변경하는 방식을 택하라.
+
+## 명령과 조회를 분리하라
+함수는 뭔가 객체 상태를 변경하거나, 객체 정보를 반환하거나 둘 중 하나다. 둘 다 수행해서는 안 된다.
+
+`public boolean set(String attribute, String value);`같은 경우에는 속성 값 설정 성공 시 true를 반환하므로 괴상한 코드가 작성된다.
+
+`if(set(“username”, “unclebob”))...` 그러므로 명령과 조회를 분리해 혼란을 주지 않도록 한다.
+
+## 오류코드보다 예외를 사용하라!
+
+try/catch를 사용하면 오류 처리 코드가 원래 코드에서 분리되므로 코드가 깔끔해 진다.
+
+#### Try/Catch 블록 뽑아내기
+
+```java
+if (deletePage(page) == E_OK) {
+	if (registry.deleteReference(page.name) == E_OK) {
+		if (configKeys.deleteKey(page.name.makeKey()) == E_OK) {
+			logger.log("page deleted");
+		} else {
+			logger.log("configKey not deleted");
+		}
+	} else {
+		logger.log("deleteReference from registry failed");
+	}
+} else {
+	logger.log("delete failed"); return E_ERROR;
+}
+```
+
+정상 작동과 오류 처리 동작을 뒤섞는 추한 구조이므로 if/else와 마찬가지로 블록을 별도 함수로 뽑아내는 편이 좋다.
+
+```java
+public void delete(Page page) {
+	try {
+		deletePageAndAllReferences(page);
+  	} catch (Exception e) {
+  		logError(e);
+  	}
+}
+
+private void deletePageAndAllReferences(Page page) throws Exception {
+	deletePage(page);
+	registry.deleteReference(page.name);
+	configKeys.deleteKey(page.name.makeKey());
+}
+
+private void logError(Exception e) {
+	logger.log(e.getMessage());
+}
+```
+
+## 오류 처리도 한가지 작업이다.
+함수는 한 가지 일만 해야 한다. 에러처리도 한 가지 일이므로 에러처리를 하는 함수는 에러처리 외의 일을 해서는 안된다.
+
+만약 함수에 `try` 키워드가 존재한다면, 이 키워드가 이 함수의 첫 키워드여야 하며 `catch/finally` 뒤에는 어떤 코드도 없어야 함을 의미한다.
+
+## Error.java 의존성 자석
+
+```java
+public enum Error {
+	OK,
+	INVALID,
+	NO_SUCH,
+	LOCKED,
+	OUT_OF_RESOURCES,
+	WAITING_FOR_EVENT;
+}
+```
+
+오류를 처리하는 곳곳에서 오류코드를 사용한다면 enum class를 쓰게 되는데 이런 클래스는 의존성 자석이므로, 새 오류코드를 추가하거나 변경할 때 코스트가 많이 필요하다.
+그러므로 예외를 사용하는 것이 더 안전하다.
+
+## 반복하지 마라!
+중복은 모든 소프트웨어에서 만악의 근원이다. 중복이 늘어날 수록 수정에 필요한 노력과 누락될 가능성이 커지므로, 늘 중복을 없애도록 노력해야한다.
+
+Object Oriented Programming은 이를 base class로 모아 중복을 줄인다. Structured Programming, Aspect Oriented Programming, Aspect Oriented Programming등 많은 패러다임들 또한 중복을 줄이기 위한 전략 중 하나이다.
+
+## 구조적 프로그래밍
+다익스트라의 구조적 프로그래밍의 원칙을 따르자면 모든 함수와 함수 내 모든 블록에 입구와 출구가 하나여야 된다. 즉, 함수는 return문이 하나여야 되며, **루프 안에서 break나 continue를 사용해선 안된며 goto는 절대로, 절대로 사용하지 말자.** 함수가 클 경우에만 상당 이익을 제공하므로, 함수를 작게 만든다면 오히려 여러차례 사용하는 것이 함수의 의도를 표현하기 쉬워진다.
+
+구조적 프로그래밍의 목표와 규율에는 공감하지만 함수가 작다면 위 규칙은 별 이익을 제공하지 못한다. 함수가 아주 클 때만 상당한 이익을 제공한다. 그러므로 함수를 작게 만든다면 간혹 return, break, continue를 사용해도 괜찮다. 오히려 때로는 단일 입/출구 규칙보다 의도를 표현하기 쉬워진다.
+
+## 함수를 어떻게 짜죠?
+우선은 길고, 복잡하고, 많은 들여쓰기와 중첩된 반복문을 쓴다. 인수 길이도 길게 작성한다. 네이밍은 알기 힘들며 중복도 많게 작성한다. 동시에 이 코드들을 빠짐없이 테스트하는 단위 테스트 케이스를 만든다.
+
+그러고 나서야 코드를 다듬고, 함수를 나누고, 이름을 바꾸고, 중복을 제거한다. 메서드 크기를 줄이고 재정렬한다. 어떤때는 클래스 전체를 갈아 엎기도 한다. 그리고 이 모든 절차는 위에서 짠 테스트를 통과하도록 만든다.
+
+처음부터 탁 짜지지는 않는다.
+
+
+> 나쁜 코드에 주석을 달지 마라. 새로 짜라.
+ - 브라이언 W.커니핸, P.J.플라우거
+
+주석은 필요악이다. 코드로 의도를 표현하지 못해, 실패를 만회하기 위해 쓰는 것이다. 주석은 언제나 실패를 의미한다. 주석 없이는 자신을 표현할 방법을 찾지 못해 할 수 없이 주석을 사용한다. 그래서 주석은 반겨 맞을 손님이 아니다.
+
+주석을 무시하는 이유가 무엇이냐고? 주석이 오래될수록 코드에서 멀어져서 거짓말을 하게 될 가능성이 커지기 때문이다. 코드는 유지보수를 해도, 주석을 계속 유지보수하기란 현실적으로 불가능하기 때문이다.
+
+## 주석은 나쁜 코드를 보완하지 못한다 ##
+코드에 주석을 추가하는 일반적인 이유는 코드 품질이 나빠서이다. 깔끔하고 주석이 거의 없는 코드가, 복잡하고 어수선하며 주석이 많이 달린 코드보다 훨씬 좋다. 주석으로 설명하려 애쓰는 대신에 그 난장판을 깨끗이 치우는 데 시간을 보내라!
+
+## 코드를 의도로 표현하라! ##
+
+```java
+// 직원에게 복지 혜택을 받을 자격이 있는지 검사한다.
+if ((emplotee.flags & HOURLY_FLAG) && (employee.age > 65)
+```
+
+다음 코드는 어떤가?
+
+```java
+if (employee.isEligibleForFullBenefits())
+```
+
+주석도 필요없이 함수 이름만으로 충분히 깔끔하게 표현되었다.
+
+## 좋은 주석 ##
+
+#### 법적인 주석: 각 소스 파일 첫머리에 들어가는 저작권 정보와 소유권 정보 등
+  `// Copyright (C) 2003, 2004, 2005 by Object Montor, Inc. All right reserved.`
+  `// GNU General Public License`
+
+#### 정보를 제공하는 주석
+
+```java
+// 테스트 중인 Responder 인스턴스를 반환
+protected abstract Responder responderInstance();
+```
+
+  물론 이 주석도 함수 이름에 정보를 담아 responderBeingTested로 바꾸면 없앨 수 있다.
+  더 나은 예:
+
+```java
+// kk:mm:ss EEE, MMM dd, yyyy 형식이다.
+Pattern timeMatcher = Pattern.compile("\\d*:\\d*\\d* \\w*, \\w*, \\d*, \\d*");
+```
+
+#### 의도를 설명하는 주석
+
+```java
+// 스레드를 대량 생성하는 방법으로 어떻게든 경쟁 조건을 만들려 시도한다.
+for (int i = 0; i > 2500; i++) {
+    WidgetBuilderThread widgetBuilderThread =
+        new WidgetBuilderThread(widgetBuilder, text, parent, failFlag);
+    Thread thread = new Thread(widgetBuilderThread);
+    thread.start();
+}
+```
+
+#### 결과를 경고하는 주석
+
+```java
+// 여유 시간이 충분하지 않다면 실행하지 마십시오.
+public void _testWithReallyBigFile() {
+
+}
+```
+
+#### TODO 주석
+
+```java
+// TODO-MdM 현재 필요하지 않다.
+// 체크아웃 모델을 도입하면 함수가 필요 없다.
+protected VersionInfo makeVersion() throws Exception {
+    return null;
+}
+```
+TODO 주석은 프로그래머가 필요하다 여기지만 당장 구현하기 어려운 업무를 기술한다. 더 이상 필요 없는 기능을 삭제하라는 알림, 누군가에게 문제를 봐달라는 요청, 더 좋은 이름을 떠올려달라는 부탁, 앞으로 발생할 이벤트에 맞춰 코드를 고치라는 주의 등에 유용하다. 요즘은 IDE를 통해 남은 TODO를 쉽게 볼 수 있으므로 편리하게 이용할 수 있다.
+
+#### 중요성을 강조하는 주석
+
+```java
+String listItemContent = match.group(3).trim();
+// 여기서 trim은 정말 중요하다. trim 함수는 문자열에서 시작 공백을 제거한다.
+// 문자열에 시작 공백이 있으면 다른 문자열로 인식되기 때문이다.
+new ListItemWidget(this, listItemContent, this.level + 1);
+return buildList(text.substring(match.end()));
+```
+
+#### 공개 API에서 Javadocs
+설명이 잘 된 공개 API는 참으로 유용하고 만족스럽다. 공개 API를 구현한다면 반드시 훌륭한 Javadocs 작성을 추천한다. 하지만 여느 주석과 마찬가지로 Javadocs 역시 독자를 오도하거나, 잘못 위치하거나, 그릇된 정보를 전달할 가능성이 존재하는 것 역시 잊으면 안 된다.
+
+## 나쁜 주석 ##
+대다수의 주석이 이 범주에 속한다. 일반적으로 대다수 주석은 허술한 코드를 지탱하거나, 엉성한 코드를 변명하거나, 미숙한 결정을 합리화하는 등 프로그래머가 주절거리는 독백에서 크게 벗어나지 못한다.
+
+#### 주절거리는 주석
+특별한 이유 없이 달리는 주석이다.
+
+```java
+public void loadProperties() {
+    try {
+        String propertiesPath = propertiesLocation + "/" + PROPERTIES_FILE;
+        FileInputStream propertiesStream = new FileInputStream(propertiesPath);
+        loadedProperties.load(propertiesStream);
+    } catch (IOException e) {
+        // 속성 파일이 없다면 기본값을 모두 메모리로 읽어 들였다는 의미다.
+    }
+}
+```
+
+catch 블록에 있는 주석은 저자에게야 의미가 있겠지만 다른 사람들에게는 전해지지 않는다. 저 주석의 의미를 알아내려면 다른 코드를 뒤져보는 수밖에 없다. 이해가 안되어 다른 모듈까지 뒤져야 하는 주석은 제대로 된 주석이 아니다.
+
+- 같은 이야기를 중복하는 주석
+  코드 내용을 그대로 중복하는 주석이 있다. 전혀 필요없는 코드
+
+```java
+// this.closed가 true일 때 반환되는 유틸리티 메서드다.
+// 타임아웃에 도달하면 예외를 던진다.
+public synchronized void waitForClose(final long timeoutMillis) throws Exception {
+    if (!closed) {
+        wait(timeoutMillis);
+        if (!closed) {
+            throw new Exception("MockResponseSender could not be closed");
+        }
+    }
+}
+```
+
+#### 오해할 여지가 있는 주석
+위 코드를 다시 보자. 중복이 많으면서도 오해할 여지가 살짝 있다. this.closed가 true로 변하는 순간에 메서드는 반환되지 않는다. this.closed가 true여야 메서드는 반환된다. 아니면 무조건 타임아웃을 기다렸다 this.closed가 그래도 true가 아니면 예외를 던진다. 주석에 담긴 '살짝 잘못된 정보'로 인해 어느 프로그래머가 경솔하게 함수를 호출해 자기 코드가 아주 느려진 이유를 못찾게 되는 것이다.
+
+#### 의무적으로 다는 주석
+모든 함수에 Javadocs를 달거나 모든 변수에 주석을 달아야 한다는 규칙은 어리석기 그지없다. 이런 주석은 코드를 복잡하게 만들며, 거짓말을 퍼뜨리고, 혼동과 무질서를 초래한다. 아래와 같은 주석은 아무 가치도 없다.
+
+```java
+/**
+ *
+ * @param title CD 제목
+ * @param author CD 저자
+ * @param tracks CD 트랙 숫자
+ * @param durationInMinutes CD 길이(단위: 분)
+ */
+public void addCD(String title, String author, int tracks, int durationInMinutes) {
+    CD cd = new CD();
+    cd.title = title;
+    cd.author = author;
+    cd.tracks = tracks;
+    cd.duration = durationInMinutes;
+    cdList.add(cd);
+}
+```
+
+#### 이력을 기록하는 주석
+지금은 소스 코드 관리 시스템이 있으니 전혀 필요없다.
+
+````java
+* 변경 이력 (11-Oct-2001부터)
+* ------------------------------------------------
+* 11-Oct-2001 : 클래스를 다시 정리하고 새로운 패키징
+* 05-Nov-2001: getDescription() 메소드 추가
+* 이하 생략
+````
+
+#### 있으나 마나 한 주석
+
+```java
+/*
+ * 기본 생성자
+ */
+protected AnnualDateRule() {
+
+}
+```
+
+#### 함수나 변수로 표현할 수 있다면 주석을 달지 마라
+
+```java
+// 전역 목록 <smodule>에 속하는 모듈이 우리가 속한 하위 시스템에 의존하는가?
+if (module.getDependSubsystems().contains(subSysMod.getSubSystem()))
+```
+
+주석을 제거하고 다시 표현하면 다음과 같다.
+
+```java
+ArrayList moduleDependees = smodule.getDependSubsystems();
+String ourSubSystem = subSysMod.getSubSystem();
+if (moduleDependees.contains(ourSubSystem))
+```
+
+#### 위치를 표시하는 주석
+때때로 프로그래머는 소스 파일에서 특정 위치를 표시하려 주석을 사용한다. 예를 들어, 최근에 살펴보던 프로그램에서 다음 행을 발견했다.
+
+````java
+// Actions /////////////////////////////////////////////
+````
+
+이런 주석은 가독성만 낮추므로 제거해야 마땅하다. 특히 뒷부분에 슬래시로 이어지는 잡음은 제거하는 편이 좋다. 너무 자주 사용하지 않을때만 배너는 눈에 띄며 주위를 환기한다. 그러므로 반드시 필요할 때 아주 드몰게 사용하는 편이 좋다.
+
+#### 닫는 괄호에 다는 주석
+중첩이 심하고 장황한 함수라면 의미가 있을지도 모르지만 작고 캡슐화된 함수에는 잡음일 뿐이다. 그러므로 닫는 괄호에 주석을 달아야겠다는 생각이 든다면 대신에 함수를 줄이려 시도하자.
+
+#### 공로를 돌리거나 저자를 표시하는 주석
+소스 코드 관리 시스템은 누가 언제 무엇을 추가했는지 귀신처럼 기억하기 때문에 저자 이름으로 코드를 오염시킬 필요가 없음.
+
+````java
+/* 릭이 추가함 */
+````
+
+#### 주석으로 처리한 코드
+
+```java
+this.bytePos = writeBytes(pngIdBytes, 0);
+//hdrPos = bytePos;
+writeHeader();
+writeResolution();
+//dataPos = bytePos;
+if (writeImageData()) {
+    wirteEnd();
+    this.pngBytes = resizeByteArray(this.pngBytes, this.maxPos);
+} else {
+    this.pngBytes = null;
+}
+return this.pngBytes;
+```
+
+1960년대 즈음에는 주석으로 처리한 코드가 유용했었지만 우리는 우수한 소스 코드 관리 시스템을 사용하기 때문에 우리를 대신에 코드를 기억해준다. 그냥 삭제하라. 잃어버릴 염려는 없다. 약속한다.
+
+#### 전역 정보
+주석을 달아야 한다면 근처에 있는 코드만 기술하라. 시스템의 전반적인 정보를 기술하지 마라. 해당 시스템의 코드가 변해도 아래 주석이 변하리라는 보장은 전혀 없다. 그리고 심하게 중복된 주석도 확인하자.
+
+```java
+/**
+ * 적합성 테스트가 동작하는 포트: 기본값은 <b>8082</b>.
+ *
+ * @param fitnessePort
+ */
+public void setFitnessePort(int fitnessePort) {
+    this.fitnewssePort = fitnessePort;
+}
+```
+
+#### 비공개 코드에서 Javadocs
+공개 API는 Javadocs가 유용하지만 공개하지 않을 코드라면 Javadocs는 쓸모가 없다. 코드만 보기싫고 산만해질 뿐이다.
+
+
+
+ ## Intro
+ 질서정연하고 깔끔하며, 일관적인 코드를 본다면 사람들에게 전문가가 짰다는 인상을 심어줄 수 있다.
+ 반대로, 코드가 어수선해 보인다면 프로젝트 전반적으로 무성의한 태도로 작성했다고 생각할 것이다.
+
+ 프로그래머라면 형식을 깔끔하게 맞춰 코드를 짜야한다.
+ 코드 형식을 맞추기 위한 간단한 규칙을 정하고, 그 규칙을 착실히 따라야 하며,
+ 팀으로 일한다면 팀이 합의해 규칙을 정하고 모두가 그 규칙을 따라야 한다.
+ 필요하다면 규칙을 자동으로 적용하는 도구를 활용한다 (**e.g. Android Studio의 Code Formatter**)
+
+
+ ## 형식을 맞추는 목적
+ 코드 형식은 중요하다! 너무 중요해서 무시하기 어렵다.
+ 코드 형식은 의사소통의 일환이며, **의사소통은 전문 개발자의 일차적인 의무다.**
+ 오늘 구현한 기능이 다음 버전에서 바뀔 확률은 높고, 시간이 지나면 원래 코드의 흔적을 찾아볼 수 없는 경우도 많지만,
+ 오늘 구현한 코드의 스타일과 가독성 수준은 유지보수의 용이성과 확정성에 지속적인 영향을 미친다.
+
+ > **코드는 사라져도 스타일과 규율은 사라지지 않는다!**
+
+
+ ## 적절한 행 길이를 유지하라 (코드의 세로 길이)
+ 소스코드는 얼마나 길어야 적당할까?
+ 500줄을 넘지 않고 대부분 200줄 정도인 파일로도 커다란 시스템을 구축할 수 있다.
+ (실제로 전문 자바 프로젝트들(JUnit, FitNesse, Time and Money 등)이 이렇게 구현되어있다)
+ <br/>
+ 코드 길이를 200줄 정도로 제한하는 것은 반드시 지킬 엄격한 규칙은 아니지만,
+ 일반적으로 큰 파일보다는 작은 파일이 이해하기 쉽다.
+
+
+ #### 신문 기사처럼 작성하라
+ 좋은 신문 기사는 최상단에 표제(기사를 몇마디로 요약하는 문구),
+ 첫 문단에는 전체 기사 내용을 요약하며, 기사를 읽으며 내려갈 수록 세세한 사실이 조금씩 드러나며 세부사항이 나오게 된다.
+ 소스파일 이름(표제)는 간단하면서도 설명이 가능하게 지어,
+ 이름만 보고도 올바른 모듈을 살펴보고 있는지를 판단 할 수 있도록 한다.
+ 소스파일의 첫 부분(요약 내용)은 고차원 개념과 알고리즘을 설명한다.
+ 아래로 내려갈수록 의도를 세세하게 묘사하며, 마지막에는 가장 저차원 함수(아마 Getter/Setter?)와 세부 내역이 나온다.
+ 신문이 사실, 날짜, 이름 등을 무작위로 뒤섞은 긴 기사 하나만 싣는다면 아무도 신문을 읽지 않을 것이다.
+
+ #### 개념은 빈 행으로 분리하라
+ 코드의 각 줄은 수식이나 절을 나타내고, 여러 줄의 묶음은 완결된 생각 하나를 표현한다.
+ 생각 사이에는 빈 행을 넣어 분리해야한다. 그렇지 않다면 단지 줄바꿈만 다를 뿐인데도 코드 가독성이 현저히 떨어진다.
+
+ ```java
+ // 빈 행을 넣지 않을 경우
+ package fitnesse.wikitext.widgets;
+ import java.util.regex.*;
+ public class BoldWidget extends ParentWidget {
+ 	public static final String REGEXP = "'''.+?'''";
+ 	private static final Pattern pattern = Pattern.compile("'''(.+?)'''",
+ 		Pattern.MULTILINE + Pattern.DOTALL);
+ 	public BoldWidget(ParentWidget parent, String text) throws Exception {
+ 		super(parent);
+ 		Matcher match = pattern.matcher(text); match.find();
+ 		addChildWidgets(match.group(1));}
+ 	public String render() throws Exception {
+ 		StringBuffer html = new StringBuffer("<b>");
+ 		html.append(childHtml()).append("</b>");
+ 		return html.toString();
+ 	}
+ }
+ ```
+
+ ```java
+ // 빈 행을 넣을 경우
+ package fitnesse.wikitext.widgets;
+
+ import java.util.regex.*;
+
+ public class BoldWidget extends ParentWidget {
+ 	public static final String REGEXP = "'''.+?'''";
+ 	private static final Pattern pattern = Pattern.compile("'''(.+?)'''",
+ 		Pattern.MULTILINE + Pattern.DOTALL
+ 	);
+
+ 	public BoldWidget(ParentWidget parent, String text) throws Exception {
+ 		super(parent);
+ 		Matcher match = pattern.matcher(text);
+ 		match.find();
+ 		addChildWidgets(match.group(1));
+ 	}
+
+ 	public String render() throws Exception {
+ 		StringBuffer html = new StringBuffer("<b>");
+ 		html.append(childHtml()).append("</b>");
+ 		return html.toString();
+ 	}
+ }
+ ```
+
+ #### 세로 밀집도
+ 줄바꿈이 개념을 분리한다면, 반대로 세로 밀집도는 연관성을 의미한다.
+ 즉, 서로 밀집한 코드 행은 세로로 가까이 놓여야 한다.
+
+ ```java
+ // 의미없는 주석으로 변수를 떨어뜨려 놓아서 한눈에 파악이 잘 안된다.
+
+ public class ReporterConfig {
+ 	/**
+ 	* The class name of the reporter listener
+ 	*/
+ 	private String m_className;
+
+ 	/**
+ 	* The properties of the reporter listener
+ 	*/
+ 	private List<Property> m_properties = new ArrayList<Property>();
+ 	public void addProperty(Property property) {
+ 		m_properties.add(property);
+ 	}
+ ```
+
+ ```java
+ // 의미 없는 주석을 제거함으로써 코드가 한눈에 들어온다.
+ // 변수 2개에 메소드가 1개인 클래스라는 사실이 드러난다.
+
+ public class ReporterConfig {
+ 	private String m_className;
+ 	private List<Property> m_properties = new ArrayList<Property>();
+
+ 	public void addProperty(Property property) {
+ 		m_properties.add(property);
+ 	}
+ ```
+
+ #### 수직 거리
+ 서로 밀접한 개념은 세로로 가까이 둬야 한다.
+ 두 개념이 서로 다른 파일에 속한다면 규칙이 통하지 않지만,
+ 타당한 근거가 없다면 서로 밀접한 개념은 한 파일에 속해야 마땅하다(protected 변수를 피해야 하는 이유)
+ 같은 파일에 속할 정도로 밀접한 두 개념은 세로 거리로 연관성_- 한 개념을 이해하는 데 다른 개념이 중요한 정도 -_을 표현한다.
+
+ ###### 변수선언
+ 변수는 사용하는 위치에서 최대한 가까이 선언한다.
+ 우리가 만든 함수는 매우 짧으므로 (Chapter3 - 함수를 공부했다면 말이지)
+
+ ```java
+ // InputStream이 함수 맨 처음에 선언 되어있다.
+
+ private static void readPreferences() {
+ 	InputStream is = null;
+ 	try {
+ 		is = new FileInputStream(getPreferencesFile());
+ 		setPreferences(new Properties(getPreferences()));
+ 		getPreferences().load(is);
+ 	} catch (IOException e) {
+ 		try {
+ 			if (is != null)
+ 				is.close();
+ 		} catch (IOException e1) {
+ 		}
+ 	}
+ }
+ ```
+
+ ```java
+ // 모두들 알다시피 루프 제어 변수는 Test each처럼 루프 문 내부에 선언
+
+ public int countTestCases() {
+ 	int count = 0;
+ 	for (Test each : tests)
+ 		count += each.countTestCases();
+ 	return count;
+ }
+ ```
+
+ ```java
+ // 드물지만, 긴 함수에서는 블록 상단 또는 루프 직전에 변수를 선언 할 수도 있다.
+ ...
+ for (XmlTest test : m_suite.getTests()) {
+ 	TestRunner tr = m_runnerFactory.newTestRunner(this, test);
+ 	tr.addListener(m_textReporter);
+ 	m_testRunners.add(tr);
+
+ 	invoker = tr.getInvoker();
+
+ 	for (ITestNGMethod m : tr.getBeforeSuiteMethods()) {
+ 		beforeSuiteMethods.put(m.getMethod(), m);
+ 	}
+
+ 	for (ITestNGMethod m : tr.getAfterSuiteMethods()) {
+ 		afterSuiteMethods.put(m.getMethod(), m);
+ 	}
+ }
+ ...
+ ```
+
+ ###### 인스턴스 변수
+ 인스턴스 변수는 클래스 맨 처음에 선언한다(자바의 경우).
+ 변수 간 세로로 거리를 두지 않는다 - 잘 설계한 클래스는 대다수 클래스 메서드가 인스턴스 변수를 사용하기 때문.
+ C++의 경우에는 마지막에 선언하는 것이 일반적이다. 어느 곳이든 잘 알려진 위치에 인스턴스 변수를 모으는 것이 중요하다.
+
+ ```java
+ // 도중에 선언된 변수는 꽁꽁 숨겨놓은 보물 찾기와 같다. 십중 팔구 코드를 읽다가 우연히 발견한다. 발견해보시길.
+ // 요즘은 IDE가 잘 되어있어서 찾기야 어렵지 않겠지만, 더러운건 마찬가지
+
+ public class TestSuite implements Test {
+ 	static public Test createTest(Class<? extends TestCase> theClass,
+ 									String name) {
+ 		...
+ 	}
+
+ 	public static Constructor<? extends TestCase>
+ 	getTestConstructor(Class<? extends TestCase> theClass)
+ 	throws NoSuchMethodException {
+ 		...
+ 	}
+
+ 	public static Test warning(final String message) {
+ 		...
+ 	}
+
+ 	private static String exceptionToString(Throwable t) {
+ 		...
+ 	}
+
+ 	private String fName;
+
+ 	private Vector<Test> fTests= new Vector<Test>(10);
+
+ 	public TestSuite() { }
+
+ 	public TestSuite(final Class<? extends TestCase> theClass) {
+ 		...
+ 	}
+
+ 	public TestSuite(Class<? extends TestCase> theClass, String name) {
+ 		...
+ 	}
+
+ 	... ... ... ... ...
+ }
+ ```
+
+ ###### 종속 함수
+ 한 함수가 다른 함수를 호출한다면(종속 함수) 두 함수는 세로로 가까이 배치한다.
+ 가능하면 호출되는 함수를 호출하는 함수보다 뒤에 배치한다. (프로그램이 자연스럽게 읽힐 수 있도록)
+ 이러한 규칙을 일관되게 적용한다면 독자는 방금 함수에서 호출한 함수가 잠시 후에 정의될 것이라고 자연스레 예측한다.
+
+ ```java
+ /*첫째 함수에서 가장 먼저 호출하는 함수가 바로 아래 정의된다.
+ 다음으로 호출하는 함수는 그 아래에 정의된다. 그러므로 호출되는 함수를 찾기가 쉬워지며
+ 전체 가독성도 높아진다.*/
+
+ /*makeResponse 함수에서 호출하는 getPageNameOrDefault함수 안에서 "FrontPage" 상수를 사용하지 않고,
+ 상수를 알아야 의미 전달이 쉬워지는 함수 위치에서 실제 사용하는 함수로 상수를 넘겨주는 방법이
+ 가독성 관점에서 훨씬 더 좋다*/
+
+ public class WikiPageResponder implements SecureResponder {
+ 	protected WikiPage page;
+ 	protected PageData pageData;
+ 	protected String pageTitle;
+ 	protected Request request;
+ 	protected PageCrawler crawler;
+
+ 	public Response makeResponse(FitNesseContext context, Request request) throws Exception {
+ 		String pageName = getPageNameOrDefault(request, "FrontPage");
+ 		loadPage(pageName, context);
+ 		if (page == null)
+ 			return notFoundResponse(context, request);
+ 		else
+ 			return makePageResponse(context);
+ 		}
+
+ 	private String getPageNameOrDefault(Request request, String defaultPageName) {
+ 		String pageName = request.getResource();
+ 		if (StringUtil.isBlank(pageName))
+ 			pageName = defaultPageName;
+
+ 		return pageName;
+ 	}
+
+ 	protected void loadPage(String resource, FitNesseContext context)
+ 		throws Exception {
+ 		WikiPagePath path = PathParser.parse(resource);
+ 		crawler = context.root.getPageCrawler();
+ 		crawler.setDeadEndStrategy(new VirtualEnabledPageCrawler());
+ 		page = crawler.getPage(context.root, path);
+ 		if (page != null)
+ 			pageData = page.getData();
+ 	}
+
+ 	private Response notFoundResponse(FitNesseContext context, Request request)
+ 		throws Exception {
+ 		return new NotFoundResponder().makeResponse(context, request);
+ 	}
+
+ 	private SimpleResponse makePageResponse(FitNesseContext context)
+ 		throws Exception {
+ 		pageTitle = PathParser.render(crawler.getFullPath(page));
+ 		String html = makeHtml(context);
+ 		SimpleResponse response = new SimpleResponse();
+ 		response.setMaxAge(0);
+ 		response.setContent(html);
+ 		return response;
+ 	}
+ ...
+ ```
+
+ ###### 개념의 유사성
+ 개념적인 친화도가 높을 수록 코드를 서로 가까이 배치한다.
+ 앞서 살펴보았듯이 한 함수가 다른 함수를 호출하는 종속성, 변수와 그 변수를 사용하는 함수가 그 예다.
+ 그 외에도 비슷한 동작을 수행하는 함수 무리 또한 개념의 친화도가 높다.
+
+ ```java
+ // 같은 assert 관련된 동작들을 수행하며, 명명법이 똑같고 기본 기능이 유사한 함수들로써 개념적 친화도가 높다.
+ // 이런 경우에는 종속성은 오히려 부차적 요인이므로, 종속적인 관계가 없더라도 가까이 배치하면 좋다.
+
+ public class Assert {
+ 	static public void assertTrue(String message, boolean condition) {
+ 		if (!condition)
+ 			fail(message);
+ 	}
+
+ 	static public void assertTrue(boolean condition) {
+ 		assertTrue(null, condition);
+ 	}
+
+ 	static public void assertFalse(String message, boolean condition) {
+ 		assertTrue(message, !condition);
+ 	}
+
+ 	static public void assertFalse(boolean condition) {
+ 		assertFalse(null, condition);
+ 	}
+ ...
+ ```
+
+ #### 세로 순서
+ 일반적으로 함수 호출 종속성은 아래방향으로 유지하므로, 호출되는 함수를 호출하는 함수보다 뒤에 배치한다.
+ 그러면 소스코드가 자연스럽게 고차원 --> 저차원으로 내려간다.
+ 가장 중요한 개념을 가장 먼저 표현하고, 세세한 사항은 마지막에 표현한다.
+ 그렇게 하면 첫 함수 몇개만 읽어도 개념을 파악하기 쉬워질 것이다.
+
+
+ ## 가로 형식 맞추기
+ 대다수의 프로그래머들은 명백히 짧은 행을 선호하므로 짧은 행이 바람직하다.
+ Hollerith가 제안한 80자 제한은 다소 인위적이므로 조금 더 늘여도 좋다. 하지만 120자 이상을 넘어간다면 주의 부족이다.
+ 필자 개인적으로는 120자 정도로 길이를 제한한다.
+
+ #### 가로 공백과 밀집도
+ 가로로는 공백을 사용해 밀접/느슨한 개념을 표현한다
+
+ ```java
+ private void measureLine(String line) {
+ 	lineCount++;
+
+ 	// 흔히 볼 수 있는 코드인데, 할당 연산자 좌우로 공백을 주어 왼쪽,오른쪽 요소가 확실하게 구분된다.
+ 	int lineSize = line.length();
+ 	totalChars += lineSize;
+
+ 	// 반면 함수이름과 괄호 사이에는 공백을 없앰으로써 함수와 인수의 밀접함을 보여준다
+ 	// 괄호 안의 인수끼리는 쉼표 뒤의 공백을 통해 인수가 별개라는 사실을 보여준다.
+ 	lineWidthHistogram.addLine(lineSize, lineCount);
+ 	recordWidestLine(lineSize);
+ }
+ ```
+
+ 추가로 연산자의 우선순위를 강조하기 위해서도 공백을 사용한다
+ `return b*b - 4*a*c;`
+ 하지만 Code Formatter등의 도구가 연산자 우선순위까지 고려하지 못하므로 공백을 임의로 넣어주더라도 사라지는 경우가 대부분.
+ <br/>
+ Q.그렇다면 괄호로 묶어주는 것이 더 바람직하지 않을까?
+
+ #### 가로 정렬
+ ```java
+ public class FitNesseExpediter implements ResponseSender {
+ 	private		Socket		  socket;
+ 	private 	InputStream 	  input;
+ 	private 	OutputStream 	  output;
+ 	private 	Reques		  request;
+ 	private 	Response 	  response;
+ 	private 	FitNesseContex	  context;
+ 	protected 	long		  requestParsingTimeLimit;
+ 	private 	long		  requestProgress;
+ 	private 	long		  requestParsingDeadline;
+ 	private 	boolean		  hasError;
+
+ 	...
+ ```
+ 보기엔 깔끔해 보일지 모르나, 코드가 엉뚱한 부분을 강조해 변수 유형을 자연스레 무시하고 이름부터 읽게 된다.
+ 게다가 Code Formatter 대부분들은 이렇게 해놔봤자 무시하고 원래대로 돌려놓는다(내가 이 문제 때문에 씨름한 경험이 있음)
+ 그러므로 선언문과 할당문을 별도로 정렬할 필요가 없다.
+ 정렬이 필요할 정도로 목록이 길다면(Q. 여기서 말하는 목록은 인스턴스 변수 개수를 말하는 것인가?),
+ 목록의 길이가 문제이지 정렬이 부족해서가 아니다. 선언부가 길다는 것은 클래스를 쪼개야 한다는 것을 의미한다.
+
+ #### 들여쓰기
+ 들여쓰기를 잘 해놓으면 _- 물론 그러고 있겠지만! -_ 구조가 한 눈에 들어온다.
+
+ ###### 들여쓰기 무시하기
+ 간단한 if문, while문, 짧은 함수에서 들여쓰기를 무시하고픈 유혹이 생긴다.(정말?)
+ 하지만 들여쓰기로 제대로 범위를 표현한 코드가 가독성이 더 높다. 유혹을 뿌리치자
+
+ ```java
+ // 이렇게 한행에 다 넣을 수 있다고 다 때려 박는 것이 멋있는 코드가 아니란 것! 알아두삼
+
+ public class CommentWidget extends TextWidget {
+ 	public static final String REGEXP = "^#[^\r\n]*(?:(?:\r\n)|\n|\r)?";
+
+ 	public CommentWidget(ParentWidget parent, String text){super(parent, text);}
+ 	public String render() throws Exception {return ""; }
+ }
+ ```
+
+ ```java
+ // 한줄이라도 정성스럽게 들여쓰기로 감싸주자. 가독성을 위해
+
+ public class CommentWidget extends TextWidget {
+ 	public static final String REGEXP = "^#[^\r\n]*(?:(?:\r\n)|\n|\r)?";
+
+ 	public CommentWidget(ParentWidget parent, String text){
+ 		super(parent, text);
+ 	}
+
+ 	public String render() throws Exception {
+ 		return "";
+ 	}
+ }
+ ```
+
+ #### 가짜 범위
+ 빈 while문이나 for문을 접할 때가 있다. 가능한한 피해야 되지만, 피하지 못 할 경우엔
+ 빈 블록을 올바로 들여쓰고 괄호로 감싸라. **그렇지 않으면 찾을 수 없는 버그가 발생할지도...**
+
+
+ ## 팀 규칙
+ 당연한 이야기들이 적혀있는 것 같지만.. 팀에 속해있다면,
+ 가장 우선시 되어야 하고 선호해야 할 규칙은 팀 규칙이다.
+ 처음 팀이 이루어졌다면 우성이형과 동현이처럼 코딩을 시작하기 전,
+ 코딩 스타일을 의논하여(괄호를 어디에 넣을지, 네이밍은 어떻게 할지 등) IDE Formatter로 지정하여
+ 구현하는 것이 옳은 방식이다.
+ **좋은 소프트웨어 시스템은 읽기 쉬운 문서로 이뤄지고, 읽기 쉬운 문서는 스타일이 일관적이고 매끄러워야 한다.**
+
+ ## 밥 아저씨의 형식 규칙
+ 끝으로 이 책의 저자가 사용하는 규칙이 여실히 드러나는 코드를 첨부하며 턴을 종료한다.
+ ```java
+ public class CodeAnalyzer implements JavaFileAnalysis {
+ 	private int lineCount;
+ 	private int maxLineWidth;
+ 	private int widestLineNumber;
+ 	private LineWidthHistogram lineWidthHistogram;
+ 	private int totalChars;
+
+ 	public CodeAnalyzer() {
+ 		lineWidthHistogram = new LineWidthHistogram();
+ 	}
+
+ 	public static List<File> findJavaFiles(File parentDirectory) {
+ 		List<File> files = new ArrayList<File>();
+ 		findJavaFiles(parentDirectory, files);
+ 		return files;
+ 	}
+
+ 	private static void findJavaFiles(File parentDirectory, List<File> files) {
+ 		for (File file : parentDirectory.listFiles()) {
+ 			if (file.getName().endsWith(".java"))
+ 				files.add(file);
+ 			else if (file.isDirectory())
+ 				findJavaFiles(file, files);
+ 		}
+ 	}
+
+ 	public void analyzeFile(File javaFile) throws Exception {
+ 		BufferedReader br = new BufferedReader(new FileReader(javaFile));
+ 		String line;
+ 		while ((line = br.readLine()) != null)
+ 			measureLine(line);
+ 	}
+
+ 	private void measureLine(String line) {
+ 		lineCount++;
+ 		int lineSize = line.length();
+ 		totalChars += lineSize;
+ 		lineWidthHistogram.addLine(lineSize, lineCount);
+ 		recordWidestLine(lineSize);
+ 	}
+
+ 	private void recordWidestLine(int lineSize) {
+ 		if (lineSize > maxLineWidth) {
+ 			maxLineWidth = lineSize;
+ 			widestLineNumber = lineCount;
+ 		}
+ 	}
+
+ 	public int getLineCount() {
+ 		return lineCount;
+ 	}
+
+ 	public int getMaxLineWidth() {
+ 		return maxLineWidth;
+ 	}
+
+ 	public int getWidestLineNumber() {
+ 		return widestLineNumber;
+ 	}
+
+ 	public LineWidthHistogram getLineWidthHistogram() {
+ 		return lineWidthHistogram;
+ 	}
+
+ 	public double getMeanLineWidth() {
+ 		return (double)totalChars/lineCount;
+ 	}
+
+ 	public int getMedianLineWidth() {
+ 		Integer[] sortedWidths = getSortedWidths();
+ 		int cumulativeLineCount = 0;
+ 		for (int width : sortedWidths) {
+ 			cumulativeLineCount += lineCountForWidth(width);
+ 			if (cumulativeLineCount > lineCount/2)
+ 				return width;
+ 		}
+ 		throw new Error("Cannot get here");
+ 	}
+
+ 	private int lineCountForWidth(int width) {
+ 		return lineWidthHistogram.getLinesforWidth(width).size();
+ 	}
+
+ 	private Integer[] getSortedWidths() {
+ 		Set<Integer> widths = lineWidthHistogram.getWidths();
+ 		Integer[] sortedWidths = (widths.toArray(new Integer[0]));
+ 		Arrays.sort(sortedWidths);
+ 		return sortedWidths;
+ 	}
+ }
+ ```
+
+
+ ## Intro ##
+
+ 변수를 비공개private로 정의하는 이유가 있다. 남들이 변수에 의존하지 않게 만들고 싶어서다. 충동이든 변덕이든, 변수 타입이나 구현을 맘대로 바꾸고 싶어서다. 그렇다면 어째서 수많은 프로그래머가 조회get 함수와 설정set 함수를 당연하게 공개public해 비공개 변수를 외부에 노출할까?
+
+ ## 자료 추상화 ##
+
+ ###### 목록 6-1 구체적인 Point 클래스
+ ```java
+ public class Point {
+   public double x;
+   public double y;
+ }
+ ```
+
+ ###### 목록 6-2 추상적인 Point 클래스
+ ```java
+ public interface Point {
+   double getX();
+   double getY();
+   void setCartesian(double x, double y);
+   double getR();
+   double getTheta();
+   void setPolar(double r, double theta);
+ }
+ ```
+
+ 목록 6-2는 구현을 완전히 숨긴다. 그에 반해 목록 6-1은 내부 구조를 노출하고, 개별적으로 좌표값을 읽고 설정하게 강제한다. 일반적으로 변수를 private으로 많이 선언을 하는데, 각 값마다 get과 set 함수를 제공한다면 이는 결과적으로 내부 구조를 노출하는 구조가 된다.
+   변수 사이에 함수라는 계층을 계층을 넣는다고 구현이 저절로 감춰지지는 않는다. 구현을 감추려면 **추상화**가 필요하다! set, get 메서드로 변수를 다룬다고 클래스가 되는 것이 아니라, 추상 인터페이스를 제공해 사용자가 구현을 모른 채 자료의 핵심을 조작할 수 있어야 진정한 의미의 클래스다.
+
+ ## 자료/객체 비대칭
+ 1. 객체는 추상화 뒤로 자료를 숨긴 채 자료를 다루는 함수만 공개한다.
+ 2. 자료 구조는 자료를 그대로 공개하며 별다른 함수는 제공하지 않는다.
+
+ 두 정의는 본질적으로 상반된다. 두 개념은 사실상 정반대다. 사소한 차이로 보일지 모르지만 그 차이가 미치는 영향은 굉장히다.
+
+ ###### 목록 6-5 절차적인 도형 (Procedural Shape)
+ ```java
+ public class Square {
+   public Point topLeft;
+   public double side;
+ }
+
+ public class Rectangle {
+   public Point topLeft;
+   public double height;
+   public double width;
+ }
+
+ public class Circle {
+   public Point center;
+   public double radius;
+ }
+
+ public class Geometry {
+   public final double PI = 3.141592653589793;
+
+   public double area(Object shape) throws NoSuchShapeException {
+     if (shape instanceof Square) {
+       Square s = (Square)shape;
+       return s.side * s.side;
+     } else if (shape instanceof Rectangle) {
+       Rectangle r = (Rectangle)shape;
+       return r.height * r.width;
+     } else if (shape instanceof Circle) {
+       Circle c = (Circle)shape;
+       return PI * c.radius * c.radius;
+     }
+     throw new NoSuchShapeException();
+   }
+ }
+ ```
+
+ 객체 지향 프로그래머가 위 코드를 본다면 코웃음을 칠지도 모르겠다. 클래스가 절차적이라 비판한다면 맞는 말이다. 하지만 그런 비웃음이 100% 옳다고 말하기는 어렵다. **만약 Geometry 클래스에 둘레 길이를 구하면 `perimeter()` 함수를 추가하고 싶다면? 도형 클래스는 아무 영향도 받지 않는다!** 도형 클래스에 의존하는 다른 클래스도 마찬가지다! **반대로 새 도형을 추가하고 싶다면 Geometry 클래스에 속한 함수를 모두 고쳐야 한다.** 그래서 두 조건은 완전히 정반대라고 할 수 있다.
+
+ 이번에는 목록 6-6을 살펴보자. 객체 지향적인 도형 클래스다. 새 도형을 추가해서 기존 함수에 아무런 영향을 미치지 않는다. 반면 새 함수를 추가하고 싶다면 도형 클래스 전부를 고쳐야 한다.
+
+ ###### 목록 6-6 다형적인 도형 (Polymorphic Shape)
+ ```java
+ public class Square implements Shape {
+   private Point topLeft;
+   private double side;
+
+   public double area() {
+     return side * side;
+   }
+ }
+
+ public class Rectangle implements Shape {
+   private Point topLeft;
+   private double height;
+   private double width;
+
+   public double area() {
+     return height * width;
+   }
+ }
+
+ public class Circle implements Shape {
+   private Point center;
+   private double radius;
+   public final double PI = 3.141592653589793;
+
+   public double area() {
+     return PI * radius * radius;
+   }
+ }
+ ```
+
+ 앞서도 말했듯이, 두 방식은 사실상 반대다! 그래서 객체와 자료 구조는 근본적으로 양분된다.
+
+ > (자료 구조를 사용하는) 절차적인 코드는 기존 자료 구조를 변경하지 않으면서 새 함수를 추가하기 쉽다. 반면, 객체 지향 코드는 기존 함수를 변경하지 않으면서 새 클래스를 추가하기 쉽다.
+
+ 반대쪽도 참이다.
+
+ > 절차적인 코드는 새로운 자료 구조를 추가하기 어렵다. 그러려면 모든 함수를 고쳐야 한다. 객체 지향 코드는 새로운 함수를 추가하기 어렵다. 그러려면 모든 클래스를 고쳐야 한다.
+
+ 다시 말해, **객체 지향 코드에서 어려운 변경은 절차적인 코드에서 쉬우며, 절차적인 코드에서 어려운 변경은 객체 지향 코드에서 쉽다!**
+
+ 복잡한 시스템을 짜다 보면 새로운 함수가 필요할 경우거나, 새로운 자료 타입이 필요한 경우가 생긴다. 이때 상황에 맞게 **클래스 & 객체 지향 기법**을 사용하거나, **절차적인 코드와 자료 구조**를 적절하게 사용하는 것이 좋다.
+
+   분별 있는 프로그래머는 모든 것이 객체라는 생각이 **미신**임을 잘 안다. 때로는 단순한 자료 구조와 절차적인 코드가 가장 적합한 상황도 있다.
+
+ ## 디미터 법칙 ##
+ 디미터 법칙은 잘 알려진 휴리스틱heuristic(경험에 기반하여 문제를 해결하거나 학습하거나 발견해 내는 방법)으로, 모듈은 자신이 조작하는 객체의 속사정을 몰라야 한다는 법칙이다.
+
+ 좀 더 정확히 표현하자면, 디미터 법칙은 "클래스 C의 메서드 f는 다음과 같은 객체의 메서드만 호출해야 한다"고 주장한다.
+
+ * 클래스 C
+ * f가 생성한 객체
+ * f 인수로 넘어온 객체
+ * C 인스턴스 변수에 저장된 객체
+
+ 하지만 위 객체에서 허용된 메서드가 반환하는 객체의 메서드는 호출하면 안 된다. 다시 말해, **낯선 사람은 경계하고 친구랑만 놀라는 의미**이다.
+
+ #### 기차 충돌 ####
+ 다음과 같은 코드를 기차 충돌train wreck이라 부른다.
+ ```java
+ final String outputDir = ctxt.getOptions().getScratchDir().getAbsolutePath();
+ ```
+ 여러 객차가 한 줄로 이어진 기차처럼 보이기 때문이다. 일반적으로 조잡하다 여겨지는 방식이므로 피하는 편이 좋다. 위 코드는 다음과 같이 나누는 편이 좋다.
+
+ ```java
+ Options opts = ctxt.getOptions();
+ File scratchDir = opts.getScratchDir();
+ final String outputDir = scratchDir.getAbsolutePath();
+ ```
+
+ 위 예제가 디미터 법칙을 위반하는지 여부는 위의 변수들이 객체인지 자료 구조인지에 달렸다. 객체라면 내부 구조를 숨겨야 하므로 확실히 디미터 법칙을 위반한다. 반면, 자료 구조라면 당연히 내부 구조를 노출하므로 문제되지 않는다.
+
+ #### 잡종 구조
+ 이런 혼란으로 말미암아 때때로 절반은 객체, 절반은 자료 구조인 잡종 구조가 나온다. 잡종 구조는 중요한 기능을 수행하는 함수도 있고, 공개 변수나 공개 get/set 함수도 있다. 이런 구조는 새로운 함수는 물론이고 새로운 자료 구조도 추가하기 어렵다. 양쪽 세상에서 단점만 모아놓은 구조다. 그러므로 되도록 이런 구조는 피하도록 하자. **프로그래머가 함수나 타입을 보호할지 공개할지 확신하지 못해 (더 나쁘게는 무지해) 어중간하게 내놓은 설계에 불과하다.**
+
+ #### 구조체 감추기
+ 위의 `outputDir` 예제의 경우 좋은 방식이 아니다. 이 경로를 왜 필요할지 같은 모듈에서 찾아 보았더니 (한참 아래로 내려가서) 이런 코드가 있다.
+
+ ```java
+ String outFile = outputDir + "/" + className.replace('.', '/') + ".class";
+ FileOutputStream fout = new FileOutputStream(outFile);
+ BufferedOutputStream bos = new BufferedOutputStream(fout);
+ ```
+
+ 추상화 수준을 뒤섞어 놓아 다소 불편하다. 점, 슬래시, 파일 확장자, File 객체를 부주의하게 마구 뒤섞으면 안 된다. 어찌 되었거나, 위 코드에 따르면 경로를 얻으려는 이유가 임시 파일을 생성하기 위함을 알 수 있다.
+
+ 그렇다면 ctxt 객체에 임시 파일을 생성하라고 시키면 어떨까?
+
+ ```java
+ BufferedOutputStream bos = ctxt.createScratchFileStream(classFileName);
+ ```
+
+ 객체에게 맡기기에 적당한 임무로 보인다! ctxt는 내부 구조를 드러내지 않으며, 모듈은 자신이 몰라야 하는 여러 객체를 탐색할 필요가 없다. 따라서 디미터 법칙을 위반하지 않는다.
+
+ ## 자료 전달 객체
+ 자료 구조체의 전형적인 형태는 공개 변수만 있고 함수가 없는 클래스다. 이를 때로는 자료 전달 객체Data Transfer Object, DTO라 한다.
+
+ ```java
+ public class Address {
+   public String street;
+   public String streetExtra;
+   public String city;
+   public String state;
+   public String zip;
+ }
+ ```
+ #### 활성 레코드
+ DTO의 특수한 형태다. 공개 변수가 있거나 비공개 변수에 getter/setter가 있는 자료 구조지만, 대게 save나 find와 같은 탐색 함수도 제공한다. 활성 레코드는 데이터베이스 테이블이나 다른 소스에서 자료를 직접 변환한 결과다.
+   불행히도 활성 레코드에 비즈니스 규칙 메서드를 추가해 이런 자료 구조를 객체로 취급하는 개발자가 흔하다. 하지만 이렇게 하게 되면 잡종 구조가 나오게 된다.
+
+   해결책은 당연하다. **활성 레코드는 자료 구조로 취급한다.** 비즈니스 규칙을 담으면서 내부 자료를 숨기는 객체는 따로 생성한다. (여기서 내부 자료는 활성 레코드의 인스턴스일 가능성이 높다.)
+
+ ## 결론 ##
+ 객체는 동작을 공개하고 자료를 숨긴다. 그래서 기존 동작을 변경하지 않으면서 새 객체 타입을 추가하기는 쉬운 반면, 기존 객체에 새 동작을 추가하기는 어렵다.
+
+ 자료 구조는 별다른 동작 없이 자료를 노출한다. 그래서 기존 자료 구조에 새 동작을 추가하기는 쉬우나, 기존 함수에 새 자료 구조를 추가하기는 어렵다.
+
+ (어떤) 시스템을 구현할 때, 새로운 자료 타입을 추가하는 유연성이 필요하면 객체가 더 적합하다. 다른 경우로 새로운 동작을 추가하는 유연성이 필요하면 자료 구조와 절차적인 코드가 더 적합하다. 우수한 소프트웨어 개발자는 편견 없이 이 사실을 이해해 직면한 문제에 최적인 해결책을 선택한다.
+
+
+
+ > 오류 처리는 중요하다. 하지만 로직을 헷갈리게 만드는 오류처리는 나쁘다.
+ (Error handling is important, but if it obscures logic, it's wrong.)
+
+ ## 리턴코드 대신 Exceptions를 사용하라 ##
+ - 예전 프로그래밍 언어들은 exceptions를 제공하지 않았다.
+ - 그 경우, 개발자들은 에러 flag를 set하거나 에러 코드를 리턴, 호출하는 측에서 예외처리를 해줘야 했다.
+ - 하지만 이러한 방식은 예외처리를 잊어버리기 쉽고 로직을 헷갈리게 하기 쉽다.
+ - 그러므로 exceptions를 사용하자. 겉보기에만 아름다운 코드가 되는게 아니라 "실제 로직"과 "예외처리" 부분이 나뉘어져 필요한 부분에 집중할 수 있게 된다.
+ ```java
+ // Bad
+ public class DeviceController {
+   ...
+   public void sendShutDown() {
+     DeviceHandle handle = getHandle(DEV1);
+     // Check the state of the device
+     if (handle != DeviceHandle.INVALID) {
+       // Save the device status to the record field
+       retrieveDeviceRecord(handle);
+       // If not suspended, shut down
+       if (record.getStatus() != DEVICE_SUSPENDED) {
+         pauseDevice(handle);
+         clearDeviceWorkQueue(handle);
+         closeDevice(handle);
+       } else {
+         logger.log("Device suspended. Unable to shut down");
+       }
+     } else {
+       logger.log("Invalid handle for: " + DEV1.toString());
+     }
+   }
+   ...
+ }
+ ```
+ ```java
+ // Good
+ public class DeviceController {
+   ...
+   public void sendShutDown() {
+     try {
+       tryToShutDown();
+     } catch (DeviceShutDownError e) {
+       logger.log(e);
+     }
+   }
+
+   private void tryToShutDown() throws DeviceShutDownError {
+     DeviceHandle handle = getHandle(DEV1);
+     DeviceRecord record = retrieveDeviceRecord(handle);
+     pauseDevice(handle);
+     clearDeviceWorkQueue(handle);
+     closeDevice(handle);
+   }
+
+   private DeviceHandle getHandle(DeviceID id) {
+     ...
+     throw new DeviceShutDownError("Invalid handle for: " + id.toString());
+     ...
+   }
+   ...
+ }
+ ```
+
+ ## Try-Catch-Finally문을 먼저 써라 ##
+ - try문은 transaction처럼 동작하는 실행코드로, catch문은 try문에 관계없이 프로그램을 일관적인 상태로 유지하도록 한다.
+ - 이렇게 함으로써 코드의 "Scope 정의"가 가능해진다.
+ - 예시: 잘못된 input을 넣을 경우 StorageException을 제대로 던지는지 확인하는 테스트 코드를 작성해보자
+ ```java
+   // Step 1: StorageException을 던지지 않으므로 이 테스트는 실패한다.
+
+   @Test(expected = StorageException.class)
+   public void retrieveSectionShouldThrowOnInvalidFileName() {
+     sectionStore.retrieveSection("invalid - file");
+   }
+
+   public List<RecordedGrip> retrieveSection(String sectionName) {
+     // dummy return until we have a real implementation
+     return new ArrayList<RecordedGrip>();
+   }
+ ```
+ ```java
+   // Step 2: 이제 테스트는 통과한다.
+   public List<RecordedGrip> retrieveSection(String sectionName) {
+     try {
+       FileInputStream stream = new FileInputStream(sectionName)
+     } catch (Exception e) {
+       throw new StorageException("retrieval error", e);
+     }
+   return new ArrayList<RecordedGrip>();
+ }
+ ```
+ ```java
+   // Step 3: Exception의 범위를 FileNotFoundException으로 줄여 정확히 어떤 Exception이 발생한지 체크하자.
+   public List<RecordedGrip> retrieveSection(String sectionName) {
+     try {
+       FileInputStream stream = new FileInputStream(sectionName);
+       stream.close();
+     } catch (FileNotFoundException e) {
+       throw new StorageException("retrieval error", e);
+     }
+     return new ArrayList<RecordedGrip>();
+   }
+ ```
+
+ ## Unchecked Exceptions를 사용하라 ##
+ - Checked exception VS Unchecked Exception(참조 1)
+ - 예외처리에 드는 비용 대비 이득을 생각해봐야 한다.
+ - 예시
+  - 1. 특정 메소드에서 checked exception을 throw하고
+  - 2. 3단계(메소드 콜) 위의 메소드에서 그 exception을 catch한다면
+  - 3. 모든 중간단계 메소드에 exception을 정의해야 한다.(자바의 경우 메소드 선언에 throws 구문을 붙이는 등)
+  - Open/Closed Principle violation(참조 2)
+ - 상위 레벨 메소드에서 하위 레벨 메소드의 디테일에 대해 알아야 하기 때문에 캡슐화 또한 깨진다.
+ - 필요한 경우 checked exceptions를 사용해야 되지만 일반적인 경우 득보다 실이 많다.
+
+ ## Exceptions로 문맥을 제공하라 ##
+ - 예외가 발생한 이유와 좀 더 구체적인 Exception 타입을 제공하라.
+
+ ## 사용에 맞게 Exception 클래스를 선언하라 ##
+ - Exception class를 만드는 데에서 가장 중요한 것은 "어떤 방식으로 예외를 잡을까"이다.
+ - 써드파티 라이브러리를 사용하는 경우 그것들을 wrapping함으로써
+  - 1. 라이브러리 교체 등의 변경이 있는 경우 대응하기 쉬워진다.
+  - 2. 라이브러리를 쓰는 곳을 테스트할 경우 해당 라이브러리를 가짜로 만들거나 함으로써 테스트하기 쉬워진다.
+  - 3. 라이브러리의 api 디자인에 종속적이지 않고 내 입맛에 맞는 디자인을 적용할 수 있다.
+ - 보통 특정 부분의 코드에는 exception 하나로 충분히 예외처리 할 수 있다.
+ - 한 exception만 잡고 나머지 하나는 다시 throw하는 경우 등 정말 필요한 경우에만 다른 exception 클래스를 만들어 사용하자.
+ - 예시: 외부 api의 클래스인 ACMEPort 클래스를 사용하는 상황을 살펴보자.
+ ```java
+   // Bad
+   // catch문의 내용이 거의 같다.
+
+   ACMEPort port = new ACMEPort(12);
+   try {
+     port.open();
+   } catch (DeviceResponseException e) {
+     reportPortError(e);
+     logger.log("Device response exception", e);
+   } catch (ATM1212UnlockedException e) {
+     reportPortError(e);
+     logger.log("Unlock exception", e);
+   } catch (GMXError e) {
+     reportPortError(e);
+     logger.log("Device response exception");
+   } finally {
+     ...
+   }
+ ```
+ ```java
+   // Good
+   // ACME 클래스를 LocalPort 클래스로 래핑해 new ACMEPort().open() 메소드에서 던질 수 있는 exception들을 간략화
+
+   LocalPort port = new LocalPort(12);
+   try {
+     port.open();
+   } catch (PortDeviceFailure e) {
+     reportError(e);
+     logger.log(e.getMessage(), e);
+   } finally {
+     ...
+   }
+
+   public class LocalPort {
+     private ACMEPort innerPort;
+     public LocalPort(int portNumber) {
+       innerPort = new ACMEPort(portNumber);
+     }
+
+     public void open() {
+       try {
+         innerPort.open();
+       } catch (DeviceResponseException e) {
+         throw new PortDeviceFailure(e);
+       } catch (ATM1212UnlockedException e) {
+         throw new PortDeviceFailure(e);
+       } catch (GMXError e) {
+         throw new PortDeviceFailure(e);
+       }
+     }
+     ...
+   }
+ ```
+
+ ## 정상적인 상황을 정의하라(Default값을 설정하라) ##
+ - 일반적으로는 위에서 봤던 방식들이 유용하지만, catch문에서 예외적인 상황(special case)을 처리해야 하는 경우 코드가 더러워지는 일이 발생할 수 있다.
+ - 이런 경우, Martin Fowler의 Special Case Pattern을 사용하자.(참조 3)
+  - 1. 코드를 부르는 입장에서 예외적인 상황을 신경쓰지 않아도 된다.
+  - 2. 예외상황은 special case object 내에 캡슐화된다.
+ ```java
+   // Bad
+
+   try {
+     MealExpenses expenses = expenseReportDAO.getMeals(employee.getID());
+     m_total += expenses.getTotal();
+   } catch(MealExpensesNotFound e) {
+     m_total += getMealPerDiem();
+   }
+ ```
+ ```java
+   // Good
+
+   // caller logic.
+   ...
+   MealExpenses expenses = expenseReportDAO.getMeals(employee.getID());
+   m_total += expenses.getTotal();
+   ...
+
+   public class PerDiemMealExpenses implements MealExpenses {
+     public int getTotal() {
+       // return the per diem default
+     }
+   }
+
+   // 이해를 돕기 위해 직접 추가한 클래스
+   public class ExpenseReportDAO {
+     ...
+     public MealExpenses getMeals(int employeeId) {
+       MealExpenses expenses;
+       try {
+         expenses = expenseReportDAO.getMeals(employee.getID());
+       } catch(MealExpensesNotFound e) {
+         expenses = new PerDiemMealExpenses();
+       }
+
+       return expenses;
+     }
+     ...
+   }
+ ```
+
+ ## Null을 리턴하지 마라 ##
+ - null을 리턴하고 싶은 생각이 들면 위의 Special Case object를 리턴하라.
+ - 써드파티 라이브러리에서 null을 리턴할 가능성이 있는 메서드가 있다면 Exception을 던지거나 Special Case object를 리턴하는 매서드로 래핑하라.
+ ```java
+   // BAD!!!!
+
+   public void registerItem(Item item) {
+     if (item != null) {
+       ItemRegistry registry = peristentStore.getItemRegistry();
+       if (registry != null) {
+         Item existing = registry.getItem(item.getID());
+         if (existing.getBillingPeriod().hasRetailOwner()) {
+           existing.register(item);
+         }
+       }
+     }
+   }
+
+
+   // 위 peristentStore가 null인 경우에 대한 예외처리가 안된 것을 눈치챘는가?
+   // 만약 여기서 NullPointerException이 발생했다면 수십단계 위의 메소드에서 처리해줘야 하나?
+   // 이 메소드의 문제점은 null 체크가 부족한게 아니라 null체크가 너무 많다는 것이다.
+ ```
+ ```java
+   // Bad
+   List<Employee> employees = getEmployees();
+   if (employees != null) {
+     for(Employee e : employees) {
+       totalPay += e.getPay();
+     }
+   }
+ ```
+
+ ```java
+   // Good
+   List<Employee> employees = getEmployees();
+   for(Employee e : employees) {
+     totalPay += e.getPay();
+   }
+
+   public List<Employee> getEmployees() {
+     if( .. there are no employees .. )
+       return Collections.emptyList();
+     }
+ }
+ ```
+
+ ## Null을 넘기지 마라 ##
+ - null을 리턴하는  것도 나쁘지만 null을 메서드로 넘기는 것은 더 나쁘다.
+ - null을 메서드의 파라미터로 넣어야 하는 API를 사용하는 경우가 아니면 null을 메서드로 넘기지 마라.
+ - 일반적으로 대다수의 프로그래밍 언어들은 파라미터로 들어온 null에 대해 적절한 방법을 제공하지 못한다.
+ - 가장 이성적인 해법은 null을 파라미터로 받지 못하게 하는 것이다.
+ ```java
+ // Bad
+ // calculator.xProjection(null, new Point(12, 13));
+ // 위와 같이 부를 경우 NullPointerException 발생
+ public class MetricsCalculator {
+   public double xProjection(Point p1, Point p2) {
+     return (p2.x – p1.x) * 1.5;
+   }
+   ...
+ }
+
+ // Bad
+ // NullPointerException은 안나지만 윗단계에서 InvalidArgumentException이 발생할 경우 처리해줘야 함.
+ public class MetricsCalculator {
+   public double xProjection(Point p1, Point p2) {
+     if(p1 == null || p2 == null){
+       throw InvalidArgumentException("Invalid argument for MetricsCalculator.xProjection");
+     }
+     return (p2.x – p1.x) * 1.5;
+   }
+ }
+
+ // Bad
+ // 좋은 명세이지만 첫번째 예시와 같이 NullPointerException 문제를 해결하지 못한다.
+ public class MetricsCalculator {
+   public double xProjection(Point p1, Point p2) {
+     assert p1 != null : "p1 should not be null";
+     assert p2 != null : "p2 should not be null";
+
+     return (p2.x – p1.x) * 1.5;
+   }
+ }
+ ```
+
+ ## 결론 ##
+ 깨끗한 코드와 견고한 코드는 대립되는 목표가 아니다. 예외처리를 로직에서 제거하면 각각에 대해 독립적인 사고가 가능해진다.
+
+ ---
+
+ #### 참조 ####
+ ##### 1. Checked exception VS Unchecked Exception #####
+ Checked Exception과 Unchecked Exception의 가장 명확한 구분 기준은 ‘꼭 처리를 해야 하느냐’이다. Checked Exception이 발생할 가능성이 있는 메소드라면 반드시 로직을 try/catch로 감싸거나 throw로 던져서 처리해야 한다. 반면에 Unchecked Exception은 명시적인 예외처리를 하지 않아도 된다. 이 예외는 피할 수 있지만 개발자가 부주의해서 발생하는 경우가 대부분이고, 미리 예측하지 못했던 상황에서 발생하는 예외가 아니기 때문에 굳이 로직으로 처리를 할 필요가 없도록 만들어져 있다.
+ 출처: http://www.nextree.co.kr/p3239/
+ ##### 2. Open/Closed Principle #####
+ The Open Close Principle states that the design and writing of the code should be done in a way that new functionality should be added with minimum changes in the existing code. The design should be done in a way to allow the adding of new functionality as new classes, keeping as much as possible existing code unchanged.
+ 출처: http://www.oodesign.com/open-close-principle.html
+ ##### 3. Special Case Pattern(by Martin Fowler) #####
+   - http://www.captaindebug.com/2011/04/null-return-values-and-special-case.html#.VM9VUsbLgXR
+   - http://martinfowler.com/eaaCatalog/specialCase.html
+
+
+
+> 우리는 가끔 서드파티 패키지나 오픈소스를 사용해야될 상황에 직면한다. 혹은 우리 회사 내부 팀이 만든 컴포넌트를 사용해야할 상황도 있다.
+어느 상황이던, 우리는 이 코드들을 우리 내부 코드와 "깨끗하게" 통합시켜야 한다.
+
+## 서드파티 코드 사용하기 ##
+- 인터페이스를 "제공하는" 입장과 "사용하는" 입장 사이에는 필연적인 긴장감이 존재한다.
+ - "제공하는" 입장에서는 좀 더 다양한 환경에서 좀 더 많은 사용자가 사용할 수 있도록 다양한 사용성을 지향한다.
+ - "사용하는" 입장에서는 그들의 사용성에 맞는 specific한 인터페이스를 원한다.
+ - 이것을 "경계에서의 긴장"이라 부른다.
+
+| Figure 8-1. The methods of Map              |
+| ------------------------------------------- |
+| clear() void – Map                          |
+| containsKey(Object key) boolean – Map       |
+| containsValue(Object value) boolean – Map   |
+| clear() void – Map                          |
+| containsKey(Object key) boolean – Map       |
+| containsValue(Object value) boolean – Map   |
+| entrySet() Set – Map                        |
+| equals(Object o) boolean – Map              |
+| get(Object key) Object – Map                |
+| getClass() Class<? extends Object> – Object |
+| hashCode() int – Map                        |
+| isEmpty() boolean – Map                     |
+| keySet() Set – Map                          |
+| notify() void – Object                      |
+| notifyAll() void – Object                   |
+| put(Object key, Object value) Object – Map  |
+| putAll(Map t) void – Map                    |
+| remove(Object key) Object – Map             |
+| size() int – Map                            |
+| toString() String – Object                  |
+| values() Collection – Map                   |
+| wait() void – Object                        |
+| wait(long timeout) void – Object            |
+| wait(long timeout, int nanos) void – Object |
+- 만약 우리가 Sensor클래스를 저장하는 Map객체를 사용한다면 다음과 같은 형태일 것이다.
+ - Map sensors = new HashMap();
+ - Sensor s = (Sensor) sensors.get(sensorId);
+ - 이와 같은 방식은 Sensor클래스를 사용하는 코드 전반에 걸쳐 빈번히 사용된다.
+ - 하지만 이는 사용되는 곳에서 캐스팅의 부담을 안게 된다. 그리고 적절한 문맥조차 줄 수 없다.
+- 이는 아래와 같이 generic을 사용함으로써 해결할 수 있다.
+ - Map\<Sensor\> sensors = new HashMap\<Sensor\>();
+ - Sensor s = sensors.get(sensorId);
+ - 하지만 이 방법 또한 Map객체가 필요 이상의 기능을 제공하는 것은 막지 못한다.
+- Map의 인터페이스가 바뀌거나 할 경우 또한 우리 코드의 많은 부분들이 바뀌어야 한다.
+ - 인터페이스가 바뀔 일이 별로 없을 것이라 생각할 지도 모르지만, 실제로 Java 5버전에서 generic이 추가되었을 때 Map의 인터페이스가 바뀐 사례가 있다.
+- 결국 제일 좋은 방법은 래핑이다.
+ - 모든 Map을 이런 식으로 래핑하라는 말은 아니다.
+ - 다만 Map과 같은 "경계에 있는 인터페이스"를 시스템 전반에 걸쳐 돌려가며 사용하지 말고
+    - 1. 해당 객체를 사용하는 클래스 내부에 넣던지 가까운 계열의 클래스에 넣어라.
+    - 2. 공개된 api에서 인자로 받거나 리턴하지 마라.
+
+```java
+public class Sensors {
+    // 경계의 인터페이스(이 경우에는 Map의 메서드)는 숨겨진다.
+    // Map의 인터페이스가 변경되더라도 여파를 최소화할 수 있다. 예를 들어 Generic을 사용하던 직접 캐스팅하던 그건 구현 디테일이며 Sensor클래스를 사용하는 측에서는 신경쓸 필요가 없다.
+    // 이는 또한 사용자의 목적에 딱 맞게 디자인되어 있으므로 이해하기 쉽고 잘못 사용하기 어렵게 된다.
+
+    private Map sensors = new HashMap();
+
+    public Sensor getById(String id) {
+        return (Sensor)sensors.get(id);
+    }
+    //snip
+}
+```
+
+## 경계를 탐험하고 공부하기 ##
+- 서드파티 코드를 사용할 때, 우리는 적어도 우리가 사용할 코드에 대해서는 테스트를 할 필요가 있다.
+- 곧바로 서드파티 코드를 사용하지 말고, 그 코드를 이해하기 위해 테스트를 작성할 수 있다.(짐 뉴커크는 이를 "테스트 공부하기"라고 부른다.)
+
+## log4j 공부하기(위 주제에 이어) ##
+```java
+    // 1.
+    // 우선 log4j 라이브러리를 다운받자.
+    // 고민 많이 하지 말고 본능에 따라 "hello"가 출력되길 바라면서 아래의 테스트 코드를 작성해보자.
+    @Test
+    public void testLogCreate() {
+        Logger logger = Logger.getLogger("MyLogger");
+        logger.info("hello");
+    }
+
+    // 2.
+    // 위 테스트는 "Appender라는게 필요하다"는 에러를 뱉는다.
+    // 조금 더 읽어보니 ConsoleAppender라는게 있는걸 알아냈다.
+    // 그래서 ConsoleAppender라는 객체를 만들어 넣어줘봤다.
+    @Test
+    public void testLogAddAppender() {
+        Logger logger = Logger.getLogger("MyLogger");
+        ConsoleAppender appender = new ConsoleAppender();
+        logger.addAppender(appender);
+        logger.info("hello");
+    }
+
+    // 3.
+    // 위와 같이 하면 "Appender에 출력 스트림이 없다"고 한다.
+    // 이상하다. 가지고 있는게 이성적일것 같은데...
+    // 구글의 도움을 빌려, 다음과 같이 해보았다.
+    @Test
+    public void testLogAddAppender() {
+        Logger logger = Logger.getLogger("MyLogger");
+        logger.removeAllAppenders();
+        logger.addAppender(new ConsoleAppender(
+            new PatternLayout("%p %t %m%n"),
+            ConsoleAppender.SYSTEM_OUT));
+        logger.info("hello");
+    }
+
+    // 성공했다. 하지만 ConsoleAppender를 만들어놓고 ConsoleAppender.SYSTEM_OUT을 받는건 이상하다.
+    // 그래서 빼봤더니 잘 돌아간다.
+    // 하지만 PatternLayout을 제거하니 돌아가지 않는다.
+    // 그래서 문서를 살펴봤더니 "ConsoleAppender의 기본 생성자는 unconfigured상태"란다.
+    // 명백하지도 않고 실용적이지도 않다... 버그이거나, 적어도 "일관적이지 않다"고 느껴진다.
+```
+```java
+// 조금 더 구글링, 문서 읽기, 테스트를 거쳐 log4j의 동작법을 알아냈고 그것을 간단한 유닛테스트로 기록했다.
+// 이제 이 지식을 기반으로 log4j를 래핑하는 클래스를 만들수 있다.
+// 나머지 코드에서는 log4j의 동작원리에 대해 알 필요가 없게 됐다.
+
+public class LogTest {
+    private Logger logger;
+
+    @Before
+    public void initialize() {
+        logger = Logger.getLogger("logger");
+        logger.removeAllAppenders();
+        Logger.getRootLogger().removeAllAppenders();
+    }
+
+    @Test
+    public void basicLogger() {
+        BasicConfigurator.configure();
+        logger.info("basicLogger");
+    }
+
+    @Test
+    public void addAppenderWithStream() {
+        logger.addAppender(new ConsoleAppender(
+            new PatternLayout("%p %t %m%n"),
+            ConsoleAppender.SYSTEM_OUT));
+        logger.info("addAppenderWithStream");
+    }
+
+    @Test
+    public void addAppenderWithoutStream() {
+        logger.addAppender(new ConsoleAppender(
+            new PatternLayout("%p %t %m%n")));
+        logger.info("addAppenderWithoutStream");
+    }
+}
+```
+## "학습 테스트(Learning test)"는 값어치를 한다 ##
+- 1. 공짜다
+- 2. 메인 로직에 영향을 주지 않으며 서드파티 코드를 이해할 수 있다.
+- 3. 서드파티 코드가 바뀔 경우 Learning test를 돌려 "아직 _우리가 필요한 기능_이 잘 동작하는지" 테스트할 수 있다.
+- Learning test를 하던 말던, 경계 테스트는 새 버전으로의 이전에 도움을 준다.
+
+## 아직 존재하지 않는 코드 사용하기 ##
+- 아직 개발되지 않은 모듈이 필요한데, 기능은 커녕 인터페이스조차 구현되지 않은 경우가 있을 수 있다.
+- 하지만 우리는 이러한 제약때문에 우리의 구현이 늦어지는걸 탐탁치 않게 여긴다.
+- 예시
+  - 저자는 무선통신 시스템을 구축하는 프로젝트를 하고 있었다.
+  - 그 팀 안의 하부 팀으로 "송신기"를 담당하는 팀이 있었는데 나머지 팀원들은 송신기에 대한 지식이 거의 없었다.
+  - "송신기"팀은 인터페이스를 제공하지 않았다. 하지만 저자는 "송신기"팀을 기다리는 대신 "원하는" 기능을 정의하고 인터페이스로 만들었다. _[지정한 주파수를 이용해 이 스트림에서 들어오는 자료를 아날로그 신호로 전송하라]_
+  - 이렇게 인터페이스를 정의함으로써 메인 로직을 더 깔끔하게 짤 수 있었고 목표를 명확하게 나타낼 수 있었다.(참조 1)
+
+![Figure 8-2](/images/figure 8-2.png)
+
+```java
+public interface Transimitter {
+    public void transmit(SomeType frequency, OtherType stream);
+}
+
+public class FakeTransmitter implements Transimitter {
+    public void transmit(SomeType frequency, OtherType stream) {
+        // 실제 구현이 되기 전까지 더미 로직으로 대체
+    }
+}
+
+// 경계 밖의 API
+public class RealTransimitter {
+    // 캡슐화된 구현
+    ...
+}
+
+public class TransmitterAdapter extends RealTransimitter implements Transimitter {
+    public void transmit(SomeType frequency, OtherType stream) {
+        // RealTransimitter(외부 API)를 사용해 실제 로직을 여기에 구현.
+        // Transmitter의 변경이 미치는 영향은 이 부분에 한정된다.
+    }
+}
+
+public class CommunicationController {
+    // Transmitter팀의 API가 제공되기 전에는 아래와 같이 사용한다.
+    public void someMethod() {
+        Transmitter transmitter = new FakeTransmitter();
+        transmitter.transmit(someFrequency, someStream);
+    }
+
+    // Transmitter팀의 API가 제공되면 아래와 같이 사용한다.
+    public void someMethod() {
+        Transmitter transmitter = new TransmitterAdapter();
+        transmitter.transmit(someFrequency, someStream);
+    }
+}
+
+```
+
+## Clean한 경계(주: 이 책에서 나오는 clean은 번역하면 안될것 같다.) ##
+- 좋은 소프트웨어 디자인은 변경이 생길 경우 많은 재작업 없이 변경을 반영할 수 있는 디자인이다.
+- 우리 내부 코드가 서드파티 코드를 많이 알지 못하게 막아야 한다.
+ - _우리가 컨트롤할 수 있는 것에 의지하는게 그렇지 않은 것에 의지하는 것보다 낫다. 그렇지 않으면 그것들이 우리를 컨트롤할 것이다._
+- Map 객체를 래핑하든 Adapter를 사용해 우리 입맛에 맞게 인터페이스를 변경하든, 코드는 보기 편해지고 경계 인터페이스를 일관적으로 사용할 수 있게 해주며 그들의 변경에도 유연하게 대응할 수 있게 해준다.
+
+---
+
+#### 참조 ####
+##### 1. Adapter Pattern #####
+참조: http://ko.m.wikipedia.org/wiki/어댑터_패턴
+
+
+---
+
+## 단위 테스트
+
+지난 10년 동안 우리 분야는 눈부신 성장을 이뤘다. 1997년만 해도 TDD(Test Driven Development)라는 개념을 아무도 몰랐다. 우리들 대다수에게 단위 테스트란 자기 프로그램이 '돌아간다'는 사실만 확인하는 일회성 코드에 불과했다.
+
+지금은 애자일과 TDD 덕택에 단위 테스트를 자동화하는 프로그래머들이 이미 많아졌으며 점점 더 늘어나는 추세다. 하지만 우리 분야에 테스트를 추가하려고 급하게 서두르는 와중에 많은 프로그래머들이 제대로 된 테스트 케이스를 작성해야 한다는 좀 더 미묘한(그리고 더욱 중요한) 사실을 놓쳐버렸다.
+
+## TDD 법칙 세 가지 ##
+지금 지음이면 TDD가 실제 코드를 짜기 전에 단위 테스트부터 짜라고 요구한다는 사실을 모르는 사람은 없으리라. 하지만 이 규칙은 빙산의 일각에 불과하다. 다음 세 가지 법칙을 살펴보자.
+
+- **첫째 법칙:** 실패하는 단위 테스트를 작성할 때까지 실제 코드를 작성하지 않는다.
+- **둘째 법칙:** 컴파일은 실패하지 않으면서 실행이 실패하는 정도로만 단위 테스트를 작성한다.
+- **셋째 법칙:** 현재 실패하는 테스트를 통과할 정도로만 실제 코드를 작성한다.
+
+위 세 가지 규칙을 따르면 개발과 테스트가 대략 30초 주기로 묶인다. 테스트 코드와 실제 코드가 함께 나올뿐더러 테스트 코드가 실제 코드보다 불과 몇 초 전에 나온다.
+  이렇게 일하면 매일 수십 개, 매달 수백 개, 매년 수천 개에 달하는 테스트 케이스가 나온다. 실제 코드를 사실상 전부 테스트하는 테스트 케이스가 나온다. 하지만 실제 코드와 맞먹을 정도로 방대한 테스트 코드는 심각한 관리 문제를 유발하기도 한다.
+
+## 깨끗한 테스트 코드 유지하기 ##
+몇 년 전 저자는 **테스트 코드에 실제 코드와 동일한 품질 기준을 적용하지 않아야 한다고 명시적으로 결정한 팀**을 코치해달라는 요청을 받았다. 팀원들은 서로에게 단위 테스트에서 규칙을 깨도 좋다는 허가장을 줬다. '**지저분해도 빨리**'가 주제어였다. 변수 이름은 신경 쓸 필요가 없고, 테스트 함수는 간결하거나 서술적일 필요가 없었고, 테스트 코드는 잘 설계하거나 주의해서 분리할 필요가 없었다. 그저 돌아만 가면, 그러니까 실제 코드를 테스트만 하면 그만이었다.
+
+하지만 팀은 지저분한 테스트 코드를 내놓으나 테스트를 안 하나 오십보 백보라는, 아니 오히려 더 못하다는 사실을 깨닫지 못했다. 문제는 실제 코드가 진화하면 테스트 코드도 변해야 한다는 데 있다. 그런데 테스트 코드가 지저하면 할수록 변경하기 어려워진다. 이 경우실제 코드를 짜는 시간보다 테스트 케이스를 추가하는 시간이 더 걸리기 십상이다. 실제 코드를 변경해 기존 테스트 케이스가 실패하기 시작하면, 지저분한 코드로 인해 실패하는 테스트 케이스를 점점 더 통과시키기 어려워진다. 그래서 테스트 코드는 계속해서 늘어나는 부담이 되버린다.
+
+새 버전을 출시할 때마다 팀이 테스트 케이스를 유지하고 보수하는 비용도 늘어난다. 점차 테스트 코드는 개발자 사이에서 가장 큰 불만으로 자리잡게 되고, 관리자가 예측값이 너무 큰 이유를 물어보면 팀은 테스트 코드를 비난한다. 결국 테스트 슈트를 폐기하지 않으면 안 되는 상황에 처한다.
+
+하지만 테스트 슈트가 없으면 개발자는 자신이 수정한 코드가 제대로 도는지 확인할 방법이 없다. 시스템 이쪽을 수정해도 저쪽이 안전하다는 사실을 검증하지 못하게 되고, 그래서 결함율이 높아지기 시작한다. 의도하지 않은 결함 수가 많아지면 개발자는 변경을 주저한다. 변경하면 득보다 해가 크다 생각해 더 이상 코드를 정리하지 않는다. 그러면서 코드가 망가지기 시작한다. 결국 테스트 슈트도 없고, 얼기설기 뒤섞인 코드에, 좌절한 고객과, 테스트에 쏟아 부은 노력이 허사였다는 실망감만 남는다.
+
+어떤 면에서 그들이 옳았다. **테스트에 쏟아 부은 노력은 확실히 허사였다.** 하지만 **실패를 초래한 원인은 테스트 코드를 막 짜도 좋다고 허용한 결정이었다.** 테스트 코드를 깨끗하게 짰다면 테스트에 쏟아 부은 노력은 허사로 돌아가지 않았을 터이다. 내가 이처럼 어느 정도 자신 있게 말하는 이유는 내가 참여하고 조언한 많은 팀이 깨끗한 단위 테스트 코드로 성공했기 때문이다.
+
+내 이야기가 전하는 교훈은 다음과 같다. **테스트 코드는 실제 코드 못지 않게 중요하다.** 테스트 코드는 이류 시민이 아니다. 테스트 코드는 사고와 설계와 주의가 필요하다. 실제 코드 못지 않게 깨끗하게 짜야 한다.
+
+#### 테스트는 유연성, 유지보수성, 재사용성을 제공한다
+테스트 코드를 깨끗하게 유지하지 않으면 결국은 잃어버린다. 그리고 테스트 케이스가 없으면 실제 코드를 유연하게 만드는 버팀목도 사라진다. 맞다, 제대로 읽었다. **코드에 유연성, 유지보수성, 재사용성을 제공하는 버팀목이 바로 단위 테스트**다. 이유는 단순하다. 테스트 케이스가 있으면 변경이 두렵지 않으니까! 테스트 케이스가 없다면 모든 변경이 잠정적인 버그다. 아키텍쳐가 아무리 유연하더라도, 설계를 아무리 잘 나눴더라도, 테스트 케이스가 없으면 개발자는 변경을 주저한다. 버그가 숨어들까 두렵기 때문이다.
+
+하지만 테스트 케이스가 있다면 공포는 사실상 사라진다. 테스트 커버리지가 높을수록 공포는 줄어든다. 아키텍처가 부실한 코드나 설계가 모호하고 엉망인 코드라도 별다른 우려 없이 변경할 수 있다. 아니, 오히려 안심하고 아키텍처와 설계를 개선할 수 있다.
+
+그러므로 실제 코드를 점검하는 자동화된 단위 테스트 슈트는 설계와 아키텍쳐를 최대한 깨끗하게 보존하는 열쇠다. 테스트는 유연성, 유지보수성, 재사용성을 제공한다. **테스트 케이스가 있으면 변경이 쉬워지기 때문이다.**
+
+따라서 테스트 코드가 지저분하면 코드를 변경하는 능력이 떨어지며 코드 구조를 개선하는 능력도 떨어진다. 테스트 코드가 지저분할수록 실제 코드도 지저분해진다. 결국 테스트 코드를 잃어버리고 실제 코드도 망가진다.
+
+## 깨끗한 테스트 코드 ##
+깨끗한 테스트 코드를 만들려면? 세 가지가 필요하다. **가독성, 가독성, 가독성.**
+어쩌면 가독성은 실제 코드보다 테스트 코드에 더더욱 중요하다. 이를 위해 명료성, 단순성, 풍부한 표현력이 필요하다. 테스트 코드는 최소의 표현으로 많은 것을 나타내야 한다.
+
+목록 9-1은 FitNess에서 가져온 코드다. 아래 테스트 케이스 세 개는 이해하기 어렵기에 개선할 여지가 충분하다. 첫째, addPage와 assertSubString을 부르느라 중복되는 코드가 매우 많다. 좀 더 중요하게는 자질구레한 사항이 너무 많아 테스트 코드의 표현력이 떨어진다.
+
+###### 목록 9-1 SerializedPageResponderTest.java
+```java
+public void testGetPageHieratchyAsXml() throws Exception {
+  crawler.addPage(root, PathParser.parse("PageOne"));
+  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+  crawler.addPage(root, PathParser.parse("PageTwo"));
+
+  request.setResource("root");
+  request.addInput("type", "pages");
+  Responder responder = new SerializedPageResponder();
+  SimpleResponse response =
+    (SimpleResponse) responder.makeResponse(new FitNesseContext(root), request);
+  String xml = response.getContent();
+
+  assertEquals("text/xml", response.getContentType());
+  assertSubString("<name>PageOne</name>", xml);
+  assertSubString("<name>PageTwo</name>", xml);
+  assertSubString("<name>ChildOne</name>", xml);
+}
+
+public void testGetPageHieratchyAsXmlDoesntContainSymbolicLinks() throws Exception {
+  WikiPage pageOne = crawler.addPage(root, PathParser.parse("PageOne"));
+  crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
+  crawler.addPage(root, PathParser.parse("PageTwo"));
+
+  PageData data = pageOne.getData();
+  WikiPageProperties properties = data.getProperties();
+  WikiPageProperty symLinks = properties.set(SymbolicPage.PROPERTY_NAME);
+  symLinks.set("SymPage", "PageTwo");
+  pageOne.commit(data);
+
+  request.setResource("root");
+  request.addInput("type", "pages");
+  Responder responder = new SerializedPageResponder();
+  SimpleResponse response =
+    (SimpleResponse) responder.makeResponse(new FitNesseContext(root), request);
+  String xml = response.getContent();
+
+  assertEquals("text/xml", response.getContentType());
+  assertSubString("<name>PageOne</name>", xml);
+  assertSubString("<name>PageTwo</name>", xml);
+  assertSubString("<name>ChildOne</name>", xml);
+  assertNotSubString("SymPage", xml);
+}
+
+public void testGetDataAsHtml() throws Exception {
+  crawler.addPage(root, PathParser.parse("TestPageOne"), "test page");
+
+  request.setResource("TestPageOne"); request.addInput("type", "data");
+  Responder responder = new SerializedPageResponder();
+  SimpleResponse response =
+    (SimpleResponse) responder.makeResponse(new FitNesseContext(root), request);
+  String xml = response.getContent();
+
+  assertEquals("text/xml", response.getContentType());
+  assertSubString("test page", xml);
+  assertSubString("<Test", xml);
+}
+```
+
+예를 들어, PathParser 호출을 살펴보자. PathParser는 문자열을 pagePath 인스턴스로 변환한다. 이 코드는 테스트와 무관하며 테스트 코드의 의도만 흐린다. responder 객체를 생성하는 코드와 response를 수집해 변환하는 코드 역시 잡음에 불과하다. 게다가 resource와 인수에서 요청 URL을 만드는 어설픈 코드도 보인다.
+
+**마지막으로 위 코드는 읽는 사람을 고려하지 않는다.** 불쌍한 독자들은 온갖 잡다하고 무관한 코드를 이해한 후라야 간신히 테스트 케이스를 이해한다.
+
+이제 목록 9-2를 살펴보자. 목록 9-1을 개선한 코드로, 목록 9-1과 정확히 동일한 테스트를 수행한다. 하지만 목록 9-2는 좀 더 깨끗하고 좀 더 이해하기 쉽다.
+
+###### 목록 9-2 SerializedPageResponderTest.java (refactored)
+```java
+public void testGetPageHierarchyAsXml() throws Exception {
+  makePages("PageOne", "PageOne.ChildOne", "PageTwo");
+
+  submitRequest("root", "type:pages");
+
+  assertResponseIsXML();
+  assertResponseContains(
+    "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>");
+}
+
+public void testSymbolicLinksAreNotInXmlPageHierarchy() throws Exception {
+  WikiPage page = makePage("PageOne");
+  makePages("PageOne.ChildOne", "PageTwo");
+
+  addLinkTo(page, "PageTwo", "SymPage");
+
+  submitRequest("root", "type:pages");
+
+  assertResponseIsXML();
+  assertResponseContains(
+    "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>");
+  assertResponseDoesNotContain("SymPage");
+}
+
+public void testGetDataAsXml() throws Exception {
+  makePageWithContent("TestPageOne", "test page");
+
+  submitRequest("TestPageOne", "type:data");
+
+  assertResponseIsXML();
+  assertResponseContains("test page", "<Test");
+}
+```
+
+**BUILD-OPERATE-CHECK 패턴이 위와 같은 테스트 구조에 적합하다.** 각 테스트는 명확히 세 부분으로 나눠진다. 첫 부분은 테스트 자료를 만든다. 두 번째 부분은 테스트 자료를 조작하며, 세 번째 부분은 조작한 결과가 올바른지 확인한다.
+
+잡다하고 세세한 코드를 거의 다 없앴다는 사실에 주목한다. 테스트 코드는 본론에 돌입해 진짜 필요한 자료 유형과 함수만 사용한다. 그러므로 코드를 읽는 사람은 온갖 잡다하고 세세한 코드에 주눅들고 헷갈릴 필요 없이 코드가 수행하는 기능을 재빨리 이해한다.
+
+#### 도메인에 특화된 테스트 언어
+목록 9-2는 도메인에 특화된 언어DSL로 테스트 코드를 구현하는 기법을 보여준다. 흔히 쓰는 시스템 조작 API를 사용하는 대신 API 위에 함수와 유틸리티를 구현한 후 그 함수와 유틸리티를 사용하므로 테스트 코드를 짜기도 읽기도 쉬워진다. 이렇게 구현한 유틸리티는 테스트 코드에서 사용하는 특수 API가 된다. 즉, 테스트를 구현하는 당사자와 나중에 테스트를 읽어볼 독자를 도와주는 테스트 언어이다.
+
+이런 테스트 API는 처음부터 설계된 API가 아니다. 잡다하고 세세한 사항으로 범벅된 코드를 계속 리팩터링하다가 진화된 API다. 내가 목록 9-1에서 목록 9-2로 리팩터링했듯이, 숙련된 개발자라면 자기 코드를 좀 더 간결하고 표현력이 풍부한 코드로 리팩터링해야 마땅하다.
+
+#### 이중 표준
+이 장을 시작하면서 언급한 팀은 어떤 면에서 올바른 판단을 내렸다. **테스트 API코드에 적용하는 표준은 실제 코드에 적용하는 표준과 확실히 다르다.** 단순하고, 간결하고, 표현력이 풍부해야 하지만, 실제 코드만큼 효율적일 필요는 없다. 실제 환경이 아니라 테스트 환경에서 돌아가는 코드이기 때문인데, 실제 환경과 테스트 환경은 요구사항이 판이하게 다르다.
+
+목록 9-3을 살펴보자. 온도가 '급격하게 떨어지면' 경보, 온풍기, 송풍기가 모두 가동되는지 확인하는 코드이다.
+
+###### 목록 9-3 EnvironmentControllerTest.java
+```java
+@Test
+public void turnOnLoTempAlarmAtThreashold() throws Exception {
+  hw.setTemp(WAY_TOO_COLD);
+  controller.tic();
+  assertTrue(hw.heaterState());
+  assertTrue(hw.blowerState());
+  assertFalse(hw.coolerState());
+  assertFalse(hw.hiTempAlarm());
+  assertTrue(hw.loTempAlarm());
+}
+```
+
+물론 위 코드는 세세한 사항이 아주 많다. 예를 들어, tic함수가 무엇인지 지금은 신경쓰지 말자. 단지 시스템 최종 상태의 온도가 "급강하"했는지 그것만 신경 써서 살펴보기 바란다.
+
+목록 9-3을 읽으면 점검하는 상태 이름과 상태 값을 확인하느라 눈길이 이리저리 흩어진다. heaterState라는 상태 이름을 확인하고 왼쪽으로 눈길을 돌려 assertTrue를 읽는다. 이런식으로 모든 state를 확인해야 하면 따분하고 미덥잖다. 읽기가 어렵다. 그래서 목록 9-4와 같이 변환해 코드 가독성을 크게 높였다.
+
+###### 목록 9-4 EnvironmentControllerTest.java(리팩터링)
+```java
+@Test
+public void turnOnLoTempAlarmAtThreshold() throws Exception {
+  wayTooCold();
+  assertEquals("HBchL", hw.getState());
+}
+```
+
+당연히 tic 함수는 wayTooCold라는 함수를 만들어 숨겼다. 그런데 assertEquals에 들어있는 이상한 문자열에 주목한다. 대문자는 '켜짐'이고 소문자는 '꺼짐'을 뜻한다. 문자는 항상 '{heater, blower, cooler, hi-temp-alarm, lo-temp-alarm}' 순서다.
+
+비롯 위 방식이 그릇된 정보를 피하라는 규칙의 위반에 가깝지만 여기서는 적절해 보인다. 일단 의미만 안다면 눈길이 문자열을 따라 움직이며 결과를 재빨리 판단한다. 테스트 코드를 읽기가 사뭇 즐거워진다. 목록 9-5를 살펴보면 테스트 코드를 이해하기 너무도 쉽다는 사실이 분명히 드러난다.
+
+###### 목록 9-5 EnvironmentControllerTest.java (bigger selection)
+```java
+@Test
+public void turnOnCoolerAndBlowerIfTooHot() throws Exception {
+  tooHot();
+  assertEquals("hBChl", hw.getState());
+}
+
+@Test
+public void turnOnHeaterAndBlowerIfTooCold() throws Exception {
+  tooCold();
+  assertEquals("HBchl", hw.getState());
+}
+
+@Test
+public void turnOnHiTempAlarmAtThreshold() throws Exception {
+  wayTooHot();
+  assertEquals("hBCHl", hw.getState());
+}
+
+@Test
+public void turnOnLoTempAlarmAtThreshold() throws Exception {
+  wayTooCold();
+  assertEquals("HBchL", hw.getState());
+}
+```
+
+목록 9-6은 'getState' 함수를 보여준다. 코드가 그리 효율적이지 못하다는 사실에 주목한다. 효율을 높이려면 StringBuffer가 더 적합하다.
+
+###### 목록 9-6 MockControlHardware.java
+```java
+public String getState() {
+  String state = "";
+  state += heater ? "H" : "h";
+  state += blower ? "B" : "b";
+  state += cooler ? "C" : "c";
+  state += hiTempAlarm ? "H" : "h";
+  state += loTempAlarm ? "L" : "l";
+  return state;
+}
+```
+
+하지만 StringBuffer는 보기에 흉하다. 나는 실제 코드에서도 크게 무리가 아니라면 이를 피한다. 목록 9-6은 StringBuffer를 안 써서 치르는 대가가 미미하다. **실제 환경에서는 문제가 될 수 있지만 테스트 환경은 자원이 제한적일 가능성이 낮기 때문이다.**
+
+이것이 이중 표준의 본질이다. 실제 환경에서는 절대로 안 되지만 테스트 환경에서는 전혀 문제없는 방식이 있다. 대개 메모리나 CPU 효율과 관련 있는 경우다. **코드의 깨끗함과는 철저히 무관하다.**
+
+## 테스트 당 assert 하나 ##
+JUnit으로 테스트 코드를 짤 때 함수마다 assert를 단 하나만 사용해야 한다고 주장하는 학파가 있다. 가혹하다 여길지 모르지만 확실히 장점이 있다. assert가 하나라면 결론이 하나기 때문에 코드를 이해하기 빠르고 쉽다. 목록 9-5를 보자.
+
+하지만 목록 9-2는 어떨까? "출력이 XML이다"라는 assert문과 "특정 문자열을 포함한다"는 assert문을 하나로 병합하는 방식이 불합리해 보인다. 하지만 목록 9-7에서 보듯이 테스트를 쪼개 각자가 assert를 수행하면 된다.
+
+###### 목록 9-7 SerializedPageResponderTest.java (단일 Assert)
+```java
+public void testGetPageHierarchyAsXml() throws Exception {
+  givenPages("PageOne", "PageOne.ChildOne", "PageTwo");
+
+  whenRequestIsIssued("root", "type:pages");
+
+  thenResponseShouldBeXML();
+}
+
+public void testGetPageHierarchyHasRightTags() throws Exception {
+  givenPages("PageOne", "PageOne.ChildOne", "PageTwo");
+
+  whenRequestIsIssued("root", "type:pages");
+
+  thenResponseShouldContain(
+    "<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>"
+  );
+}
+```
+
+위에서 함수 이름을 바꿔 given-when-then 이라는 관례를 사용했다는 사실에 주목한다. 그러면 테스트 코드를 읽기가 쉬워진다. **하지만 불행하게도 위에서 보듯이 테스트를 분리하면 중복되는 코드가 많아진다.**
+
+TEMPLATE METHOD 패턴을 사용하면 중복을 제거할 수 있다. given/when 부분을 부모 클래스에 두고 then 부분을 자식 클래스에 두면 된다. 아니면 완전히 독자적인 테스트 클래스를 만들어 @Before 함수에 given/when 부분을 넣고 @Test 함수에 then 부분을 넣어도 된다. 하지만 모두가 배보다 배꼽이 더 크다. 이것저것 감안해 보면 결국 목록 9-2처럼 assert 문을 여럿 사용하는 편이 좋다고 생각한다.
+
+나는 **단일 assert 문**이라는 규칙이 훌륭한 지침이라 생각한다. 목록 9-5에서 봤듯이, 대체로 나는 단일 assert를 지원하는 해당 분야 테스트 언어를 만들려 노력한다. 하지만 때로는 주저 없이 함수 하나에 여러 assert 문을 넣기도 한다. 단지 assert 문 개수는 최대한 줄여야 좋다는 생각이다.
+
+#### 테스트당 개념 하나
+어쩌면 "테스트 함수마다 한 개념만 테스트하라"는 규칙이 더 낫겠다. 이것저것 잡다한 개념을 연속으로 테스트하는 긴 함수는 피한다. 목록 9-8은 바람직하지 못한 테스트 함수다. 독자적인 개념 세 개를 테스트하므로 독자적인 테스트 세 개로 쪼개야 마땅하다. 이를 한 함수로 몰아넣으면 **독자가 각 절이 거기에 존재하는 이유와 각 절이 테스트하는 개념을 모두 이해해야 한다.**
+
+###### 목록 9-8
+```java
+/**
+ * addMonth() 메서드를 테스트하는 장황한 코드
+ */
+public void testAddMonths() {
+  SerialDate d1 = SerialDate.createInstance(31, 5, 2004);
+
+  SerialDate d2 = SerialDate.addMonths(1, d1);
+  assertEquals(30, d2.getDayOfMonth());
+  assertEquals(6, d2.getMonth());
+  assertEquals(2004, d2.getYYYY());
+
+  SerialDate d3 = SerialDate.addMonths(2, d1);
+  assertEquals(31, d3.getDayOfMonth());
+  assertEquals(7, d3.getMonth());
+  assertEquals(2004, d3.getYYYY());
+
+  SerialDate d4 = SerialDate.addMonths(1, SerialDate.addMonths(1, d1));
+  assertEquals(30, d4.getDayOfMonth());
+  assertEquals(7, d4.getMonth());
+  assertEquals(2004, d4.getYYYY());
+}
+```
+
+셋으로 분리한 테스트 함수는 각각 다음 기능을 수행한다.
+
+* (5월처럼) 31일로 끝나는 달의 마지막 날짜가 주어지는 경우
+  1. (6월처럼) 30일로 끝나는 한 달을 더하면 날짜는 30일이 되어야지 31일이 되어서는 안 된다.
+  2.  두 달을 더하면 그리고 두 번째 달이 31일로 끝나면 날짜는 31일이 되어야 한다.
+* (6월처럼) 30일로 끝나는 달의 마지막 날짜가 주어지는 경우
+  1. 31일로 끝나는 한 달을 더하면 날짜는 30일이 되어야지 31일이 되면 안 된다.
+
+개념들을 이렇게 정리해 표현하면 장황한 코드 속에 여러 개념을 테스트하고 있음을 알 수 있다. 이 경우 assert 문이 여럿이라는 사실이 문제가 아니라, 한 테스트 함수에서 여러 개념을 테스트한다는 사실이 문제다. **그러므로 가장 좋은 규칙은 "개념 당 assert 문 수를 최소로 줄여라"와 "테스트 함수 하나는 개념 하나만 테스트하라"라 하겠다.**
+
+## F.I.R.S.T ##
+깨끗한 테스트는 다음 다섯 가지 규칙을 따르는데, 각 규칙에서 첫 글자를 따오면 FIRST가 된다.
+
+**빠르게Fast:**
+테스트는 빨라야 한다. 테스트는 빨리 돌아야 한다는 말이다. 테스트가 느리면 자주 돌릴 엄두를 못 낸다. 자주 돌리지 않으면 초반에 문제를 찾아내 고치지 못한다. 코드를 마음껏 정리하지도 못한다. 결국 코드 품질이 망가지기 시작한다.
+
+**독립적으로Independent:**
+각 테스트를 서로 의존하면 안 된다. 한 테스트가 다음 테스트가 실행될 환경을 준비해서는 안 된다. 각 테스트는 독립적으로 그리고 어떤 순서로 실행해도 괜찮아야 한다. 테스트가 서로에게 의존하면 하나가 실패할 때 나머지도 잇달아 실패하므로 원인을 진단하기 어려워지며 후반 테스트가 찾아내야 할 결함이 숨겨진다.
+
+**반복가능하게Repeatable:**
+테스트는 어떤 환경에서도 반복 가능해야 한다. 실제 환경, QA 환경, 버스를 타고 집으로 가는 길에 사용하는 노트북 환경(네트워크가 연결되지 않은)에서도 실행할 수 있어야 한다. 테스트가 돌아가지 않는 환경이 하나라도 있다면 테스트가 실패한 이유를 둘러댈 변명이 생긴다. 게다가 환경이 지원되지 않기에 테스트를 수행하지 못하는 상황에 직면한다.
+
+**자가검증하는Self-Validating:**
+테스트는 bool값으로 결과를 내야 한다. 성공 아니면 실패다. 통과 여부를 알리고 로그 파일을 읽게 만들어서는 안 된다. 통과 여부를 보려고 텍스트 파일 두 개를 수작업으로 비교하게 만들어서도 안 된다. 테스트가 스스로 성공과 실패를 가늠하지 않는다면 판단은 주관적이 되며 지루한 수작업 평가가 필요하게 된다.
+
+**적시에Timely:**
+테스트는 적시에 작성해야 한다. 단위 테스트는 테스트하려는 실제 코드를 구현하기 직전에 구현한다. 실제 코드를 구현한 다음에 테스트 코드를 만들면 실제 코드가 테스트하기 어렵다는 사실을 발견할지도 모른다. 어떤 실제 코드는 테스트하기 너무 어렵다고 판명날지 모른다. 테스트가 불가능하도록 실제 코드를 설계할지도 모른다.
+
+## 결론 ##
+이 장은 주제를 수박 겉핥기 정도로만 훑었다. 사실상 **깨끗한 테스트 코드**라는 주제는 책 한 권을 할애해도 모자랄 주제다. 테스트 코드는 실제 코드만큼이나 프로젝트 건강에 중요하다. 어쩌면 실제 코드보다 더 중요할지도 모르겠다. 테스트 코드는 실제 코드의 유연성, 유지보수성, 재사용성을 보존하고 강화하기 때문이다. 그러므로 테스트 코드는 지속적으로 깨끗하게 관리하자. 표현력을 높이고 간결하게 정리하자. 테스트 API를 구현해 도메인 특화 언어(Domain Specific Language, DSL)를 만들자. 그러면 그만큼 테스트 코드를 짜기가 쉬워진다.
+
+테스트 코드가 방치되어 망가지면 실제 코드도 망가진다. 테스트 코드를 깨끗하게 유지하자.
+
+
+
+## Intro
+이전 챕터에서 코드, 코드 블록, 함수 구현 방법과 함수간의 관련 맺는 방식을 공부 했지만
+하지만 좀 더 차원 높은 단계까지 신경 쓰지 않으면 코드를 얻기는 어렵다.
+이 장에서는 클래스를 다룬다.
+
+## 클래스 체계
+JAVA Convention에 따르면 가장 먼저 변수 목록이 나온다.
+**static public --> static private --> private 인스턴스 --> (public은 필요한 경우가 거의 없다)**
+변수목록 다음에는 공개 함수가 나온다. 비공개 함수는 자신을 호출 하는 공개 함수 직후에 나온다.
+즉, 추상화 단계가 순차적으로 내려간다.
+
+#### 캡슐화
+변수와 유틸리티 함수는 가능한 공개하지 않는 편이 낫지만 반드시 숨겨야 하는 것은 아니다.
+우리에게 테스트는 중요하므로 테스트를 위해 protected로 선언해서 접근을 허용하기도 한다.
+**하지만 비공개 상태를 유지할 온갖 방법을 강구하고, 캡슐화를 풀어주는 결정은 언제나 최후의 수단이다.**
+
+## 클래스는 작아야 한다!
+클래스는 첫째! 작아야한다. 둘째! 작아야한다. 더 작아야 한다. 단 함수와는 다르게(함수는 물리적인 행 수로 측정)
+**클래스는 맡은 책임을 측정한다.**
+
+#### 개념은 빈 행으로 분리하라
+코드의 각 줄은 수식이나 절을 나타내고, 여러 줄의 묶음은 완결된 생각 하나를 표현한다.
+생각 사이에는 빈 행을 넣어 분리해야한다. 그렇지 않다면 단지 줄바꿈만 다를 뿐인데도 코드 가독성이 현저히 떨어진다.
+
+```java
+// 어마어마하게 큰 슈퍼 만능 클래스
+
+public class SuperDashboard extends JFrame implements MetaDataUser {
+	public String getCustomizerLanguagePath()
+	public void setSystemConfigPath(String systemConfigPath)
+	public String getSystemConfigDocument()
+	public void setSystemConfigDocument(String systemConfigDocument)
+	public boolean getGuruState()
+	public boolean getNoviceState()
+	public boolean getOpenSourceState()
+	public void showObject(MetaObject object)
+	public void showProgress(String s)
+	public boolean isMetadataDirty()
+	public void setIsMetadataDirty(boolean isMetadataDirty)
+	public Component getLastFocusedComponent()
+	public void setLastFocused(Component lastFocused)
+	public void setMouseSelectState(boolean isMouseSelected)
+	public boolean isMouseSelected()
+	public LanguageManager getLanguageManager()
+	public Project getProject()
+	public Project getFirstProject()
+	public Project getLastProject()
+	public String getNewProjectName()
+	public void setComponentSizes(Dimension dim)
+	public String getCurrentDir()
+	public void setCurrentDir(String newDir)
+	public void updateStatus(int dotPos, int markPos)
+	public Class[] getDataBaseClasses()
+	public MetadataFeeder getMetadataFeeder()
+	public void addProject(Project project)
+	public boolean setCurrentProject(Project project)
+	public boolean removeProject(Project project)
+	public MetaProjectHeader getProgramMetadata()
+	public void resetDashboard()
+	public Project loadProject(String fileName, String projectName)
+	public void setCanSaveMetadata(boolean canSave)
+	public MetaObject getSelectedObject()
+	public void deselectObjects()
+	public void setProject(Project project)
+	public void editorAction(String actionName, ActionEvent event)
+	public void setMode(int mode)
+	public FileManager getFileManager()
+	public void setFileManager(FileManager fileManager)
+	public ConfigManager getConfigManager()
+	public void setConfigManager(ConfigManager configManager)
+	public ClassLoader getClassLoader()
+	public void setClassLoader(ClassLoader classLoader)
+	public Properties getProps()
+	public String getUserHome()
+	public String getBaseDir()
+	public int getMajorVersionNumber()
+	public int getMinorVersionNumber()
+	public int getBuildNumber()
+	public MetaObject pasting(MetaObject target, MetaObject pasted, MetaProject project)
+	public void processMenuItems(MetaObject metaObject)
+	public void processMenuSeparators(MetaObject metaObject)
+	public void processTabPages(MetaObject metaObject)
+	public void processPlacement(MetaObject object)
+	public void processCreateLayout(MetaObject object)
+	public void updateDisplayLayer(MetaObject object, int layerIndex)
+	public void propertyEditedRepaint(MetaObject object)
+	public void processDeleteObject(MetaObject object)
+	public boolean getAttachedToDesigner()
+	public void processProjectChangedState(boolean hasProjectChanged)
+	public void processObjectNameChanged(MetaObject object)
+	public void runProject()
+	public void setAçowDragging(boolean allowDragging)
+	public boolean allowDragging()
+	public boolean isCustomizing()
+	public void setTitle(String title)
+	public IdeMenuBar getIdeMenuBar()
+	public void showHelper(MetaObject metaObject, String propertyName)
+
+	// ... many non-public methods follow ...
+}
+```
+
+```java
+// 메소드를 5개로 줄인다고 하더라도 여전히 책임이 많다..
+
+public class SuperDashboard extends JFrame implements MetaDataUser {
+	public Component getLastFocusedComponent()
+	public void setLastFocused(Component lastFocused)
+	public int getMajorVersionNumber()
+	public int getMinorVersionNumber()
+	public int getBuildNumber()
+}
+```
+
+클래스 이름은 해당 클래스 책임을 기술해야된다. 작명은 클래스 크기를 줄이는 첫번째 관문임.
+간결한 이름이 떠오르지 않는다면 클래스 책임이 너무 많아서이다.
+(e.g. Chapter 2장에 언급한 것 처럼 Manager, Processor, Super 등)
+
+또한 클래스 설명은 "if", "and", "or", "but"을 사용하지 않고 25 단어 내외로 가능해야된다.
+한글의 경우 만약, 그리고, ~하며, 하지만 이 들어가면 안된다.
+
+#### 단일 책임의 원칙 - Single Responsibility Principle
+단일 책임의 원칙 (이하 SRP)은 클래스나 모듈을 변경할 이유가 단 하나뿐이어야 한다는 원칙이다.
+책임, 즉 변경할 이유를 파악하려고 애쓰다 보면 코드를 추상화 하기도 쉬워진다.
+
+```java
+// 이 코드는 작아보이지만, 변경할 이유가 2가지이다.
+
+public class SuperDashboard extends JFrame implements MetaDataUser {
+	public Component getLastFocusedComponent()
+	public void setLastFocused(Component lastFocused)
+	public int getMajorVersionNumber()
+	public int getMinorVersionNumber()
+	public int getBuildNumber()
+}
+```
+
+```java
+// 위 코드에서 버전 정보를 다루는 메서드 3개를 따로 빼서
+// Version이라는 독자적인 클래스를 만들어 다른 곳에서 재사용하기 쉬워졌다.
+
+public class Version {
+	public int getMajorVersionNumber()
+	public int getMinorVersionNumber()
+	public int getBuildNumber()
+}
+```
+
+SRP는 객체지향설계에서 더욱 중요한 개념이고, 지키기 수월한 개념인데, 개발자가 가장 무시하는 규칙 중 하나이다.
+대부분의 프로그래머들이 **돌아가는 소프트웨어**에 초점을 맞춘다. 전적으로 올바른 태도이기는 하지만,
+돌아가는 소프트웨어가 작성되면 **깨끗하고 체계적인 소프트웨어**라는 다음 관심사로 전환을 해야한다.
+
+작은 클래스가 많은 시스템이든, 큰 클래스가 몇 개뿐인 시스템이든 돌아가는 부품은 그 수가 비슷하다.
+> "도구 상자를 어떻게 관리하고 싶은가?
+   작은 서랍을 많이 두고 기능과 이름이 명확한 컴포넌트를 나눠 넣고 싶은가?
+   아니면 큰 서랍 몇개를 두고 모두 던져 넣고 싶은가?"
+
+**큰 클래스 몇개가 아니라 작은 클래스 여럿으로 이뤄진 시스템이 더 바람직하다.
+작은 클래스는 각자 맡은 책임이 하나며, 변경할 이유가 하나며, 다른 작은 클래스와 협력해
+시스템에 필요한 동작을 수행한다.**
+
+#### 응집도
+클래스는 인스턴스 변수 수가 작아야 한다.
+각 클래스 메서드는 클래스 인스턴스 변수를 하나 이상 사용해야 한다.
+일반적으로 메서드가 변수를 더 많이 사용할 수록 메서드와 클래스는 응집도가 더 높다.
+모든 인스턴스 변수를 메서드마다 사용하는 클래스는 응집도가 가장 높지만, 이런 클래스는 가능하지도,
+바람직하지도 않다. 하지만 가능한한 응집도가 높은 클래스를 지향해야 한다.
+**응집도가 높다는 말은 클래스에 속한 메서드와 변수가 서로 의존하며 논리적인 단위로 묶인다는 의미기 때문이다**
+
+```java
+// Stack을 구현한 코드, 응집도가 높은 편이다.
+
+public class Stack {
+	private int topOfStack = 0;
+	List<Integer> elements = new LinkedList<Integer>();
+
+	public int size() {
+		return topOfStack;
+	}
+
+	public void push(int element) {
+		topOfStack++;
+		elements.add(element);
+	}
+
+	public int pop() throws PoppedWhenEmpty {
+		if (topOfStack == 0)
+			throw new PoppedWhenEmpty();
+		int element = elements.get(--topOfStack);
+		elements.remove(topOfStack);
+		return element;
+	}
+}
+```
+
+**함수를 작게, 매개변수 목록을 짧게**라는 전략을 따르다 보면
+때때로 몇몇 메서드만이 사용하는 인스턴스 변수가 아주 많아진다.
+이는 십중 팔구 새로운 클래스를 쪼개야 한다는 신호다.
+응집도가 높아지도록 변수와 메서드를 적절히 분리해 새로운 클래스 두세 개로 쪼개준다.
+
+#### 응집도를 유지하면 작은 클래스 여럿이 나온다.
+큰 함수를 작은 함수 여럿으로 나누기만 해도 클래스 수가 많아진다.
+예를 들어,
+변수가 아주 많은 큰 함수가 하나 있다
+--> 큰 함수 일부를 작은 함수로 빼내고 싶다
+--> 빼내려는 코드가 큰 함수에 정의 된 변수를 많이 사용한다
+--> 변수들을 새 함수에 인수로 넘겨야 하나? NO!
+--> 변수들을 클래스 인스턴스 변수로 승격 시키면 인수가 필요없다. But! 응집력이 낮아짐
+--> **몇몇 함수가 몇몇 인스턴스 변수만 사용한다면 독자적인 클래스로 분리해도 된다!**
+
+큰 함수를 작은 함수 여럿으로 쪼개다 보면 종종 작은 클래스 여럿으로 쪼갤 기회가 생긴다.
+
+```java
+// 이 하나의 크고 더러운 함수를 여러 함수와 클래스로 잘게 나누면서 적절한 이름을 부여해보자!
+
+package literatePrimes;
+
+public class PrintPrimes {
+	public static void main(String[] args) {
+		final int M = 1000;
+		final int RR = 50;
+		final int CC = 4;
+		final int WW = 10;
+		final int ORDMAX = 30;
+		int P[] = new int[M + 1];
+		int PAGENUMBER;
+		int PAGEOFFSET;
+		int ROWOFFSET;
+		int C;
+		int J;
+		int K;
+		boolean JPRIME;
+		int ORD;
+		int SQUARE;
+		int N;
+		int MULT[] = new int[ORDMAX + 1];
+
+		J = 1;
+		K = 1;
+		P[1] = 2;
+		ORD = 2;
+		SQUARE = 9;
+
+		while (K < M) {
+			do {
+				J = J + 2;
+				if (J == SQUARE) {
+					ORD = ORD + 1;
+					SQUARE = P[ORD] * P[ORD];
+					MULT[ORD - 1] = J;
+				}
+				N = 2;
+				JPRIME = true;
+				while (N < ORD && JPRIME) {
+					while (MULT[N] < J)
+						MULT[N] = MULT[N] + P[N] + P[N];
+					if (MULT[N] == J)
+						JPRIME = false;
+					N = N + 1;
+				}
+			} while (!JPRIME);
+			K = K + 1;
+			P[K] = J;
+		}
+		{
+			PAGENUMBER = 1;
+			PAGEOFFSET = 1;
+			while (PAGEOFFSET <= M) {
+				System.out.println("The First " + M + " Prime Numbers --- Page " + PAGENUMBER);
+				System.out.println("");
+				for (ROWOFFSET = PAGEOFFSET; ROWOFFSET < PAGEOFFSET + RR; ROWOFFSET++) {
+					for (C = 0; C < CC;C++)
+						if (ROWOFFSET + C * RR <= M)
+							System.out.format("%10d", P[ROWOFFSET + C * RR]);
+					System.out.println("");
+				}
+				System.out.println("\f"); PAGENUMBER = PAGENUMBER + 1; PAGEOFFSET = PAGEOFFSET + RR * CC;
+			}
+		}
+	}
+}
+```
+
+위 코드를... 바꿔보자면
+
+```java
+package literatePrimes;
+
+public class PrimePrinter {
+	public static void main(String[] args) {
+		final int NUMBER_OF_PRIMES = 1000;
+		int[] primes = PrimeGenerator.generate(NUMBER_OF_PRIMES);
+
+		final int ROWS_PER_PAGE = 50;
+		final int COLUMNS_PER_PAGE = 4;
+		RowColumnPagePrinter tablePrinter =
+			new RowColumnPagePrinter(ROWS_PER_PAGE,
+						COLUMNS_PER_PAGE,
+						"The First " + NUMBER_OF_PRIMES + " Prime Numbers");
+		tablePrinter.print(primes);
+	}
+}
+```
+
+```java
+package literatePrimes;
+
+import java.io.PrintStream;
+
+public class RowColumnPagePrinter {
+	private int rowsPerPage;
+	private int columnsPerPage;
+	private int numbersPerPage;
+	private String pageHeader;
+	private PrintStream printStream;
+
+	public RowColumnPagePrinter(int rowsPerPage, int columnsPerPage, String pageHeader) {
+		this.rowsPerPage = rowsPerPage;
+		this.columnsPerPage = columnsPerPage;
+		this.pageHeader = pageHeader;
+		numbersPerPage = rowsPerPage * columnsPerPage;
+		printStream = System.out;
+	}
+
+	public void print(int data[]) {
+		int pageNumber = 1;
+		for (int firstIndexOnPage = 0 ;
+			firstIndexOnPage < data.length ;
+			firstIndexOnPage += numbersPerPage) {
+			int lastIndexOnPage =  Math.min(firstIndexOnPage + numbersPerPage - 1, data.length - 1);
+			printPageHeader(pageHeader, pageNumber);
+			printPage(firstIndexOnPage, lastIndexOnPage, data);
+			printStream.println("\f");
+			pageNumber++;
+		}
+	}
+
+	private void printPage(int firstIndexOnPage, int lastIndexOnPage, int[] data) {
+		int firstIndexOfLastRowOnPage =
+		firstIndexOnPage + rowsPerPage - 1;
+		for (int firstIndexInRow = firstIndexOnPage ;
+			firstIndexInRow <= firstIndexOfLastRowOnPage ;
+			firstIndexInRow++) {
+			printRow(firstIndexInRow, lastIndexOnPage, data);
+			printStream.println("");
+		}
+	}
+
+	private void printRow(int firstIndexInRow, int lastIndexOnPage, int[] data) {
+		for (int column = 0; column < columnsPerPage; column++) {
+			int index = firstIndexInRow + column * rowsPerPage;
+			if (index <= lastIndexOnPage)
+				printStream.format("%10d", data[index]);
+		}
+	}
+
+	private void printPageHeader(String pageHeader, int pageNumber) {
+		printStream.println(pageHeader + " --- Page " + pageNumber);
+		printStream.println("");
+	}
+
+	public void setOutput(PrintStream printStream) {
+		this.printStream = printStream;
+	}
+}
+```
+
+```java
+package literatePrimes;
+
+import java.util.ArrayList;
+
+public class PrimeGenerator {
+	private static int[] primes;
+	private static ArrayList<Integer> multiplesOfPrimeFactors;
+
+	protected static int[] generate(int n) {
+		primes = new int[n];
+		multiplesOfPrimeFactors = new ArrayList<Integer>();
+		set2AsFirstPrime();
+		checkOddNumbersForSubsequentPrimes();
+		return primes;
+	}
+
+	private static void set2AsFirstPrime() {
+		primes[0] = 2;
+		multiplesOfPrimeFactors.add(2);
+	}
+
+	private static void checkOddNumbersForSubsequentPrimes() {
+		int primeIndex = 1;
+		for (int candidate = 3 ; primeIndex < primes.length ; candidate += 2) {
+			if (isPrime(candidate))
+				primes[primeIndex++] = candidate;
+		}
+	}
+
+	private static boolean isPrime(int candidate) {
+		if (isLeastRelevantMultipleOfNextLargerPrimeFactor(candidate)) {
+			multiplesOfPrimeFactors.add(candidate);
+			return false;
+		}
+		return isNotMultipleOfAnyPreviousPrimeFactor(candidate);
+	}
+
+	private static boolean isLeastRelevantMultipleOfNextLargerPrimeFactor(int candidate) {
+		int nextLargerPrimeFactor = primes[multiplesOfPrimeFactors.size()];
+		int leastRelevantMultiple = nextLargerPrimeFactor * nextLargerPrimeFactor;
+		return candidate == leastRelevantMultiple;
+	}
+
+	private static boolean isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
+		for (int n = 1; n < multiplesOfPrimeFactors.size(); n++) {
+			if (isMultipleOfNthPrimeFactor(candidate, n))
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean isMultipleOfNthPrimeFactor(int candidate, int n) {
+		return candidate == smallestOddNthMultipleNotLessThanCandidate(candidate, n);
+	}
+
+	private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) {
+		int multiple = multiplesOfPrimeFactors.get(n);
+		while (multiple < candidate)
+			multiple += 2 * primes[n];
+		multiplesOfPrimeFactors.set(n, multiple);
+		return multiple;
+	}
+}
+```
+
+가장 먼저 원래 프로그램의 정확한 동작을 검증하는 테스트 슈트를 작성하라.
+그 다음 한번에 하나씩 여러번에 걸쳐 코드를 변경하고,
+코드를 변경 할 때 마다 테스트를 수행해 원래 프로그램과 동일하게 동작하는지 확인하라.
+
+## 변경하기 쉬운 클래스
+시스템은 변경이 불가피하다. 그리고 변경이 있을 때 마다 의도대로 동작하지 않을 위험이 따른다.
+깨끗한 시스템은 클래스를 체계적으로 관리해 변경에 따르는 위험을 최대한 낮춘다.
+
+```java
+// 해당 코드는 새로운 SQL문을 지원할 때 손대야 하고, 기존 SQL문을 수정할 때도 손대야 하므로 SRP위반
+
+public class Sql {
+	public Sql(String table, Column[] columns)
+	public String create()
+	public String insert(Object[] fields)
+	public String selectAll()
+	public String findByKey(String keyColumn, String keyValue)
+	public String select(Column column, String pattern)
+	public String select(Criteria criteria)
+	public String preparedInsert()
+	private String columnList(Column[] columns)
+	private String valuesList(Object[] fields, final Column[] columns) private String selectWithCriteria(String criteria)
+	private String placeholderList(Column[] columns)
+}
+```
+
+클래스 일부에서만 사용되는 비공개 메서드는 코드 개선의 잠재적인 여지를 시사한다.
+
+```java
+// 공개 인터페이스를 전부 SQL 클래스에서 파생하는 클래스로 만들고, 비공개 메서드는 해당 클래스로 옮기고,
+// 공통된 인터페이스는 따로 클래스로 뺐다.
+// 이렇게 하면 update문 추가 시에 기존의 클래스를 건드릴 이유가 없어진다.
+
+	abstract public class Sql {
+		public Sql(String table, Column[] columns)
+		abstract public String generate();
+	}
+	public class CreateSql extends Sql {
+		public CreateSql(String table, Column[] columns)
+		@Override public String generate()
+	}
+
+	public class SelectSql extends Sql {
+		public SelectSql(String table, Column[] columns)
+		@Override public String generate()
+	}
+
+	public class InsertSql extends Sql {
+		public InsertSql(String table, Column[] columns, Object[] fields)
+		@Override public String generate()
+		private String valuesList(Object[] fields, final Column[] columns)
+	}
+
+	public class SelectWithCriteriaSql extends Sql {
+		public SelectWithCriteriaSql(
+		String table, Column[] columns, Criteria criteria)
+		@Override public String generate()
+	}
+
+	public class SelectWithMatchSql extends Sql {
+		public SelectWithMatchSql(String table, Column[] columns, Column column, String pattern)
+		@Override public String generate()
+	}
+
+	public class FindByKeySql extends Sql public FindByKeySql(
+		String table, Column[] columns, String keyColumn, String keyValue)
+		@Override public String generate()
+	}
+
+	public class PreparedInsertSql extends Sql {
+		public PreparedInsertSql(String table, Column[] columns)
+		@Override public String generate() {
+		private String placeholderList(Column[] columns)
+	}
+
+	public class Where {
+		public Where(String criteria) public String generate()
+	}
+
+	public class ColumnList {
+		public ColumnList(Column[] columns) public String generate()
+	}
+```
+
+**잘 짜여진 시스템은 추가와 수정에 있어서 건드릴 코드가 최소이다.**
+
+##### 변경으로부터 격리
+OOP입문에서 concrete 클래스와 abstract 클래스가 있는데,
+concrete 클래스에 의존(상세한 구현에 의존)하는 클라이언트 클래스는 구현이 바뀌면 위험에 빠진다.
+그래서 인터페이스와 abstract 클래스를 사용해 구현이 미치는 영향을 격리시켜야 한다.
+
+상세한 구현에 의존하는 코드는 테스트가 어려움.
+그래서 추상화를 통해 테스트가 가능할 정도로 시스템의 결합도를 낮춤으로써
+유연성과 재사용성도 더욱 높아진다.
+
+결함도가 낮다는 말은 각 시스템 요소가 다른 요소로부터 그리고 변경으로부터 잘 격리되어있다는 뜻이다.
+
+```java
+// Portfolio 클래스를 구현하자, 그런데 이 클래스는 외부 TokyoStockExchange API를 사용해 포트폴리오 값을 계산한다.
+// 따라서 API 특성 상 시세 변화에 영향을 많이 받아 5분마다 값이 달라지는데, 이때문에 테스트 코드를 짜기 쉽지 않다.
+// 그러므로 Portfolio에서 외부 API를 직접 호출하는 대신 StockExchange라는 인터페이스를 생성한 후 메서드를 선언하다.
+
+public interface StockExchange {
+	Money currentPrice(String symbol);
+}
+```
+
+```java
+// 이후 StockExchange 인터페이스를 구현하는 TokyoStockExchange 클래스를 구현한다.
+// 그리고 Portfolio 생성자를 수정해 StockExchange 참조자를 인수로 받는다.
+
+public Portfolio {
+	private StockExchange exchange;
+	public Portfolio(StockExchange exchange) {
+		this.exchange = exchange;
+	}
+	// ...
+}
+```
+
+```java
+// 이제 TokyoStockExchange 클래스를 흉내내는 테스트용 클래스를 만들 수 있다.(FixedStockExchangeStub)
+// 테스트용 클래스는 StockExchange 인터페이스를 구현하며 고정된 주가를 반환한다.
+// 그럼으로써 무난히 테스트 코드를 작성 할 수 있다.
+
+public class PortfolioTest {
+	private FixedStockExchangeStub exchange;
+	private Portfolio portfolio;
+
+	@Before
+	protected void setUp() throws Exception {
+		exchange = new FixedStockExchangeStub();
+		exchange.fix("MSFT", 100);
+		portfolio = new Portfolio(exchange);
+	}
+
+	@Test
+	public void GivenFiveMSFTTotalShouldBe500() throws Exception {
+		portfolio.add(5, "MSFT");
+		Assert.assertEquals(500, portfolio.value());
+	}
+}
+
+```
+
+위에서 개선한 Portfolio 클래스는 상세 구현 클래스가 아닌 StockExchange라는 인터페이스에 의존하므로,
+실제로 주가를 얻어오는 출처나 얻어오는 방식 등과 같은 구체적인 사실을 모두 숨길 수 있다.
+
+
+---
+
+> Complexity kills. It sucks the life out of developers, it makes products difficult to plan, build, and test.
+
+
+## 서론: 도시 만들기 ##
+ 도시를 건설하고 관리하는 데에는 한 사람 만으로는 충분하지 않다. 그래도 도시는 돌아간다. 그것은 도시라는 거대한 덩어리를
+수도, 전원, 교통 등의 모듈로 모듈화하고 관리되기 때문이다. 일정 수준의 추상화를 통해 큰 그림에 대한 이해 없이도 도시는
+돌아간다.
+
+ 소프트웨어 또한 이와 비슷한 방식으로 구성되기는 하나 도시의 모듈화 만큼의 추상화를 이루지 못하는 경우가 많다.
+
+ **클린 코드는 이 것을 낮은 단계의 추상화를 통해 이루는 것을 도와준다.**
+
+
+## 시스템의 생성과 사용을 분리하라 ##
+```
+  /* Code 1-1 */
+
+  public Service getService() {
+      if (service == null)
+          service = new MyServiceImpl(...); // Good enough default for most cases?
+      return service;
+  }
+```
+
+위 Code 1-1은 "Lazy Initialization/Evaluation(게으른 초기화)"의 일반적인 형태이다. 이는 불필요한 초기화 코스트의 최적화,
+null 반환 방지 등의 이점을 가지는 코드이다.
+하지만 이 코드로 인해 우리의 시스템은 MyServiceImpl 객체에 대한 의존성을 가지게 되었고 MyServiceImpl의 사용 여부와 관계 없이
+무조건 이 의존성을 만족해야 하게 되었다.
+테스트 수행에도 문제가 발생한다. 만약 MyServiceImpl 객체가 무거운 객체라면 테스트를 위한 Test Double<sup> [1](#fn1)</sup> / Mock Object를
+service필드에 대입해야 하며, 이는 기존의 runtime 로직에 관여하기 때문에 모든 가능한 경우의 수를 고려해야 하는 문제도
+발생한다.
+
+이러한 생성/사용의 분산은 모듈성을 저해하고 코드의 중복을 가져오므로 **잘 정돈된 견고한 시스템을 만들기 위해서는 전역적이고 일관된 의존성 해결 방법을 통해 위와 같은 작은 편의 코드들이 모듈성의 저해를 가져오는 것을 막아야 한다.**
+
+```java
+  /* Code 1-2: Android Example */
+
+  @Override
+  public Object getSystemService(@ServiceName @NonNull String name) {
+      /* Pre-contidion checks here... */
+
+      if (WINDOW_SERVICE.equals(name)) {
+          return mWindowManager;
+      } else if (SEARCH_SERVICE.equals(name)) {
+          ensureSearchManager();
+          return mSearchManager;
+      }
+      return super.getSystemService(name);
+  }
+
+  // Usage
+  ConnectivityManager cm =
+      (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+```
+
+
+#### 생성 로직을 어플리케이션의 시작이 아닌 메인으로 ####
+<p align="center"><img src="/images/figure 11-1.png" width="500" /></p>
+생성과 사용을 분리하는 가장 간단한 방법은 모든 생성과 관련된 로직을 main으로 옮기는 것이다.
+어플리케이션에서는 사용할 모등 객체들이 main에서 잘 생성되었을 것이라 여기고 나머지 디자인에 집중할 수 있다.
+
+
+#### 팩토리 기법 ####
+<p align="center"><img src="/images/figure 11-2.png" width="500" /></p>
+객체의 생성 시기를 직접 결정하려면 main에서 완성된 객체를 던져주기 보다 factory 객체를 만들어서 던져주자.
+
+만약 자세한 구현을 숨기고 싶다면 Abstract Factory 패턴을 사용하자.<sup> [2](#fn2)</sup>
+
+
+#### 의존성 주입(Dependency Injection) ####
+의존성 관리의 관점에서는 "객체는 그 자신의 의존성들을 직접 생성하지 말고 다른 'authoritative mechanism'에게 맡겨야 한다."라고 한다. 아래의 예를 보자.(JNDI가 실제로 어떤 일을 하는지는 본 챕터와 관계가 없으므로 생략한다)
+```java
+    /* Code 1-3 */
+    MyService myService = (MyService)(jndiContext.lookup(“NameOfMyService”));
+```
+위 코드를 호출하는 쪽에서는 실제로 lookup 메서드가 무엇을(어떤 구현체를) 리턴하는지에 대해 관여하지 않으면서 의존성을 해결할 수 있다.
+
+진정한 의존성 주입은 여기에서 한 단계 더 나아가 완전히 수동적인 형태를 지닌다. 의존성을 필요로 하는 객체가 직접 의존성을 해결(생성, 연결)하는 대신 생성자/setter 등을 통해 DI 컨테이너가 해당 의존성을 해결하도록 도와준다.(DI / IoC)<sup> [3](#fn3)</sup>
+
+
+## 스케일링 ##
+촌락은 마을로, 마을은 도시로 성장한다. 하지만 누가 마을의 성장을 고려해 미리 6차선 고속도로를 지으려 할까?
+처음부터 시스템을 제대로 제대로 만든다는 것은 미신일 뿐이다. 우리는 오늘 필요한 것을 만들 뿐이다. 내일 할 일은 테스트 기반 개발, 리펙토링, 그리고 클린코드가 이를 코드 레벨에서 도와줄 것이다.
+
+소프트웨어 시스템 또한 마찬가지이다. 만약 우리가 **Concern들을 적절히 분리**할 수 있다면, 소프트웨어 시스템은 물리적인 시스템(ex, 건축)과는 다르게 점진적으로 커질 수 있다.
+
+먼저, 스케일링을 고려하지 않은 구조에 대해 EJB1/EJB2를 예시로 알아보자.
+* EJB에 대한 자세한 내용은 본 챕터와 관계가 없으므로 생략한다. (EJB에 대한 자세한 개요는 각주로 추가 바람)
+우선 entity bean이란 관계 데이터(DB 테이블의 행)의 메모리상의 표현이라는 것만 알고 가자. (An entity bean is an in-memory representation of relational data, in other words, a table row.)
+
+```java
+/* Code 2-1(Listing 11-1): An EJB2 local interface for a Bank EJB */
+
+package com.example.banking;
+import java.util.Collections;
+import javax.ejb.*;
+
+public interface BankLocal extends java.ejb.EJBLocalObject {
+    String getStreetAddr1() throws EJBException;
+    String getStreetAddr2() throws EJBException;
+    String getCity() throws EJBException;
+    String getState() throws EJBException;
+    String getZipCode() throws EJBException;
+    void setStreetAddr1(String street1) throws EJBException;
+    void setStreetAddr2(String street2) throws EJBException;
+    void setCity(String city) throws EJBException;
+    void setState(String state) throws EJBException;
+    void setZipCode(String zip) throws EJBException;
+    Collection getAccounts() throws EJBException;
+    void setAccounts(Collection accounts) throws EJBException;
+    void addAccount(AccountDTO accountDTO) throws EJBException;
+}
+```
+
+```java
+/* Code 2-2(Listing 11-2): The corresponding EJB2 Entity Bean Implementation */
+
+package com.example.banking;
+import java.util.Collections;
+import javax.ejb.*;
+
+public abstract class Bank implements javax.ejb.EntityBean {
+    // Business logic...
+    public abstract String getStreetAddr1();
+    public abstract String getStreetAddr2();
+    public abstract String getCity();
+    public abstract String getState();
+    public abstract String getZipCode();
+    public abstract void setStreetAddr1(String street1);
+    public abstract void setStreetAddr2(String street2);
+    public abstract void setCity(String city);
+    public abstract void setState(String state);
+    public abstract void setZipCode(String zip);
+    public abstract Collection getAccounts();
+    public abstract void setAccounts(Collection accounts);
+
+    public void addAccount(AccountDTO accountDTO) {
+        InitialContext context = new InitialContext();
+        AccountHomeLocal accountHome = context.lookup("AccountHomeLocal");
+        AccountLocal account = accountHome.create(accountDTO);
+        Collection accounts = getAccounts();
+        accounts.add(account);
+    }
+
+    // EJB container logic
+    public abstract void setId(Integer id);
+    public abstract Integer getId();
+    public Integer ejbCreate(Integer id) { ... }
+    public void ejbPostCreate(Integer id) { ... }
+
+    // The rest had to be implemented but were usually empty:
+    public void setEntityContext(EntityContext ctx) {}
+    public void unsetEntityContext() {}
+    public void ejbActivate() {}
+    public void ejbPassivate() {}
+    public void ejbLoad() {}
+    public void ejbStore() {}
+    public void ejbRemove() {}
+}
+```
+
+위 코드와 같은 전형적인 EJB2 객체 구조는 아래와 같은 문제점을 가지고 있다.
+1. 비지니스 로직이 EJB2 컨테이너에 타이트하게 연결되어 있다. Entity를 만들기 위해 컨테이너 타입을 subclass하고 필요한 lifecycle 메서드를 구현해야 한다.
+2. 실제로 사용되지 않을 테스트 객체의 작성을 위해 mock 객체를 만드는 데에도 무의미한 노력이 많이 든다. EJB2 구조가 아닌 다른 구조에서 재사용할 수 없는 컴포넌트를 작성해야 한다.
+3. OOP 또한 등한시되고 있다. 상속도 불가능하며 쓸데없는 DTO(Data Transfer Object)를 작성하게 만든다.
+
+
+#### Cross-Cutting Concerns(관심 분야) ####
+* Cross-Cuttin Concerns란?
+ - 이론적으로는 독립된 형태로 구분될 수 있지만 실제로는 코드에 산재하기 쉬운 부분들을 뜻한다.(transaction, authorization, logging등)
+
+반면, 어떤 측면에서는 EJB2 아키텍쳐는 시스템의 스케일링을 위한 concern의 분리를 잘 이행하고 있다. 이들은 AOP(aspect-oriented programming)<sup> [4](#fn4)</sup>를 통해 transaction, logging과 같은 cross-cutting concerns의 모듈성을 되살리고 있다.
+AOP에서는 "코드의 어느 부분에 어떤 추가적인 기능을 삽입할까"에 대한 정의를 aspect라는 형태로 제공한다.
+
+이제 자바를 사용한 aspect-like mechanism에 대해 알아보자.
+
+
+## Cross-Cutting Concerns 해결을 위한 세 가지 방법<sup> [5](#fn5)</sup> ##
+
+#### 자바 프록시<sup> [6](#fn6)</sup> ####
+간단한 경우라면 자바 프록시가 적절한 솔루션일 것이다. 아래는 자바 프록시를 사용해 객체의 변경이 자동으로 persistant framework에 저장되는 구조에 대한 예시이다.
+
+```java
+/* Code 3-1(Listing 11-3): JDK Proxy Example */
+
+// Bank.java (suppressing package names...)
+import java.utils.*;
+
+// The abstraction of a bank.
+public interface Bank {
+    Collection<Account> getAccounts();
+    void setAccounts(Collection<Account> accounts);
+}
+
+// BankImpl.java
+import java.utils.*;
+
+// The “Plain Old Java Object” (POJO) implementing the abstraction.
+public class BankImpl implements Bank {
+    private List<Account> accounts;
+
+    public Collection<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Collection<Account> accounts) {
+        this.accounts = new ArrayList<Account>();
+        for (Account account: accounts) {
+            this.accounts.add(account);
+        }
+    }
+}
+// BankProxyHandler.java
+import java.lang.reflect.*;
+import java.util.*;
+
+// “InvocationHandler” required by the proxy API.
+public class BankProxyHandler implements InvocationHandler {
+    private Bank bank;
+
+    public BankHandler (Bank bank) {
+        this.bank = bank;
+    }
+
+    // Method defined in InvocationHandler
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        String methodName = method.getName();
+        if (methodName.equals("getAccounts")) {
+            bank.setAccounts(getAccountsFromDatabase());
+
+            return bank.getAccounts();
+        } else if (methodName.equals("setAccounts")) {
+            bank.setAccounts((Collection<Account>) args[0]);
+            setAccountsToDatabase(bank.getAccounts());
+
+            return null;
+        } else {
+            ...
+        }
+    }
+
+    // Lots of details here:
+    protected Collection<Account> getAccountsFromDatabase() { ... }
+    protected void setAccountsToDatabase(Collection<Account> accounts) { ... }
+}
+
+// Somewhere else...
+Bank bank = (Bank) Proxy.newProxyInstance(
+    Bank.class.getClassLoader(),
+    new Class[] { Bank.class },
+    new BankProxyHandler(new BankImpl())
+);
+```
+위 코드에 대한 간략한 설명은 아래와 같다.
+1. Java Proxy API를 위한 Bank 인터페이스를 작성한다.
+2. 위에서 작성한 Bank 인터페이스를 사용한 BankImpl(POJO aka Plane Old Java Object)를 구현한다. 여기에는 순수한 데이터만 들어가며 비지니스 로직은 포함되지 않는다.(모델과 로직의 분리)
+3. InvocationHandler를 구현하는 BankProxyHandler를 작성한다. 이 핸들러는 Java Reflection API를 이용해 Bank 인터페이스를 구현하는 객체들의 메서드콜을 가로챌 수 있으며 추가적인 로직을 삽입할 수 있다. 본 예제에서 비지니스 로직(persistant stack logic)은 이 곳에 들어간다.
+4. 마지막으로 코드의 마지막 블럭과 같이 BankImpl 객체를 BankProxyHandler에 할당, Bank 인터페이스를 사용해 프록시된 인터페이스를 사용해 모델과 로직이 분리된 코드를 작성할 수 있다. 이로써 모델과 로직의 분리를 이뤄낸 코드를 작성할 수 있게 되었다.
+
+하지만 위와 같은 상대적으로 간단한 경우임에도 불구하고 결과적으로 추가적인 복잡한 코드가 생겼다. 이는 클린코드를 작성하는 데에 걸림돌이 되며 또한 시스템 전반적인 advice를 삽입하는 데에도 부적절하다.
+
+
+#### 순수 자바 AOP 프레임워크<sup> [7](#fn7)</sup> ####
+
+위 Java Proxy API의 단점들은 Spring, JBoss와 같은 순수 자바 AOP 프레임워크를 통해 해결할 수 있다. 예를 들어 Spring에서는 비지니스 로직을 POJO로 작성해 자신이 속한 도메인에 집중하게 한다. 결과적으로 의존성은 줄어들고 테스트 작성에 필요한 고민도 줄어든다. 이러한 심플함은 user story의 구현과 유지보수, 확장 또한 간편하게 만들어 준다.
+
+예시를 통해 Spring 프레임워크의 동작 방식에 대해 확인해 보자.
+
+```java
+/* Code 3-2(Listing 11-4): Spring 2.X configuration file */
+
+<beans>
+    ...
+    <bean id="appDataSource"
+        class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="com.mysql.jdbc.Driver"
+        p:url="jdbc:mysql://localhost:3306/mydb"
+        p:username="me"/>
+
+    <bean id="bankDataAccessObject"
+        class="com.example.banking.persistence.BankDataAccessObject"
+        p:dataSource-ref="appDataSource"/>
+
+    <bean id="bank"
+        class="com.example.banking.model.Bank"
+        p:dataAccessObject-ref="bankDataAccessObject"/>
+    ...
+</beans>
+```
+
+Bank객체는 BankDataAccessObject가, BankDataAccessObject는 BankDataSource가 감싸 프록시하는 구조로 되어 각각의 bean들이 <a href="/images/additional references/Chapter 11 - Russian nesting dolls.jpg?raw=true">"러시안 인형"</a>의 한 부분처럼 구성되었다. 클라이언트는 Bank에 접근하고 있다고 생각하지만 사실은 가장 바깥의 BankDataSource에 접근하고 있는 것이다.
+<p align="center"><img src="/images/figure 11-3.png" width="500" /></p>
+
+이 프록시된 Bank객체를 생성하는 방법은 아래와 같다.
+
+```java
+/* Code 3-3: Code 3-2의 활용법 */
+
+XmlBeanFactory bf = new XmlBeanFactory(new ClassPathResource("app.xml", getClass()));
+Bank bank = (Bank) bf.getBean("bank");
+```
+위와 같이 최소한의 Spring-specific한 코드만 작성하면 되므로 ***프레임워크와 "거의" decouple된*** 어플리케이션을 작성할 수 있다.
+
+구조 정의를 위한 xml은 다소 장황하고 읽기 힘들 수는 있지만 Java Proxy보다는 훨씬 간결하다. 이 개념은 아래에 설명할 EJB3의 구조 개편에 큰 영향을 미쳤다. EJB3은 xml와 Java annotation을 사용해 cross-cutting concerns를 정의하고 서포트하게 되었다.
+```java
+/* Code 3-4(Listing 11-5): An EBJ3 Bank EJB */
+
+package com.example.banking.model;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
+@Entity
+@Table(name = "BANKS")
+public class Bank implements java.io.Serializable {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
+
+    @Embeddable // An object “inlined” in Bank’s DB row
+    public class Address {
+        protected String streetAddr1;
+        protected String streetAddr2;
+        protected String city;
+        protected String state;
+        protected String zipCode;
+    }
+
+    @Embedded
+    private Address address;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="bank")
+    private Collection<Account> accounts = new ArrayList<Account>();
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void addAccount(Account account) {
+        account.setBank(this);
+        accounts.add(account);
+    }
+
+    public Collection<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Collection<Account> accounts) {
+        this.accounts = accounts;
+    }
+}
+```
+위와 같이 EJB3은 EJB2 보다 훨씬 간결한 코드로 작성할 수 있게 되었다. 몇몇 세부 속성들은 annotation으로 클래스 내에 정의되어 있지만 annotation을 벗어나진 않기 때문에 이전보다 더 깨끗하고 명료한 코드를 산출하며 그로 인해 유지보수, 테스트하기 편한 장점을 갖게 되었다.
+
+
+#### AspectJ ####
+AspectJ는 AOP를 실현하기 위한 full-featured tool이라 일컬어진다. 8~90%의 경우에는 Spring AOP와 JBoss AOP로도 충분하지만 AspectJ는 훨씬 강력한 수준의 AOP를 지원한다. 다만 이를 사용하기 위해 새로운 툴, 언어 구조, 관습적인 코드를 익혀야 한다는 단점도 존재한다.(최근 소개된 "annotation-form AspectJ"로 인해 적용에 필요한 노력은 많이 줄어들었다고 한다.)
+AOP에 대한 더 자세한 내용은 [AspectJ], [Colyer], [Spring]를 참조하기 바란다.
+
+
+## 시스템 아키텍쳐를 테스트 주도하라(Test Drive the System Architecture) ##
+코드 레벨에서부터 아키텍쳐와 분리된(decouple된) 프로그램 작성은 당신의 아키텍쳐를 test drive하기 쉽게 만들어 준다. 처음에는 작고 간단한 구조에서 시작하지만 필요에 따라 새로운 기술을 추가해 정교한 아키텍쳐로 진화할 수 있다. 또한 decouple된 코드는 user story, 규모 변화와 같은 변경사항에 더 빠르게 대처할 수 있도록 우리를 도와 준다.
+도리어 BDUF(Big Design Up First)와 같은 방식은 변경이 생길 경우 기존의 구조를 버려야 한다는 심리적 저항, 아키텍쳐에 따른 디자인에 대한 고민 등 변화에 유연하지 못한 단점들을 가져오게 된다.
+초기 EJB와 같이 너무 많은 엔지니어링이 가미되어 많은 concern들을 묶어버리지 않으며 오히려 많은 부분들을 숨기는 것이 아름다운 구조를 가져올 것이다.
+
+> 이상적인 시스템 아키텍쳐는 각각 POJO로 만들어진 모듈화된 관심 분야 영역(modularized domains of concern)으로 이루어져야 한다. 다른 영역끼리는 Aspect의 개념을 사용해 최소한의 간섭으로 통합되어야 한다. 이러한 아키텍쳐는 코드와 마찬가지로 test-driven될 수 있다.
+
+
+## 의사 결정을 최적화하라 ##
+충분히 큰 시스템에서는(그것이 도시이건 소프트웨어이건) 한 사람이 모든 결정을 내릴 수는 없다. 결정은 최대한 많은 정보가 모일 때까지 미루고 시기가 되었을 경우 해당 파트의 책임자(여기서는 사람이 아닌 모듈화된 컴포넌트를 뜻한다)에게 맡기는 것이 불필요한 고객 피드백과 고통을 덜어줄 것이다.
+> 모듈화된 관심 분야로 이루어진 POJO 시스템의 (변화에 대한)민첩함은 가장 최신의 정보를 가지고 적시에 최적의 선택을 할 수 있게 도와준다. 결정에 필요한 복잡도 또한 경감된다.
+
+
+## 표준은 확실한 이득을 가져올 경우 추가하라 ##
+많은 소프트웨어 팀들은 훨씬 가볍고 직관적인 디자인이 가능했음에도 불구하고 그저 표준이라는 이유만으로 EJB2 구조를 사용했다. **표준에 심취해 "고객을 위한 가치 창출"이라는 목표를 잃어 버렸기 때문이다.**
+> 표준은 아이디어와 컴포넌트의 재사용, 관련 전문가 채용, 좋은 아이디어의 캡슐화, 컴포넌트들의 연결을 쉽게 도와 준다. 하지만 종종 표준을 만드는 데에 드는 시간은 납품 기한을 맞추기 어렵게 만들고, 혹은 최초에 제공하려던 기능과 동떨어지게 되기도 한다.
+
+
+## 시스템에는 DSL(도메인 영역 언어)이 필요하다 ##
+좋은 DSL은 도메인 영역의 개념과 실제 구현될 코드 사이의 "소통의 간극"을 줄여 도메인 영역을 코드 구현으로 번역하는 데에 오역을 줄여준다. DSL을 효율적으로 사용하면 코드 덩어리와 디자인 패턴의 추상도를 높여 주며 그에 따라 코드의 의도를 적절한 추상화 레벨에서 표현할 수 있게 해준다.
+> DSL은 "모든 단계에서의 추상화"와 "모든 도메인의 POJO화"를 고차원적 규칙과 저차원적 디테일 전반에 걸쳐 도와 준다.
+
+
+## 결론 ##
+코드뿐만이 아니라 시스템 또한 깨끗해야 한다. 침략적인(invasive) 아키텍쳐는 도메인 로직에 피해를 주고 신속성에도 영향을 준다. 도메인 로직이 모호해지면 버그는 숨기 쉬워지고 기능 구현은 어려워 진다. 신속성이 침해되면 생산성이 저해되고 TDD로 인한 이득 또한 얻을 수 없다.
+의도는 모든 레벨의 추상화에서 명확해야 한다. 이는 각각의 concern들을 POJO로 작성된 코드와 aspect-like 메커니즘을 통해 구성할 때 비로소 실현될 수 있다.
+당신이 시스템을 디자인하든 독자적인 모듈을 디자인하든, *동작하는 범위에서 가장 간단한 것*을 사용하는 것을 잊어서는 안된다.
+
+---
+
+#### 참조 ####
+##### 1. Test Double
+https://en.wikipedia.org/wiki/Test_double
+
+##### 2. Abstract Factory Pattern
+A factory is the location of a concrete class in the code at which objects are constructed. The intent in employing the pattern is to insulate the creation of objects from their usage and to create families of related objects without having to depend on their concrete classes.[2]This allows for new derived types to be introduced with no change to the code that uses the base class.
+Use of this pattern makes it possible to interchange concrete implementations without changing the code that uses them, even at runtime. However, employment of this pattern, as with similar design patterns, may result in unnecessary complexity and extra work in the initial writing of code. Additionally, higher levels of separation and abstraction can result in systems which are more difficult to debug and maintain.<br />
+참조: https://en.m.wikipedia.org/wiki/Abstract_factory_pattern
+
+##### 3. Dependency Injection and Inversion of Control
+http://greatkim91.tistory.com/41
+
+##### 4. AOP
+읽기 좋은 정리: http://isstory83.tistory.com/90<br/>
+그림: http://addio3305.tistory.com/86<br/>
+사전적 설명(개요): http://seulkom.tistory.com/18
+
+##### 5. 해당 섹션은 독자의 이해를 돕기 위해 역자 임의로 추가된 섹션
+
+##### 6. Java Proxy API sample
+https://github.com/crowjdh/DatabaseProxySample
+
+##### 7. Spring Framework example
+https://github.com/crowjdh/DatabaseProxyUsingAOPSample
+
+
+
+**창발성**(Emergence)라는 개념을 우선 몰라서 찾아봄. 간단한 설명을 첨부.
+창발성이란 **단순한 결합이 복잡한 결과를 나타내는 것을 의미한다.** 인간의 뇌를 예로 들면 하나의 뉴런은 인식능력이 없지만 수십억개의 뉴런이 결합하게 되면 자기 인식이 발생하는 현상을 말하는 것이다. 이 창발성은 명령을 내리는 조정자 없이 각 부분의 의사소통으로 자기 조직화를 이루게 되고 이러한 밑으로 부터의 힘은 예기치 못한 기능을 발현하는 힘을 말한다. 쉽게 생각하면 집단 지성과 같은 것이 이에 해당한다고 볼 수 있는 것이다.
+
+즉 **창발적 설계**란 어떤 규칙과 원칙에 따라 설계를 하게 되면, 그것들이 모여 아주 좋은 거시적 설계가 된다고 보면 될 듯.
+
+## 창발적 설계로 깔끔한 코드를 구현하자
+착실하게 따르기만 하면 우수한 설계가 나오는 간단한 규칙 네 가지가 있다면?
+네 가지 규칙을 따르면 코드 구조와 설계를 파악하기 쉬워진다면? 그래서 SRP <sup>[1](#fn1)</sup>나 DIP<sup>[2](#fn2)</sup>와 같은 원칙을 적용하기 쉬워진다면? 네 가지 규칙이 우수한 설계의 창발성을 촉진한다면?
+
+  우리들 대다수는 **켄트 벡**이 제시한 **단순한 설계** 규칙 네 가지가 소프트웨어 설계 품질을 크게 높여준다고 믿는다.
+
+  켄트 벡은 다음 규칙을 따르면 설계는 '단순하다'고 말한다.
+
+```markdown
+* 모든 테스트를 실행한다.
+* 중복을 없앤다.
+* 프로그래머 의도를 표현한다.
+* 클래스와 메서드 수를 최소로 줄인다.
+```
+
+## 단순한 설계 규칙 1: 모든 테스트를 실행하라
+무엇보다 먼저, 설계는 의도한 대로 돌아가는 시스템을 내놓아야 한다. 문서로는 완벽히 설계했지만, 시스템이 의도한 대로 돌아가는지 검증할 간단한 방법이 없다면, 문서 작성을 위해 투자한 노력에 대한 가치는 인정받기 힘들다.
+
+테스트를 철저히 거쳐 모든 테스트 케이스를 항상 통과하는 시스템은 **'테스트가 가능한 시스템'이다. 당연하지만 중요한 말이다. 테스트가 불가능한 시스템은 검증도 불가능하다.** 논란의 여지는 있지만, 검증이 불가능한 시스템은 절대 출시하면 안 된다.
+
+다행스럽게도, 테스트가 가능한 시스템을 만들려고 애쓰면 설계 품질이 더불어 높아진다. 크기가 작고 목적 하나만 수행하는 클래스가 나온다. SRP를 준수하는 클래스는 테스트가 훨씬 더 쉽다. 우리가 테스트를 더 많이 작성하면 할수록 프로그래머가 더 테스트하기 간단하게 코드를 작성할 수 있게 도와준다. 따라서 철저한 테스트가 가능한 시스템을 만들면 더 나은 설계가 얻어진다.
+
+결합도가 높으면 테스트 케이스를 작성하기 어렵다. 그러므로, 앞서와 마찬가지로, 테스트 케이스를 많이 작성할수록 개발자는 **DIP와 같은 원칙을 적용하고 의존성 주입(Dependency Injection), 인터페이스, 추상화 등과 같은 도구를 사용해 결합도를 낮춘다.** 따라서 설계 품질은 더욱 높아진다.)
+
+놀랍게도 "테스트 케이스를 만들고 계속 돌려라"라는 간단하고 단순한 규칙을 따르면 시스템은 낮은 결합도와 높은 응집력이라는, 객체 지향 방법론이 지향하는 목표를 저절로 달성한다. 즉, 테스트 케이스를 작성하면 설계 품질이 높아진다.
+
+## 단순한 설계 규칙 2~4: 리팩터링
+테스트 케이스를 모두 작성했다면 이제 코드와 클래스를 정리해도 괜찮다. 구체적으로는 코드를 점진적으로 리팩터링 해나간다. 코드 몇 줄을 추가할 때마다 잠시 멈추고 설계를 조감한다. 새로 추가하는 코드가 설계 품질을 낮춘다면 깔끔히 정리한 후 테스트를 돌려 기존 기능을 깨뜨리지 않았다는 사실을 확인한다. **코드를 정리하면서 시스템이 깨질까 걱정할 필요가 없다. 테스트 케이스가 있으니까!**
+
+리팩터링 단계에서는 소프트웨어 설계 품질을 높이는 기법이라면 무엇이든 적용해도 괜찮다. 응집도를 높이고, 결합도를 낮추고, 관심사를 분리하고, 시스템 관심사를 모듈로 나누고, 함수와 클래스 크기를 줄이고, 더 나은 이름을 선택하는 등 다양한 기법을 동원한다. 또한 이 단계는 단순한 설계 규칙 중 나머지 3개를 적용해 중복 제거, 프로그래머 의도 표현, 클래스 메서드 축소 등등을 할 수 있다.
+
+## 중복을 없애라
+우수한 설계에서 중복은 커다란 적이다. 중복은 추가 작업, 추가 위험, 불필요한 복잡도를 뜻하기 때문이다. 중복은 여러 가지 형태로 표출된다. 똑같은 코드는 당연히 중복이다. 비슷한 코드는 더 비슷하게 고쳐주면 리팩터링이 쉬워진다. 구현 중복도 중복의 한 형태다. 예를 들어, 집합 클래스에 다음 메서드가 있다고 가정한다.
+
+```java
+int size() {}
+boolean isEmpty{}
+```
+
+각 메서드를 따로 구현하는 방법도 있다. 하지만 size()가 개수를 반환하는 로직이기에, isEmpty는 이를 이용하면 코드를 중복해서 구현할 필요가 없어진다.
+
+```java
+boolean isEmpty() {
+  return 0 == size();
+}
+```
+
+깔끔한 시스템을 만들려면 단 몇 줄이라도 중복을 제거하겠다는 의지가 필요하다. 다음 코드를 살펴보자.
+
+```java
+public void scaleToOneDimension(float desiredDimension, float imageDimension) {
+  if (Math.abs(desiredDimension - imageDimension) < errorThreshold)
+    return;
+  float scalingFactor = desiredDimension / imageDimension;
+  scalingFactor = (float)(Math.floor(scalingFactor * 100) * 0.01f);
+
+  RenderedOpnewImage = ImageUtilities.getScaledImage(image, scalingFactor, scalingFactor);
+  image.dispose();
+  System.gc();
+  image = newImage;
+}
+
+public synchronized void rotate(int degrees) {
+  RenderedOpnewImage = ImageUtilities.getRotatedImage(image, degrees);
+  image.dispose();
+  System.gc();
+  image = newImage;
+}
+```
+
+scaleToOneDimension 메서드와 rotate 메서드를 살펴보면 일부 코드가 동일하다. 다음과 같이 코드를 정리해 중복을 제거한다.
+
+```java
+public void scaleToOneDimension(float desiredDimension, float imageDimension) {
+  if (Math.abs(desiredDimension - imageDimension) < errorThreshold)
+    return;
+  float scalingFactor = desiredDimension / imageDimension;
+  scalingFactor = (float) Math.floor(scalingFactor * 10) * 0.01f);
+  replaceImage(ImageUtilities.getScaledImage(image, scalingFactor, scalingFactor));
+}
+
+public synchronized void rotate(int degrees) {
+  replaceImage(ImageUtilities.getRotatedImage(image, degrees));
+}
+
+private void replaceImage(RenderedOpnewImage) {
+  image.dispose();
+  System.gc();
+  image = newImage;
+}
+```
+
+위 replaceImage()를 리팩토링했다. 아주 적은 양이지만 공통적인 코드를 새 메서드로 뽑고 보니 클래스가 SRP를 위반한다. 그러므로 새로 만든 replaceImage 메서드를 다른 클래스로 옮겨도 좋겠다. 그러면 새 메서드의 가시성이 높아지고, 따라서 다른 팀원이 새 메서드를 좀 더 추상화해 다른 맥락에서 재사용할 기회를 포착할지도 모른다. **이런 '소규모 재사용'은 시스템 복잡도를 극적으로 줄여준다. 소규모 재사용을 제대로 익혀야 대규모 재사용이 가능하다.**
+
+TEMPLATE METHOD<sup>[4](#fn3)</sup> 패턴은 고차원 중복을 제거할 목적으로 자주 사용하는 기법이다. 예를 살펴보자.
+
+```java
+public class VacationPolicy {
+  public void accrueUSDDivisionVacation() {
+    // 지금까지 근무한 시간을 바탕으로 휴가 일수를 계산하는 코드
+    // ...
+    // 휴가 일수가 미국 최소 법정 일수를 만족하는지 확인하는 코드
+    // ...
+    // 휴가 일수를 급여 대장에 적용하는 코드
+    // ...
+  }
+
+  public void accrueEUDivisionVacation() {
+    // 지금까지 근무한 시간을 바탕으로 휴가 일수를 계산하는 코드
+    // ...
+    // 휴가 일수가 유럽연합 최소 법정 일수를 만족하는지 확인하는 코드
+    // ...
+    // 휴가 일수를 급여 대장에 적용하는 코드
+    // ...
+  }
+}
+```
+
+최소 법정 일수를 계산하는 코드만 제외하면 두 메서드는 거의 동일하다. 최소 법정 일수를 계산하는 알고리즘은 직원 유형에 따라 살짝 변한다. 여기에 TEMPLATE METHOD 패턴을 적용해 눈에 들어오는 중복을 제거한다.
+
+```java
+abstract public class VacationPolicy {
+  public void accrueVacation() {
+    caculateBseVacationHours();
+    alterForLegalMinimums();
+    applyToPayroll();
+  }
+
+  private void calculateBaseVacationHours() { /* ... */ };
+  abstract protected void alterForLegalMinimums();
+  private void applyToPayroll() { /* ... */ };
+}
+
+public class USVacationPolicy extends VacationPolicy {
+  @Override protected void alterForLegalMinimums() {
+    // 미국 최소 법정 일수를 사용한다.
+  }
+}
+
+public class EUVacationPolicy extends VacationPolicy {
+  @Override protected void alterForLegalMinimums() {
+    // 유럽연합 최소 법정 일수를 사용한다.
+  }
+}
+```
+
+하위 클래스는 중복되지 않는 정보만 제공해 accrueVacation 알고리즘에서 빠진 '구멍'을 메운다.
+
+역주: swift에서는 protocol과 protocol extension을 활용해서 위와 유사한 방식으로 구현할 수 있다.
+추후 플레이그라운드 테스트 후 본인 gist 링크로 달 예정
+
+## 표현하라
+아마 우리 대다수는 엉망인 코드를 접한 경험이 있으리라. 아마 우리 대다수는 스스로 엉망인 코드를 내놓은 경험도 있으리라. **자신이** 이해하는 코드를 짜기는 쉽다. 코드를 짜는 동안에는 문제에 푹 빠져 코드를 구석구석 이해하니까. 하지만 나중에 코드를 유지보수할 사람이 그만큼 문제를 깊이 이해할 가능성은 희박하다.
+
+소프트웨어 프로젝트 비용 중 대다수는 장기적인 유지보수에 들어간다. 코드를 변경하면서 버그의 싹을 심지 않으려면 유지보수 개발자가 시스템을 제대로 이해해야 한다. 하지만 시스템이 점차 복잡해지면서 유지보수 개발자가 시스템을 이해하느라 보내는 시간은 점점 늘어나고 동시에 코드를 오해할 가능성도 점점 커진다. 그러므로 **코드는 개발자의 의도를 분명히 표현해야 한다.** 개발자가 코드를 명백하게 짤수록 다른 사람이 그 코드를 이해하기 쉬워진다. 그래야 결함이 줄어들고 유지보수 비용이 적게 든다.
+
+우선, **좋은 이름**을 선택한다. 이름과 기능이 완전히 딴판인 클래스나 함수로 개발자를 놀라게 해서는 안 된다.
+
+둘째, 함수와 클래스 크기를 가능한 한 줄인다. 작은 클래스와 작은 함수는 이름 짓기도 쉽고, 구현하기도 쉽고, 이해하기도 쉽다.
+
+셋째, 표준 명칭을 사용한다. 예를 들어, 디자인 패턴은 의사소통과 표현력 강화가 주요 목적이다. **클래스가 COMMAND나 VISITOR와 같은 표준 패턴을 사용해 구현된다면 클래스 이름에 패턴 이름을 넣어준다.** 그러면 다른 개발자가 클래스 설계 의도를 이해하기 쉬워진다.
+
+넷째, 단위 테스트 케이스를 꼼꼼히 작성한다. 테스트 케이스는 소위 '예제로 보여주는 문서'다. 다시 말해, 잘 만든 테스트 케이스를 읽어보면 클래스 기능이 한눈에 들어온다.
+
+하지만 표현력을 높이는 가장 중요한 방법은 **노력**이다. 흔히 코드만 돌린 후 다음 문제로 직행하는 사례가 너무도 흔하다. **나중에 읽을 사람을 고려해 조금이라도 읽기 쉽게 만드려는 충분한 고민은 거의 찾기 어렵다. 하지만 나중에 코드를 읽을 사람은 바로 자신일 가능성이 높다는 사실을 명심하자.**
+
+그러므로 자신의 작품을 조금 더 자랑하자. 함수와 클래스에 조금 더 시간을 투자하자. 더 나은 이름을 선택하고, 큰 함수를 작은 함수 여럿으로 나누고, 자신의 작품에 조금만 더 주의를 기울이자. 주의는 대단한 재능이다.
+
+## 클래스와 메서드 수를 최소로 줄여라
+중복을 제거하고, 의도를 표현하고, SRP를 준수한다는 기본적인 개념도 극단으로 치달으면 득보다 실이 많아진다. 클래스와 메서드 크기를 줄이자고 조그만 클래스와 메서드를 수없이 만드는 사례도 없지 않다. 그래서 이 규칙은 함수와 클래스 수를 가능한 한 줄이라고 제안한다.
+
+때로는 무의미하고 독단적인 정책 탓에 클래스 수와 메서드 수가 늘어나기도 한다. 클래스마다 무조건 인터페이스를 생성하라고 요구하는 구현 표준이 좋은 예다. 자료 클래스와 동작 클래스는 무조건 분리해야 한다고 주장하는 개발자도 좋은 예다. **가능한 독단적인 견해는 멀리하고 실용적인 방식을 택해야 한다.**
+
+목표는 함수와 클래스 크기를 작게 유지하면서 동시에 시스템 크기도 작게 유지하는 데 있다. 하지만 이 규칙은 간단한 설계 규칙 네 개 중 우선순위가 가장 낮다. 다시 말해, 클래스와 함수 수를 줄이는 작업도 중요하지만, 테스트 케이스를 만들고 중복을 제거하고 의도를 표현하는 작업이 더 중요하다는 뜻이다.
+
+## 결론
+경험을 대신할 단순한 개발 기법이 있을까? 당연히 없다. 하지만 이 장, 아니 이 책에서 소개하는 기법은 저자들이 수십 년 동안 쌓은 경험의 정수다. 단순한 설계 규칙을 따른다면 (오랜 경험 후에야 익힐) 우수한 기법과 원칙을 단번에 활용할 수 있다.
+
+## 참조
+##### [1. SRP](#FN1) #####
+Single Responsibility Principle, 단일 책임 원칙
+
+##### [2. DIP](#FN2) #####
+Dependency Inversion Principle, 의존 관계 역전 원칙
+
+##### [3. GOF](#FN3) #####
+Gang of Four의 디자인 패턴 중 하나
+
+---
+
+> “Objects are abstractions of processing. Threads are abstractions of schedule.”
+<p align="right">—James O. Coplien</p>
+
+
+## 서론 ##
+단일 스레드에서 동작하는 코드는 작성하기 쉽다. 잘 동작하는 "것 처럼" 보이는 멀티 스레드 코드를 작성하기도 쉽다.
+
+본 챕터에서는 concurrent 프로그래밍의 필요성, 어려움에 대해 논의하고 그것에 대한 해결 방안과 "clean concurrent code"를 작성하는 방법, 테스트 방법을 소개하고자 한다.
+
+**역주: Concurrency<sup> [1](#fn1)</sup>는 원문의 뉘앙스를 해쳐 발생하는 오해를 줄이기 위해 번역하지 않음.**
+
+
+## 동시성이 필요한 이유? ##
+Concurrency는 단일 스레드에서 엮여 있던 "무엇을 할 것인가"와 "언제 끝날 것인가"간의 의존성을 해소시켜 준다. 이는 처리량과 구조 개선에 도움을 줄 수 있다.
+
+구조 개선의 좋은 예는 Servlet 모델일 것이다. *이론적으로,* Servlet 개발자는 요청을 개별적으로 처리하는 데에만 신경을 쓰며 요청 큐를 직접 관리하는 부담을 덜 수 있다. 물론, Servlet이 제공하는 의존성의 해소는 완벽하지 않지만 Servlet이 제공하는 구조적인 이점은 그 자체로 가치가 있다.
+
+처리량 또한 향상될 수 있다. 한 유저의 요청을 처리하는 데에 1초가 필요한 시스템을 생각해 보자. 이 시스템은 적은 유저가
+사용할 경우 그럭저럭 괜찮은 퍼포먼스를 보여줄 것이다. 하지만 유저가 늘어남에 따라 모든 유저는 자신보다 먼저 도착한 요청이
+끝날 때까지 기다려야만 한다. 이러한 경우 concurrency가 여러 유저를 동시에 처리함으로써 처리량을 향상시킬 수 있다.
+
+
+
+#### 미신과 오해 ####
+아래는 잘 알려진 미신과 오해에 대한 설명이다.
+- Concurrency는 항상 퍼포먼스를 향상시킨다.
+  => Concurrency는 여러 스레드 혹은 여러 프로세서가 대기 시간을 공유할 수 있는 경우에만 퍼포먼스를 향상시킨다. 하지만 이러한 경우는 드물다.
+- Concurrent program 작성은 시스템의 디자인을 변경시키지 않는다.
+  => "무엇"과 "언제"를 분리하는 작업은 보통 시스템의 구조에 큰 영향을 미친다.
+- Web나 EJB와 같은 컨테이너를 사용한다면 Concurrency 문제들은 신경쓸 필요가 없다.
+  => 컨테이너가 어떤 일을 하는가에 대해 알아야 하며 concurrent update, 데드락을 해결하는 방법을 알아야 한다.
+
+위에 덧붙여 아래의 사항도 숙지하자.
+- Concurrency는 퍼포먼스, 코드 작성 양쪽 모두에 약간의 오버헤드를 일으킨다.
+- 간단한 문제 해결을 위한 Concurrency는 간단하지 않다.
+- Concurrency 관련 버그는 재현하기 어렵기 때문에 종종 one-off<sup> [2](#fn2)</sup>로 취급된다.
+- Concurrency 문제에는 보통 근본적인 디자인 개편이 필요하다.
+
+
+## 난관 ##
+```java
+/* Code 1-1 */
+
+public class ClassWithThreadingProblem {
+    private int lastIdUsed;
+
+    public ClassWithThreadingProblem(int lastIdUsed) {
+        this.lastIdUsed = lastIdUsed;
+    }
+
+    public int getNextId() {
+        return ++lastIdUsed;
+    }
+}
+
+public static void main(String args[]) {
+    final ClassWithThreadingProblem classWithThreadingProblem = new ClassWithThreadingProblem(42);
+
+    Runnable runnable = new Runnable() {
+        public void run() {
+            classWithThreadingProblem.getNextId();
+        }
+    };
+
+    Thread t1 = new Thread(runnable);
+    Thread t2 = new Thread(runnable);
+    t1.start();
+    t2.start();
+}
+```
+위 코드가 만들 수 있는 결과는 총 3가지 이다.
+- t1이 43을, t2가 44를 가져간다. lastIdUsed는 44이다.(O)
+- t1이 44을, t2가 43를 가져간다. lastIdUsed는 44이다.(O)
+- t1이 43을, t2가 43를 가져간다. lastIdUsed는 43이다.(X)
+
+위의 getNextId() 메서드는 8개의 자바 byte-code로 변환되며, 이를 두 스레드에서 실행하게 되면 총 12,870개의 코드 조합을 낼 수 있다. 그 중 *얼마 안 되는* 몇몇 조합이 위의 3가지 결과 중 마지막 결과를 낳게 된다.<sup> [3](#fn3)</sup>
+
+
+## 동시성 방어 원칙 ##
+
+
+#### 단일 책임 원칙(Single Responsibility Principle, SRP)<sup> [4](#fn4)</sup> ####
+Concurrency 디자인은 그 자체로 충분히 복잡하기 때문에 변경이 발생할 수 있다. 따라서 concurrency 관련 코드는 분리되어야 한다.
+하지만 concurrency 구현은 다른 코드의 변화까지 가져오는 경우가 잦다.
+아래의 사항들을 숙지하자.
+
+- *Concurrency 관련 코드*는 *개발*, 변경, 튜닝시 다른 코드와 분리된 생명주기를 가진다.
+- *Concurrency 관련 코드*는 그 자체가 가지는 어려움(풀기 힘든 문제)이 있다.
+- 잘못 작성된 concurrency 코드는 여러 문제를 발생시킬 수 있으며, 이는 추가적인 코드 없이 해결되기 힘들다.
+
+**추천**: *Concurrency 관련 코드는 다른 코드들과 분리하라.*
+
+
+#### 따름 정리(Corollary): 자료 범위를 제한하라 ####
+위 "무엇이 어려운가?"에서 본 것 처럼 공유 객체를 두 스레드에서 수정하는 중 간섭이 발생할 수 있으며 이는 예기치 못한 결과를 야기할 수 있다.
+이러한 *critical section*<sup> [5](#fn5)</sup>을 보호하는 한 가지 방법은 synchronized 키워드를 사용하는 것이다.
+*Critical section*의 수는 가능한한 적게 만들어야 하며 이를 어길 경우 아래와 같은 문제가 발생하기 쉽게 된다.
+- 한두 군데를 보호하는 것을 까먹기 쉬우며 이로 인해 해당 자원을 수정하는 모든 코드를 망가트리게 된다.
+- 모든 곳이 보호되었는지 파악하기 위해 중복적인 노력이 필요하게 된다.
+- 이미 찾기 어려운 문제의 근원을 더 찾기 어렵게 만들게 된다.
+
+**추천**: *데이터 캡슐화를 가슴 깊이 새기며, 공유될 만한 자원에 접근하는 부분(코드)을 극도로 줄여라.*
+
+
+#### 따름 정리: 자료 사본을 사용하라 ####
+공유 자원 문제를 해결하는 좋은 방법중 하나는 애초에 공유 자원을 사용하지 않는 것이다. 읽기 전용으로 사용될 경우 자원의 복사본을 사용하게 하는 방법이 있다. 경우에 따라서는 복사본을 여러 스레드에 전달, 작업을 수행하고 결과를 단일 스레드에서 수집해 사용하는 것도 가능하다.
+
+객체의 복사에 드는 비용을 걱정할 수도 있다. 혹은, 이 문제가 "진짜 문제가 되는지" 조사해 보는 방법도 있다. 하지만 객체의 복사본을 사용함으로써 동기화를 피할 수 있다면, 객체 생성 및 GC에 드는 비용은 공유 자원 동기화에 필요한 비용 보다 일반적으로 적은 비용으로 문제를 해결하게 해 준다.(객체 복사 cost < 공유 자원 동기화 cost)
+
+
+#### 따름 정리: 스레드는 가능한 독립적으로 구현하라 ####
+스레드 코드를 공유 자원을 사용하지 않는 독립된 세계로 만든다면 동기화 문제는 없어지게 된다.
+
+HttpServlet을 생각해 보라. HttpServlet을 상속받는 클래스는 doGet, doPost와 같은 메서드에서 필요한 파라미터를 받아 처리한다.
+이는 각 Servlet이 각자의 세계에 있는 것처럼 작동하게 도와주며, 지역 변수를 사용하는 한 동기화 문제는 발생하지 않게 된다.
+물론 대부분의 Servlet들은 데이터베이스 연결과 같은 공유 자원이 필요하긴 하다.
+
+**추천**: *데이터를 독립적인 스레드-더 나아가 각각의 프로세서-에서 사용될 수 있게 구분하라.*
+
+
+## 라이브러리를 이해하라 ##
+자바 5버전 이상에서 스레드 관련 코드 작성시 아래의 사항들을 숙지하자.
+
+- 자바에서 제공하는 thread-safe 컬랙션을 사용하라.
+- 연관이 없는 태스크들을 수행시 executor 프레임워크를 사용하라.
+- 가능하면 nonblocking 방법을 사용하라.
+- 몇몇 라이브러리 클래스들은 thread-safe하지 않다.
+
+
+#### 스레드 환경에 안전한 컬렉션 ####
+java.util.concurrent 패키지는 멀티 스레드 환경에서 사용할 수 있는 컬랙션들을 제공한다. ConcurrentHashMap의 경우에는 일반 HashMap보다 대부분의 상황에서 더 좋은 퍼포먼스를 제공한다. 만약 배포 환경이 자바 5버전 이상이라면 이 패키지를 활용하자.
+
+아래와 같은 고급 concurrency 디자인 구현을 위한 컴포넌트들도 숙지하자.
+
+| Name            | Description                                                         |
+| :-------------- | :------------------------------------------------------------------ |
+| ReentrantLock   | 한 메서드에서 잠그고 다른 메서드에서 해제될 수 있는 lock이다.       |
+| Semaphore       | 전통적인 세마포어(갯수를 셀 수 있는 lock)의 구현체이다.             |
+| CountDownLatch  | 기다리는 모든 스레드들을 해제하기 전 특정 횟수의 이벤트가 발생하는 것을 기다리게 할 수 있는 lock이다. 모든 스레드가 거의 동시에 시작될 수 있게 도와줄 수 있다. |
+
+**추천**: *당신에게 맞는 클래스를 살펴보라. 자바의 경우 java.util.concurrent, java.util.concurrent.atomic, java.util.concurrent.locks를 살펴보라.*
+
+
+## 실행 모델을 이해하라 ##
+실행 모델에 대해 이야기하기 위해 필요한 기본적인 용어를 먼저 알아 보자.
+
+| Name                         | Description  |
+| :--------------------------- | :----------- |
+| Bound Resources              | Concurrent 환경에서 사용되는 고정된 크기의 자원이다. 예시로 데이터베이스 연결, 고정된 크기의 읽기/쓰기 버퍼가 있다. |
+| Mutual Exclusion             | 한 시점에 공유 자원에 접근할 수 있는 스레드는 단 하나이다. |
+| Starvation                   | 한 스레드 혹은 스레드의 그룹이 긴 시간 혹은 영원히 작업을 수행할 수 없게 된다. 작업의 우선권을 가지는 수행 시간이 짧은 스레드가 끝없이 실행된다면 수행 시간이 긴 스레드는 굶게 된다. |
+| Deadlock                     | 두 개 이상의 스레드들이 서로의 작업이 끝나기를 기다린다. 각 스레드는 서로가 필요로 하는 자원을 점유하고 있으며 필요한 자원을 얻지 못하는 이상 그 누구도 작업을 끝내지 못하게 된다. |
+| Livelock<sup> [6](#fn6)</sup>| 스레드들이 서로 작업을 수행하려는 중 다른 스레드가 작업중인 것을 인지하고 서로 양보한다. 이러한 공명 때문에 스레드들은 작업을 계속 수행하려 하지만 장시간 혹은 영원히 작업을 수행하지 못하게 된다. |
+
+
+#### 생산자-소비자(Producer-Consumer) ####
+한 개 이상의 생산자가 생산한 작업물을 버퍼 혹은 큐에 넣는다. 한 개 이상의 소비자가 버퍼 혹은 큐에서 작업물을 습득, 작업을 마친다. 생산자와 소비자 사이에 있는 큐는 *bound resource*이다. 따라서 생산자는 큐에 남는 공간이 생길 때까지, 소비자는 큐에 작업물이 하나라도 생길 때까지 기다려야 한다. 큐를 통한 생산자와 소비자간의 조율에는 둘 사이의 시그널링이 필요하다. 생산자는 큐에 작업물을 넣고 소비자에게 "큐가 비어있지 않다"는 신호를 보내고 소비자는 큐에서 작업물을 꺼낸 후 "큐가 가득차 있지 않다"는 신호를 보낸다. 그 전까지 둘은 신호를 기다린다.
+
+
+#### 읽기-쓰기(Readers-Writers) ####
+일반적으로 독자를 위한 정보로 사용되며, 가끔 저자에 의해 업데이트되는 공유 자원의 경우 처리량이 문제가 된다. 처리량을 강조해 독자가 상대적인 우선권을 가지게 되면 저자는 기아 상태에 빠지며 공유 자원은 정체된 정보로 가득차게 된다. 반대로 저자가 우선권을 가지면 처리량이 줄어들게 된다. 저자-독자 문제는 이 둘 사이의 균형을 맞추며 concurrent 업데이트를 방지하는 것을 주안점으로 둔다.
+
+
+#### 식사하는 철학자들(Dining Philosophers) ####
+원탁을 둘러싼 여러 명의 철학자들이 있다. 각 철학자의 왼쪽에 포크가 놓여 있으며 테이블의 중앙에 큰 스파게티 한 그릇이 놓여 있다. 그들은 배가 고파지기 전까지 각자 생각을 하며 시간을 보낸다. 배가 고파지면 그들은 자신의 양쪽에 놓여 있는 포크 2개를 잡고 스파게티를 먹는다.
+철학자는 포크 2개가 있어야만 스파게티를 먹을 수 있다. 그렇지 않다면 옆 사람이 포크를 다 사용하기 전까지 기다려야 한다. 스파게티를 먹은 철학자는 다시 배가 고파질 때까지 포크를 놓고 있게 된다.
+위 상황에서 철학자를 스레드로, 포크를 공유 자원으로 바꾸게 되면 이는 자원을 놓고 경쟁하는 프로세스와 비슷한 상황이 된다. 잘 설계되지 않은 시스템은 deadlock, livelock, 처리량 문제, 효율성 저하 문제에 맞닥뜨리기 쉽다.
+
+당신이 맞닥뜨릴 대부분의 concurrent관련 문제들은 이 세 가지 문제의 변형일 가능성이 높다. 이 알고리즘들을 공부하고 스스로 해법을 작성함으로써 이와 같은 문제들을 직면하더라도 의연하게 대처할 수 있도록 하자.
+
+**추천**: *위 기본적인 알고리즘들과 그 해법을 익히자.*
+
+
+## 동기화하는 메서드 사이에 존재하는 의존성을 이해하라 ##
+동기화된 메서드 간의 의존성은 concurrent 코드에서 사소한 버그를 일으킬 수 있다. 자바는 synchronized라는 "메서드 하나를 보호하는 노테이션"을 제공한다. 하지만 한 클래스에 두 개 이상의 synchronized 메서드가 존재하면 문제를 일으킬 수도 있다.
+
+**추천**: *공유된 객체의 두 메서드 이상을 사용하는 것을 피하라.*
+
+만약 위 추천을 따를 수 없는 상황이라면 아래의 세 방법을 고려해 보라.
+
+**클라이언트 기반 잠금(Client-Based Locking)**: 클라이언트가 첫 메서드를 부르기 이전부터 마지막 메서드를 부른 다음까지 서버를 잠근다. (역주: 공유 객체를 사용하는 코드에서 공유 객체를 잠그는 것이다.)
+=> *Bad: 서버를 사용하는 모든 클라이언트 코드에서 lock이 필요하게 되며 이는 유지보수 및 디버깅에 필요한 비용을 상승시킨다.*
+
+**서버 기반 잠금(Server-Based Locking)**: 서버 내에서 서버(자신)을 잠그고 모든 동작을 수행한 후 잠금을 푸는 메서드를 제공한다. 클라이언트에게는 새로운 메서드를 제공한다. (역주: 공유 객체에 새로운 메서드를 작성하고 잠금이 필요한 동작 전체를 수행하게 하는 것이다.)
+=> *Good: Critical section에 접근하는 코드를 최소화해 위 4-2에 부합한다.*
+
+**중계된 서버(Adapted Server)**: 잠금을 수행하는 중계자를 작성한다. 이는 기본적으로 서버 기반 잠금이지만 기존의 서버를 변경할 수 없는 상황에 사용할 수 있는 방법이다.(역주: 서드 파티 라이브러리를 사용한다고 생각하면 쉬울 것이다.)
+=> *Good: 서버 기반 잠금 방식을 사용할 수 없는 경우에 사용하자.*
+
+아래는 위의 내용에 대한 예제이다.
+
+```java
+/* Code 2-1: 문제가 되는 상황 */
+
+public class IntegerIterator implements Iterator<Integer> {
+    private Integer nextValue = 0;
+
+    public synchronized boolean hasNext() {
+        return nextValue < 100000;
+    }
+
+    public synchronized Integer next() {
+        if (nextValue == 100000)
+            throw new IteratorPastEndException();
+        return nextValue++;
+    }
+
+    public synchronized Integer getNextValue() {
+        return nextValue;
+    }
+}
+
+// Shared Resource
+IntegerIterator iterator = new IntegerIterator();
+
+// Threaded-Code
+while(iterator.hasNext()) {
+    // nextValue가 99999인 상황에서 두 스레드에서 순차적으로 while(iterator.hasNext())를 호출하게 되면
+    // 두 스레드 모두 while문 안으로 진입하게 된다. 이는 예상되지 않은 결과이다.
+    int nextValue = iterator.next();
+    // do something with nextValue
+}
+```
+
+```java
+/* Code 2-2: Client-Based Locking */
+
+// Shared Resource
+IntegerIterator iterator = new IntegerIterator();
+
+// Threaded-Code
+while (true) {
+    int nextValue;
+    synchronized (iterator) {
+        if (!iterator.hasNext())
+            break;
+        nextValue = iterator.next();
+    }
+    doSometingWith(nextValue);
+}
+```
+
+```java
+/* Code 2-3: Server-Based Locking */
+
+public class IntegerIteratorServerLocked {
+    private Integer nextValue = 0;
+
+    public synchronized Integer getNextOrNull() {
+        if (nextValue < 100000)
+            return nextValue++;
+        else
+            return null;
+    }
+}
+
+// Shared Resource
+IntegerIterator iterator = new IntegerIterator();
+
+// Threaded-Code
+while (true) {
+    Integer nextValue = iterator.getNextOrNull();
+    if (next == null)
+        break;
+    // do something with nextValue
+}
+```
+
+```java
+/* Code 2-4: Adapted Server */
+
+public class ThreadSafeIntegerIterator {
+    private IntegerIterator iterator = new IntegerIterator();
+
+    public synchronized Integer getNextOrNull() {
+        if(iterator.hasNext())
+            return iterator.next();
+        return null;
+    }
+}
+
+// Threaded-Code는 위 Code 2-3과 동일
+```
+
+
+## 동기화하는 부분을 작게 만들어라 ##
+Synchronized로 수행되는 잠금은 딜레이와 오버헤드를 만들기 때문에 "비싼 수행"으로 간주되며 가능한 한 작게 만들어야 한다. 반면 critical section은 꼭 보호되어야 한다.
+
+**추천**: *동기화된 영역은 최대한 작게 만들어라.*
+
+
+## 올바른 종료 코드는 구현하기 어렵다 ##
+"항상 살아 있어야 하는 코드"의 작성은 "잠시 동작하고 조용히 끝나는" 코드의 작성과는 다르다.
+
+조용히 끝나는 코드는 작성하기 어렵다. 이는 보편적으로 "오지 않을 신호"를 기다리는 쓰레드의 데드락을 포함한다.
+
+데드락에 걸린 자식 스레드의 수행이 끝나길 기다리는 부모 스레드의 경우를 생각해 보라. 자식은 데드락에 걸려 멈춰 있고 부모는 이를 끝없이 기다리게 된다.
+
+이와 같은 코드를 작성할 경우 정상적인 종료가 이루어질 때까지 많은 시간이 소요될 것을 상정해야 한다.
+
+**추천**: *개발 초기에 시스템 종료에 대해 고민하고 구현하라. 이 작업은 생각보다 오래 걸릴 것이다. 기존에 구현한 알고리즘을 리뷰하는 것도 필요하다.*
+
+
+## 스레드 코드 테스트하기 ##
+테스트는 정확성을 보장하지 않으며 "코드가 제대로 작성되었는가"를 증명할 수 없다.
+다만 잘 작성된 테스트는 위험을 최소화할 수 있다. 이는 멀티 스레드 상황에서는 훨씬 더 복잡해 진다.
+
+**추천**: *문제를 발생시킬 만한 테스트를 작성하고 여러 프로그램 설정과 시스템 설정, 부하 하에서 자주 수행하라. 테스트가 한번이라도 실패한다면 원인을 분석하라. 한번 더 테스트를 실행해 성공했다고 해서 이전의 실패를 무시하지 마라.*
+
+이는 아래와 같이 분류할 수 있다.
+
+ - 말이 안 되는 실패는 잠정적인 스레드 문제로 취급하라
+ - 다중 스레드를 고려하지 않은 순차 코드부터 제대로 돌게 만들자
+ - 다중 스레드를 쓰는 코드 부분을 다양한 환경에 쉽게 끼워 넣을 수 있게 스레드 코드를 구현하라
+ - 다중 스레드를 쓰는 코드 부분을 상황에 맞게 조율할 수 있게 작성하라
+ - 프로세서 수보다 많은 스레드를 돌려보라
+ - 다른 플랫폼에서 돌려보라
+ - 코드에 보조 코드instrument를 넣어 돌려라. 강제로 실패를 일으키게 해보라
+
+
+#### 말이 안 되는 실패는 잠정적인 스레드 문제로 취급하라 ####
+멀티 스레드 코드는 일반적으로 발생할 리 없어 보이는 문제를 발생시킨다. (저자를 포함한)대부분의 개발자는 이러한 문제를 직관적으로 파악하지 못한다. 또한 이는 매우 드물게 발생해 개발자들을 좌절하게 만든다. 그래서 개발자들은 이러한 문제들을 우주선(宇宙線), 하드웨어 버그, 혹은 이러한 류의 one-off로 치부한다. 제일 좋은 방향은 one-off는 없다고 판단하는 것이다. 이러한 one-off들이 무시될 수록 더 많은 코드들이 이미 문제가 있는 시스템에 추가되게 될 뿐이다.
+
+**추천**: *시스템 오작동을 one-off로 판단해 무시하지 말라.*
+
+
+#### 다중 스레드를 고려하지 않은 순차 코드부터 제대로 돌게 만들자 ####
+당연한 말이지만 거듭 강조할 만큼 중요한 이야기이다. 스레드 밖에서 잘 동작하는 코드를 먼저 작성하라. 이는 스레드에서 사용될 POJO를 뜻한다. POJO는 스레드와 연관이 없어 스레드 밖에서도 테스트할 수 있다. 시스템은 가능한 한 POJO로 작성하는 것이 좋다.
+
+**추천**: *스레드 관련 버그와 그렇지 않은 버그를 동시에 잡으려 하지 마라. 작성한 코드가 스레드 밖에서 잘 작동하는지 먼저 체크하라.*
+
+
+#### 다중 스레드를 쓰는 코드 부분을 다양한 환경에 쉽게 끼워 넣을 수 있게 스레드 코드를 구현하라 ####
+Concurrency 지원 코드를 아래와 같이 여러 설정으로 실행될 수 있게 만들어라.
+
+- 단일 스레드, 여러 스레드 환경에서 동작하게 구현
+- 실제 사용될 객체 혹은 Test Double<sup> [7](#fn7)</sup>과 상호작용할 수 있는 스레드 코드로 구현
+- 수행 속도를 조절할 수 있는 Test Double을 구현
+- 지정된 횟수만큼 반복 수행할 수 있게 구현
+
+**추천**: *스레드 기반 코드를 여러 환경에서 실행할 수 있게 하라.*
+
+
+#### 다중 스레드를 쓰는 코드 부분을 상황에 맞게 조율할 수 있게 작성하라 ####
+스레드 관련 코드의 적절한 균형을 맞추는 작업은 보통 시행착오를 필요로 한다. 여러 환경에서 시스템의 퍼포먼스를 테스트할 수 있는 방법을 개발 초기에 강구하라. 실행할 스레드 갯수를 쉽게 변경할 수 있게 작성하라. 이를 시스템이 동작하는 도중에 변경할 수 있게 하는 것을 고려해 보라. 처리량과 시스템 활용도를 기준으로 스스로를 조정할 수 있게 하는 것을 고려해 보라.
+
+
+#### 프로세서 수보다 많은 스레드를 돌려보라 ####
+시스템이 작업을 전환할 때에도 문제는 발생한다. 작업 전환을 빈번히 발생하게 하기 위해 프로세서 수보다 많은 스레드를 실행해 보라. 작업 전환이 잦을수록 빠뜨린 critical section이나 dead lock을 찾을 확률이 높아지게 된다.
+
+
+#### 다른 플랫폼에서 돌려보라 ####
+우리(저자)는 2007년 중순 concurrent 프로그래밍 강좌를 개발했다. 강좌의 개발은 OSX에서 진행되었으며 시연은 VM상의 Windows XP에서 진행되었다. 하지만 실패를 시연하기 위해 작성된 테스트는 OSX에서는 자주 발생했지만 Windows XP에서는 OSX에서만큼 자주 발생하지 않았다.
+
+우리는 이로 인해 서로 다른 운영체제는 상이한 스레딩 정책을 가지며 코드의 실행에 영향을 미친다는 것을 다시 한번 깨닫게 되었다. 멀티 스레드 코드는 실행 환경에 따라 다르게 동작한다. 따라서 당신은 모든 잠재적 배포 환경에 대해 테스트를 수행해야 한다.
+
+**추천**: 스레드 관련 코드를 이른 시기에, 빈번한 주기로 모든 타겟 플랫폼에서 수행하라.
+
+
+#### 코드에 보조 코드instrument를 넣어 돌려라. 강제로 실패를 일으키게 해보라 ####
+스레드 관련 문제는 수많은 실행 경로중 얼마 안되는 확률로 발생하기 때문에 드물게 발생하며 재현하기 어렵다. 이 실행 경로를 조작해 스레드 문제가 발생할 확률을 높이는 code instrumentation에는 두 가지 방법이 있다.
+
+- 직접 구현하기
+- 자동화
+
+
+###### 직접 구현하기 ######
+이는 Object.wait(), Object.sleep(), Object.yield(), Object.priority()등의 메서드를 사용해 실행 경로를 변경함으로써 코드의 문제를 발견하는 방법이다.
+
+```java
+/* Code 3-1 */
+
+public synchronized String nextUrlOrNull() {
+    if(hasNext()) {
+        String url = urlGenerator.next();
+        Thread.yield();
+        // inserted for testing.
+        updateHasNext();
+        return url;
+    }
+    return null;
+}
+```
+
+yield() 메서드를 호출함으로써 코드의 실행 경로를 변경할 수 있다. 만약 위 코드에서 문제가 발생한다면 이는 yield()를 추가해 생긴 문제가 아니라 이미 존재하던 문제를 명백히 만든것 뿐이다.
+
+하지만 이 방법에는 몇 가지 문제가 있다.
+- 테스트할 부분을 직접 찾아야 한다.
+- 어디에 어느 메서드를 호출해야 할지 알기 어렵다.
+- 이와 같은 코드를 제품에 포함해 배포하는 것은 불필요하게 퍼포먼스를 저하시킬 뿐이다.
+- Shotgun approach<sup> [8](#fn8)</sup>이기 때문에 반드시 문제가 발생한다는 보장을 얻을 수 없다.
+
+우리는 실제 제품에 포함되지 않으며 여러 조합으로 실행해 에러를 찾기 쉽게 만들 방법이 필요하다.
+
+이를 위해서는 시스템을 최대한 POJO 단위로 나눠 instrument code를 삽입할 부분을 찾기 쉽게 하고 여러 정책에 따라 sleep, yield등을 삽입할 수 있게 해야 한다.
+
+
+###### 자동화 ######
+위와 다르게 Aspect-oriented Framework, CGLib, ASM등을 통해 프로그램적으로 코드를 조작할 수도 있다. 아래의 예를 보자.
+
+```java
+/* Code 4-1 */
+
+public class ThreadJigglePoint {
+    public static void jiggle() { }
+}
+
+public synchronized String nextUrlOrNull() {
+    if(hasNext()) {
+        ThreadJiglePoint.jiggle();
+        String url = urlGenerator.next();
+        ThreadJiglePoint.jiggle();
+        updateHasNext();
+        ThreadJiglePoint.jiggle();
+        return url;
+    }
+    return null;
+}
+```
+
+위와 같이 구현한 후 간단한 Aspect<sup> [9](#fn9)</sup>를 이용해 '아무 것도 안하기', 'sleep', 'yield'등을 무작위로 선택하게 할 수 있다.
+
+혹은 ThreadJigglePoint가 두 가지 구현을 가지게 할 수도 있다. 첫 번째 구현은 배포용 코드를 위한 '아무 것도 안하기'를 수행하며 두 번째 구현은 'sleep, yield, 아무 것도 안하기' 중의 하나를 무작위로 선택하는 것이다. 다소 간단하긴 하지만 좀 더 정교한 툴을 사용하는 대신 이 정도로 구현하는 것도 적절한 선택일 것이다.
+
+혹은 이와 비슷한 작업을 수행해 주는 IBM에서 개발한 ConTest라는 툴도 있다. 이는 수행시마다 다른 순서로 스레드를 실행하게 만들어 줌으로써 문제를 발견할 확률을 극적으로 높여준다.
+
+
+## 결론 ##
+Concurrent 코드는 제대로 작성하기 어렵다. 이해하기 쉬운 코드는 여러 스레드와 공유 자원이 엮이게 되면 끔찍한 결말을 낳게 된다. 당신이 concurrent code를 작성하게 된다면 엄격한 기준으로 clean하게 작성하라. 그렇지 않으면 찾기 어렵고 빈번하지 않은 오류를 만나게 될 것이다.
+
+최우선적으로 SRP를 숙지하라. 시스템을 최대한 POJO단위로 잘라 스레드 관련 코드와 非 스레드 관련 코드를 나누어라. 스레드 관련 코드를 테스트할 때에는 그 이외의 것들은 제외하고 스레드 관련 문제만 테스트하라. 이는 스레드 관련 문제가 최대한 작은 부분에 집중되게 한다.
+
+한 공유 자원에 대한 멀티 스레드 수행, 공유되는 자원 풀 등 concurrency 문제를 일으킬 수 있는 부분에 대해 인지하라. 깔끔하게 종료되게 하는 문제나 반복문 탈출과 같은 문제는 특히 성가실 수 있다.
+
+라이브러리를 이해하고 기본적인 알고리즘을 이해하라. 라이브러리가 제공하는 기능이 어떻게 문제를 해결하는지 이해하라.
+
+잠가야 할 필요가 있는 부분을 찾는 방법을 배우고 잠가라. 쓸데 없는 구간을 잠그지 마라. 잠긴 구간에서 또 다른 잠긴 구간을 부르는 것을 기피하라. 이는 "무엇이 공유되고 안되고"에 대한 깊은 이해를 요구한다. 공유 객체의 갯수와 공유 영역을 최소한으로 줄여라. 클라이언트가 공유 객체의 상태(잠금 등)를 관리하는 대신 공유 객체의 디자인을 변경하라.
+
+문제는 돌연 발생할 것이다. 그렇지 않은 문제들은 보통 "한번만 발생하는" 문제로 치부된다. 이러한 one-off들은 보통 시스템에 부하가 걸린 경우, 혹은 무작위로 발생한다. 그러므로 스레드 관련 코드는 여러 설정, 환경에서 반복적이고 지속적으로 수행해 보라.
+
+당신의 코드를 시간을 들여 instrument하게 되면 문제점을 찾을 확률은 높아질 것이다. 직접 코드를 작성할 수도 있고 자동화 툴을 사용할 수도 있다. 출시하기 전까지 최대한 오래 테스트 해야할 것이다.
+
+Clean한 접근 방식을 사용한다면, 제대로 된 코드를 만들어낼 가능성은 급격히 올라갈 것이다.
+
+---
+
+#### 참조
+##### 1. Concurrency
+https://en.wikipedia.org/wiki/Concurrency_(computer_science)
+
+##### 2. One-off
+사전적 의미는 "한 번만 일어나는"이며, 여기에서는 "고칠 수 없는"이라는 의미도 포함하고 있다.
+
+##### 3. 더 자세한 내용은 원문의 [부록 A: Concurrency II]를 참고하길 바란다.
+
+##### 4. SRP(Single Responsibility Principle)
+참조: https://en.wikipedia.org/wiki/Single_responsibility_principle
+
+##### 5. Critical Section: 둘 이상의 스레드가 동시에 접근해서는 안되는 공유 자원(자료 구조 또는 장치)을 접근하는 코드의 일부
+출처: https://ko.m.wikipedia.org/wiki/%EC%9E%84%EA%B3%84_%EA%B5%AC%EC%97%AD
+
+##### 6. Livelock
+실생활에서 발생할 수 있는 상황을 예로 들면 아래와 같다.
+두 사람이 좁은 길목에서 만나 서로 비켜가기 위해 한 쪽으로 걷는다. 하지만 우연히도 두 사람은 계속 같은 방향으로 피하게 된다. 따라서 두 사람 모두 앞으로 진행하지 못하게 된다.
+출처: http://stackoverflow.com/a/6155978/2279149
+
+##### 7. Test Double: 테스트용으로 만들어진 비교적 단순한 구조를 가지는 객체
+https://en.wikipedia.org/wiki/Test_double
+
+##### 8. Shotgun approach: 산탄총으로 목표를 향해 발사하는 것처럼 되는 대로 시도해 보는 방법
+출처: http://dictionary.reference.com/browse/shotgun-approach
+
+##### 9. Aspect: Chapter 11의 AOP 참조
+참조: https://github.com/Yooii-Studios/Clean-Code/blob/master/Chapter%2011%20-%20시스템.md#4-2
+
+
+
+---
+
+## Intro
+이 장은 점진적인 개선을 보여주는 사례 연구다. 우선, 출발은 좋았으나 확장성이 부족했던 모듈을 소개한다. 그런 다음, 모듈을 개선하고 정리하는 단계를 살펴본다.
+
+프로그램을 짜다 보면 종종 명령행 인수의 구문을 분석할 필요가 생긴다. 편리한 유틸리티가 없다면 main 함수로 넘어오는 문자열 배열을 직접 분석하게 된다. 여러 가지 훌륭한 유틸리티가 있지만 내 사정에 딱 맞는 유틸리티가 없다면? 물론 직접 짜겠다고 결심한다. 새로 짠 유틸리티를 Args라 부르겠다.
+
+Args는 사용법이 간단하다. Args 생성자에 (입력으로 들어온) 인수 문자열과 형식 문자열을 넘겨 Args 인스턴스를 생성한 후 Args 인스턴스에다 인수 값을 질의한다. 다음 간단한 예를 살펴보자.
+
+##### 목록 14-1 간단한 Args 사용법
+```java
+public static void main(String[] args) {
+  try {
+    Args arg = new Args("l,p#,d*", args);
+    boolean logging = arg.getBoolean('l');
+    int port = arg.getInt('p');
+    String directory = arg.getString('d');
+    executeApplication(logging, port, directory);
+  } catch (ArgsException e) {
+    System.out.print("Argument error: %s\n", e.errorMessage());
+  }
+}
+```
+매개변수 두 개로 Args 클래스의 클래스의 인스턴스를 만든다. 첫째 매개변수는 형식 또는 스키마를 지정한다. "l,p#,d*"은 명령행 인수 세 개를 정의한다. 첫 번째 -l은 부울 인수다. 두 번째 -p는 정수 인수다. 세 번째 -d는 문자열 인수다. 두 번째 매개변수는 main으로 넘어온 명령행 인수 배열 자체다.
+
+ ArgsException이 발생하지 않는다면 명령행 인수의 구문을 성공적으로 분석했으며 Args 인스턴스에 질의를 던져도 좋다는 말이다. 인수 값을 가져오기 위해 get~() 등의 메서드를 사용한다.
+
+
+## Args 구현
+목록 14-2는 Args 클래스다. 아주 주의 깊게 읽어보기 바란다. 스타일과 구조에 신경을 썼으므로 흉내 낼 가치가 있다고 믿는다.
+
+이름을 붙인 방법, 함수 크기, 코드 형식에 각별히 주목한다. 노련한 프로그래머라면 여기저기 자잘한 구조나 스타일이 거슬릴지 모르지만 전반적으로 깔끔한 구조에 잘 짜인 프로그램으로 여겨주면 좋겠다.
+
+##### 목록 14-2 Args.java
+```java
+package com.objectmentor.utilities.args;
+
+import static com.objectmentor.utilities.args.ArgsException.ErrorCode.*;
+import java.util.*;
+
+public class Args {
+  private Map<Character, ArgumentMarshaler> marshalers;
+  private Set<Character> argsFound;
+  private ListIterator<String> currentArgument;
+
+  public Args(String schema, String[] args) throws ArgsException {
+    marshalers = new HashMap<Character, ArgumentMarshaler>();
+    argsFound = new HashSet<Character>();
+
+    parseSchema(schema);
+    parseArgumentStrings(Arrays.asList(args));
+  }
+
+  private void parseSchema(String schema) throws ArgsException {
+    for (String element : schema.split(","))
+      if (element.length() > 0)
+        parseSchemaElement(element.trim());
+  }
+
+  private void parseSchemaElement(String element) throws ArgsException {
+    char elementId = element.charAt(0);
+    String elementTail = element.substring(1); validateSchemaElementId(elementId);
+    if (elementTail.length() == 0)
+      marshalers.put(elementId, new BooleanArgumentMarshaler());
+    else if (elementTail.equals("*"))
+      marshalers.put(elementId, new StringArgumentMarshaler());
+    else if (elementTail.equals("#"))
+      marshalers.put(elementId, new IntegerArgumentMarshaler());
+    else if (elementTail.equals("##"))
+      marshalers.put(elementId, new DoubleArgumentMarshaler());
+    else if (elementTail.equals("[*]"))
+      marshalers.put(elementId, new StringArrayArgumentMarshaler());
+    else
+      throw new ArgsException(INVALID_ARGUMENT_FORMAT, elementId, elementTail);
+  }
+
+  private void validateSchemaElementId(char elementId) throws ArgsException {
+    if (!Character.isLetter(elementId))
+      throw new ArgsException(INVALID_ARGUMENT_NAME, elementId, null);
+  }
+
+  private void parseArgumentStrings(List<String> argsList) throws ArgsException {
+    for (currentArgument = argsList.listIterator(); currentArgument.hasNext();) {
+      String argString = currentArgument.next();
+      if (argString.startsWith("-")) {
+        parseArgumentCharacters(argString.substring(1));
+      } else {
+        currentArgument.previous();
+        break;
+      }
+    }
+  }
+
+  private void parseArgumentCharacters(String argChars) throws ArgsException {
+    for (int i = 0; i < argChars.length(); i++)
+      parseArgumentCharacter(argChars.charAt(i));
+  }
+
+  private void parseArgumentCharacter(char argChar) throws ArgsException {
+    ArgumentMarshaler m = marshalers.get(argChar);
+    if (m == null) {
+      throw new ArgsException(UNEXPECTED_ARGUMENT, argChar, null);
+    } else {
+      argsFound.add(argChar);
+      try {
+        m.set(currentArgument);
+      } catch (ArgsException e) {
+        e.setErrorArgumentId(argChar);
+        throw e;
+      }
+    }
+  }
+
+  public boolean has(char arg) {
+    return argsFound.contains(arg);
+  }
+
+  public int nextArgument() {
+    return currentArgument.nextIndex();
+  }
+
+  public boolean getBoolean(char arg) {
+    return BooleanArgumentMarshaler.getValue(marshalers.get(arg));
+  }
+
+  public String getString(char arg) {
+    return StringArgumentMarshaler.getValue(marshalers.get(arg));
+  }
+
+  public int getInt(char arg) {
+    return IntegerArgumentMarshaler.getValue(marshalers.get(arg));
+  }
+
+  public double getDouble(char arg) {
+    return DoubleArgumentMarshaler.getValue(marshalers.get(arg));
+  }
+
+  public String[] getStringArray(char arg) {
+    return StringArrayArgumentMarshaler.getValue(marshalers.get(arg));
+  }
+}
+```
+
+여기저기 뒤적일 필요 없이 위에서 아래로 코드가 읽힌다는 사실에 주목한다. 한 가지 먼저 읽어볼 코드가 있다면 ArgumentMarshaler 정의인데, 목록 14-3에서 14-6까지는 ArgumentMarshaler 인터페이스와 파생 클래스다.
+
+##### 목록 14-3 ArgumentMarshaler.java
+```java
+public interface ArgumentMarshaler {
+  void set(Iterator<String> currentArgument) throws ArgsException;
+}
+```
+
+##### 목록 14-4 BooleanArgumentMarshaler.java
+```java
+public class BooleanArgumentMarshaler implements ArgumentMarshaler {
+  private boolean booleanValue = false;
+
+  public void set(Iterator<String> currentArgument) throws ArgsException {
+    booleanValue = true;
+  }
+
+  public static boolean getValue(ArgumentMarshaler am) {
+    if (am != null && am instanceof BooleanArgumentMarshaler)
+      return ((BooleanArgumentMarshaler) am).booleanValue;
+    else
+      return false;
+  }
+}
+```
+
+##### 목록 14-5 StringArgumentMarshaler.java
+```java
+import static com.objectmentor.utilities.args.ArgsException.ErrorCode.*;
+
+public class StringArgumentMarshaler implements ArgumentMarshaler {
+  private String stringValue = "";
+
+  public void set(Iterator<String> currentArgument) throws ArgsException {
+    try {
+      stringValue = currentArgument.next();
+    } catch (NoSuchElementException e) {
+      throw new ArgsException(MISSING_STRING);
+    }
+  }
+
+  public static String getValue(ArgumentMarshaler am) {
+    if (am != null && am instanceof StringArgumentMarshaler)
+      return ((StringArgumentMarshaler) am).stringValue;
+    else
+      return "";
+  }
+}
+```
+
+##### 목록 14-6 IntegerArgumentMarshaler.java
+```java
+import static com.objectmentor.utilities.args.ArgsException.ErrorCode.*;
+
+public class IntegerArgumentMarshaler implements ArgumentMarshaler {
+  private int intValue = 0;
+
+  public void set(Iterator<String> currentArgument) throws ArgsException {
+    String parameter = null;
+    try {
+      parameter = currentArgument.next();
+      intValue = Integer.parseInt(parameter);
+    } catch (NoSuchElementException e) {
+      throw new ArgsException(MISSING_INTEGER);
+    } catch (NumberFormatException e) {
+      throw new ArgsException(INVALID_INTEGER, parameter);
+    }
+  }
+
+  public static int getValue(ArgumentMarshaler am) {
+    if (am != null && am instanceof IntegerArgumentMarshaler)
+      return ((IntegerArgumentMarshaler) am).intValue;
+    else
+    return 0;
+  }
+}
+```
+
+나머지 DoubleArgumentMarshaler와 StringArrayArgumentMarshaler는 다른 파생 클래스와 똑같은 패턴이므로 코드를 생략한다.
+
+한 가지가 눈에 거슬릴지 모르겠다. 바로 오류 코드 상수를 정의하는 부분이다. 목록 14-7을 살펴보자.
+
+##### 목록 14-7 ArgsException.java
+```java
+import static com.objectmentor.utilities.args.ArgsException.ErrorCode.*;
+
+public class ArgsException extends Exception {
+  private char errorArgumentId = '\0';
+  private String errorParameter = null;
+  private ErrorCode errorCode = OK;
+
+  public ArgsException() {}
+
+  public ArgsException(String message) {super(message);}
+
+  public ArgsException(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+
+  public ArgsException(ErrorCode errorCode, String errorParameter) {
+    this.errorCode = errorCode;
+    this.errorParameter = errorParameter;
+  }
+
+  public ArgsException(ErrorCode errorCode, char errorArgumentId, String errorParameter) {
+    this.errorCode = errorCode;
+    this.errorParameter = errorParameter;
+    this.errorArgumentId = errorArgumentId;
+  }
+
+  public char getErrorArgumentId() {
+    return errorArgumentId;
+  }
+
+  public void setErrorArgumentId(char errorArgumentId) {
+    this.errorArgumentId = errorArgumentId;
+  }
+
+  public String getErrorParameter() {
+    return errorParameter;
+  }
+
+  public void setErrorParameter(String errorParameter) {
+    this.errorParameter = errorParameter;
+  }
+
+  public ErrorCode getErrorCode() {
+    return errorCode;
+  }
+
+  public void setErrorCode(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+
+  public String errorMessage() {
+    switch (errorCode) {
+      case OK:
+        return "TILT: Should not get here.";
+      case UNEXPECTED_ARGUMENT:
+        return String.format("Argument -%c unexpected.", errorArgumentId);
+      case MISSING_STRING:
+        return String.format("Could not find string parameter for -%c.", errorArgumentId);
+      case INVALID_INTEGER:
+        return String.format("Argument -%c expects an integer but was '%s'.", errorArgumentId, errorParameter);
+      case MISSING_INTEGER:
+        return String.format("Could not find integer parameter for -%c.", errorArgumentId);
+      case INVALID_DOUBLE:
+        return String.format("Argument -%c expects a double but was '%s'.", errorArgumentId, errorParameter);
+      case MISSING_DOUBLE:
+        return String.format("Could not find double parameter for -%c.", errorArgumentId);
+      case INVALID_ARGUMENT_NAME:
+        return String.format("'%c' is not a valid argument name.", errorArgumentId);
+      case INVALID_ARGUMENT_FORMAT:
+        return String.format("'%s' is not a valid argument format.", errorParameter);
+    }
+    return "";
+  }
+
+  public enum ErrorCode {
+    OK, INVALID_ARGUMENT_FORMAT, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME,
+    MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, MISSING_DOUBLE, INVALID_DOUBLE
+  }
+}
+```
+
+이처럼 단순한 개념을 구현하는데 코드가 너무 많이 필요해 놀랄지도 모르겠다. 우선적인 이유는 장황한 언어인 자바를 사용해서인데, 정적 타입 언어라서 타입 시스템을 만족하려면 많은 단어가 필요하다.
+
+하지만 이름을 붙인 방법, 함수 크기, 코드 형식에 주목을 해 본다면 전반적으로 깔끔한 구조에 잘 짜인 프로그램으로 여겨주면 좋겠다.
+
+예를 들어, 날짜 인수나 복소수 인수 등 새로운 인수 유형을 추가하는 방법이 명백하다. 고칠 코드도 별로 없다. 간단히 설명하자면, ArgumentMarshaler에서 새 클래스를 파생해 getXXX 함수를 추가한 후 parseSchemaElement 함수에 새 case 문만 추가하면 끝이다. 필요하다면 새 ArgsException.ErrorCode를 만들고 새 오류 메시지를 추가한다.
+
+
+#### 어떻게 짰느냐고?
+일단 진정하기 바란다. 나는 위 프로그램을 처음부터 저렇게 구현하지 않았다. 더욱 중요하게는 여러분이 깨끗하고 우아한 프로그램을 한 방에 뚝딱 내놓으리라 기대하지 않는다. 지난 수십여 년 동안 쌓아온 경험에서 얻은 교훈이라면, **프로그래밍은 과학보다 공예(craft)에 가깝다는 사실이다. 깨끗한 코드를 짜려면 먼저 지저분한 코드를 짠 뒤에 정리해야 한다는 의미이다.**
+
+처음 듣는 이야기가 아니라고 생각한다. 초등학교 시절 선생님들도 작문을 할 때도 초안부터 쓰라고 교육을 하셨다. 깔끔한 작품을 내놓으려면 단계적으로 개선해야 한다고 가르치려 애쓰셨다.
+
+대다수의 신참 프로그래머는 (대다수 초딩과 마찬가지로) 이 충고를 충실히 따르지 않는다. 그들은 무조건 돌아가는 프로그램을 목표로 잡는다. 일단 프로그램이 '돌아가면' 다음 업무로 넘어간다. '돌아가는' 프로그램은 그 상태가 어떻든 그대로 버려둔다. **경험이 풍부한 전문 프로그래머라면 이런 행동이 전문가로서 자살 행위라는 사실을 잘 안다.**
+
+
+## Args: 1차 초안
+목록 14-8은 내가 맨 처음 짰던 Args 클래스다. 코드는 '돌아가지만' 엉망이다.
+
+##### 목록 14-8 Args.java(1차 초안)
+```java
+import java.text.ParseException;
+import java.util.*;
+
+public class Args {
+  private String schema;
+  private String[] args;
+  private boolean valid = true;
+  private Set<Character> unexpectedArguments = new TreeSet<Character>();
+  private Map<Character, Boolean> booleanArgs = new HashMap<Character, Boolean>();
+  private Map<Character, String> stringArgs = new HashMap<Character, String>();
+  private Map<Character, Integer> intArgs = new HashMap<Character, Integer>();
+  private Set<Character> argsFound = new HashSet<Character>();
+  private int currentArgument;
+  private char errorArgumentId = '\0';
+  private String errorParameter = "TILT";
+  private ErrorCode errorCode = ErrorCode.OK;
+
+  private enum ErrorCode {
+    OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, UNEXPECTED_ARGUMENT}
+
+  public Args(String schema, String[] args) throws ParseException {
+    this.schema = schema;
+    this.args = args;
+    valid = parse();
+  }
+
+  private boolean parse() throws ParseException {
+    if (schema.length() == 0 && args.length == 0)
+      return true;
+    parseSchema();
+    try {
+      parseArguments();
+    } catch (ArgsException e) {
+    }
+    return valid;
+  }
+
+  private boolean parseSchema() throws ParseException {
+    for (String element : schema.split(",")) {
+      if (element.length() > 0) {
+        String trimmedElement = element.trim();
+        parseSchemaElement(trimmedElement);
+      }
+    }
+    return true;
+  }
+
+  private void parseSchemaElement(String element) throws ParseException {
+    char elementId = element.charAt(0);
+    String elementTail = element.substring(1);
+    validateSchemaElementId(elementId);
+    if (isBooleanSchemaElement(elementTail))
+      parseBooleanSchemaElement(elementId);
+    else if (isStringSchemaElement(elementTail))
+      parseStringSchemaElement(elementId);
+    else if (isIntegerSchemaElement(elementTail))
+      parseIntegerSchemaElement(elementId);
+    else
+      throw new ParseException(String.format("Argument: %c has invalid format: %s.",
+        elementId, elementTail), 0);
+    }
+  }
+
+  private void validateSchemaElementId(char elementId) throws ParseException {
+    if (!Character.isLetter(elementId)) {
+      throw new ParseException("Bad character:" + elementId + "in Args format: " + schema, 0);
+    }
+  }
+
+  private void parseBooleanSchemaElement(char elementId) {
+    booleanArgs.put(elementId, false);
+  }
+
+  private void parseIntegerSchemaElement(char elementId) {
+    intArgs.put(elementId, 0);
+  }
+
+  private void parseStringSchemaElement(char elementId) {
+    stringArgs.put(elementId, "");
+  }
+
+  private boolean isStringSchemaElement(String elementTail) {
+    return elementTail.equals("*");
+  }
+
+  private boolean isBooleanSchemaElement(String elementTail) {
+    return elementTail.length() == 0;
+  }
+
+  private boolean isIntegerSchemaElement(String elementTail) {
+    return elementTail.equals("#");
+  }
+
+  private boolean parseArguments() throws ArgsException {
+    for (currentArgument = 0; currentArgument < args.length; currentArgument++) {
+      String arg = args[currentArgument];
+      parseArgument(arg);
+    }
+    return true;
+  }
+
+  private void parseArgument(String arg) throws ArgsException {
+    if (arg.startsWith("-"))
+      parseElements(arg);
+  }
+
+  private void parseElements(String arg) throws ArgsException {
+    for (int i = 1; i < arg.length(); i++)
+      parseElement(arg.charAt(i));
+  }
+
+  private void parseElement(char argChar) throws ArgsException {
+    if (setArgument(argChar))
+      argsFound.add(argChar);
+    else
+      unexpectedArguments.add(argChar);
+      errorCode = ErrorCode.UNEXPECTED_ARGUMENT;
+      valid = false;
+  }
+
+  private boolean setArgument(char argChar) throws ArgsException {
+    if (isBooleanArg(argChar))
+      setBooleanArg(argChar, true);
+    else if (isStringArg(argChar))
+      setStringArg(argChar);
+    else if (isIntArg(argChar))
+      setIntArg(argChar);
+    else
+      return false;
+
+    return true;
+  }
+
+  private boolean isIntArg(char argChar) {
+    return intArgs.containsKey(argChar);
+  }
+
+  private void setIntArg(char argChar) throws ArgsException {
+    currentArgument++;
+    String parameter = null;
+    try {
+      parameter = args[currentArgument];
+      intArgs.put(argChar, new Integer(parameter));
+    } catch (ArrayIndexOutOfBoundsException e) {
+      valid = false;
+      errorArgumentId = argChar;
+      errorCode = ErrorCode.MISSING_INTEGER;
+      throw new ArgsException();
+    } catch (NumberFormatException e) {
+      valid = false;
+      errorArgumentId = argChar;
+      errorParameter = parameter;
+      errorCode = ErrorCode.INVALID_INTEGER;
+      throw new ArgsException();
+    }
+  }
+
+  private void setStringArg(char argChar) throws ArgsException {
+    currentArgument++;
+    try {
+      stringArgs.put(argChar, args[currentArgument]);
+    } catch (ArrayIndexOutOfBoundsException e) {
+      valid = false;
+      errorArgumentId = argChar;
+      errorCode = ErrorCode.MISSING_STRING;
+      throw new ArgsException();
+    }
+  }
+
+  private boolean isStringArg(char argChar) {
+    return stringArgs.containsKey(argChar);
+  }
+
+  private void setBooleanArg(char argChar, boolean value) {
+    booleanArgs.put(argChar, value);
+  }
+
+  private boolean isBooleanArg(char argChar) {
+    return booleanArgs.containsKey(argChar);
+  }
+
+  public int cardinality() {
+    return argsFound.size();
+  }
+
+  public String usage() {
+    if (schema.length() > 0)
+      return "-[" + schema + "]";
+    else
+      return "";
+  }
+
+  public String errorMessage() throws Exception {
+    switch (errorCode) {
+      case OK:
+        throw new Exception("TILT: Should not get here.");
+      case UNEXPECTED_ARGUMENT:
+        return unexpectedArgumentMessage();
+      case MISSING_STRING:
+        return String.format("Could not find string parameter for -%c.", errorArgumentId);
+      case INVALID_INTEGER:
+        return String.format("Argument -%c expects an integer but was '%s'.", errorArgumentId, errorParameter);
+      case MISSING_INTEGER:
+        return String.format("Could not find integer parameter for -%c.", errorArgumentId);
+    }
+    return "";
+  }
+
+  private String unexpectedArgumentMessage() {
+    StringBuffer message = new StringBuffer("Argument(s) -");
+    for (char c : unexpectedArguments) {
+      message.append(c);
+    }
+    message.append(" unexpected.");
+
+    return message.toString();
+  }
+
+  private boolean falseIfNull(Boolean b) {
+    return b != null && b;
+  }
+
+  private int zeroIfNull(Integer i) {
+    return i == null ? 0 : i;
+  }
+
+  private String blankIfNull(String s) {
+    return s == null ? "" : s;
+  }
+
+  public String getString(char arg) {
+    return blankIfNull(stringArgs.get(arg));
+  }
+
+  public int getInt(char arg) {
+    return zeroIfNull(intArgs.get(arg));
+  }
+
+  public boolean getBoolean(char arg) {
+    return falseIfNull(booleanArgs.get(arg));
+  }
+
+  public boolean has(char arg) {
+    return argsFound.contains(arg);
+  }
+
+  public boolean isValid() {
+    return valid;
+  }
+
+  private class ArgsException extends Exception {
+  }
+}
+```
+이처럼 지저분한 코드를 보고 처음 든 생각이 "저자가 그냥 버려두지 않아서 진짜 다행이야!"이기 바란다. 만약 그렇다면 그렇다면 자신이 대충 짜서 남겨둔 코드를 남들이 어떻게 느낄지 생각하기 바란다.
+
+처음부터 지저분한 코드를 짜려는 생각은 없었다. 실제로도 코드를 어느 정도 손보려고 애썼다. 함수 이름이나 변수 이름을 선택한 방식, 어설프지만 나름대로 구조가 있다는 사실 등이 내 노력의 증거다. 하지만 어느 순간 프로그램은 내 손을 벗어났다. 첫 버전이던 Boolean 인수만 지원하던 초기 버전에서 String과 Integer 인수 유형을 추가하면서 부터 재앙이 시작됐다.
+
+주) 관련 코드들 역시 있지만 내용이 너무 많기에 내용 및 코드를 생략
+
+
+#### 그래서 멈췄다
+추가할 인수 유형이 적어도 두 개는 더 있었는데 그러면 코드가 훨씬 더 나빠지리라는 사실이 자명했다. 계속 밀어붙이면 프로그램은 어떻게든 완성하겠지만 그랬다가는 너무 커서 손대기 어려운 골칫거리가 생겨날 참이었다. 코드 구조를 유지보수하기 좋은 상태로 만들려면 지금이 적기라 판단했다.
+
+그래서 나는 기능을 더 이상 추가하지 않기로 결정하고 리팩터링을 시작했다. String, Integer 유형을 추가한 경험에서 나는 새 인수 유형을 추가하려면 주요 지점 세 곳에도 코드를 추가해야 한다는 사실을 이미 깨달았다.
+
+인수 유형은 다양하지만 모두가 유사한 메서드를 제공하므로 클래스 하나가 적합하다 판단했다. 그래서 ArgumentMarshaler라는 개념이 탄생했다.
+
+
+#### 점진적으로 개선하다
+프로그램을 망치는 가장 좋은 방법 중 하나는 개선이라는 이름 아래 구조를 크게 뒤집는 행위다. 어떤 프로그램은 그저 그런 '개선'에서 결코 회복하지 못한다. '개선' 전과 똑같이 프로그램을 돌리기가 아주 어렵기 때문이다.
+
+**그래서 나는 테스트 주도 개발(Test-Driven Development, TDD)라는 기법을 사용했다.** TDD는 언제 어느 때라도 시스템이 돌아가야 한다는 원칙을 따른다. 다시 말해, TDD는 시스템을 망가뜨리는 변경을 허용하지 않는다. 변경을 가한 후에도 시스템이 변경 전과 똑같이 돌아가야 한다는 말이다.
+
+변경 전후 시스템이 똑같이 돌아간다는 사실을 확인하려면 언제든 실행이 가능한 자동화된 테스트 슈트가 필요하다. 앞서 Args 클래스를 구현하는 동안에 나는 이미 단위 테스트 슈트와 인수 테스트를 만들어 놓았다. 두 테스트 모두 언제든 실행이 가능했고, 시스템이 두 테스트를 모두 통과하면 올바로 동작한다고 봐도 좋았다.
+
+그래서 나는 시스템에 자잘한 변경을 가하기 시작했다. 코드를 변경할 때마다 시스템 구조는 조금씩 ArgumentMarshaler 개념에 가까워졌다. 또한 변경 후에도 시스템은 여전히 잘 돌아갔다. 가장 먼저 나는 기존 코드 끝에 ArgumentMarshaler 클래스의 골격을 추가했다. 우선 boolean 부분 부터 해 보기로 했다.
+
+##### 목록 14-11 Args.java 끝에 추가한 ArgumentMarshaler
+```java
+private class ArgumentMarshaler {
+  private boolean booleanValue = false;
+
+  public void setBoolean(boolean value) {
+    booleanValue = value;
+  }
+
+  public boolean getBoolean() {return booleanValue;}
+}
+
+private class BooleanArgumentMarshaler extends ArgumentMarshaler { }
+private class StringArgumentMarshaler extends ArgumentMarshaler { }
+private class IntegerArgumentMarshaler extends ArgumentMarshaler { }
+```
+
+그리고 코드를 최소로 건드리는, 가장 단순한 변경을 가했다. 구체적으로는 Boolean 인수를 저장하는 HashMap에서 Boolean 인수 유형을 ArgumentMarshaler 유형으로 바꿨다.
+
+```java
+private Map<Character, ArgumentMarshaler> boolean Args = new HashMap<Character, ArgumentMarshaler>();
+```
+
+```java
+...
+
+private void parseBooleanSchemaElement(char elementId) {
+  booleanArgs.put(elementId, new BooleanArgumentMarshaler());
+}
+
+...
+
+private void setBooleanArg(char argChar, boolean value) {
+  booleanArgs.get(argChar).setBoolean(value);
+}
+
+...
+
+public boolean getBoolean(char arg) {
+  Args.ArgumentMarshaler am = booleanArgs.get(arg);
+  return am != null && am.getBoolean();
+}
+```
+
+
+## String 인수
+String 인수를 추가하는 과정은 boolean 인수와 매우 유사했다. HashMap을 변경한 후 parse, set, get 함수를 고쳤다. 일단 각 인수 유형을 처리하는 코드를 모두 ArgumentMarshaler 클래스에 넣고 나서 그 파생 클래스를 만들어 코드를 분리할 계획을 세우고 진행했다. 그러면 프로그램 구조를 조금씩 변경하는 동안에도 시스템의 정상 동작을 유지하기 쉬워지기 때문이다.
+
+해당 부분을 리팩토링하고 난 후 남는 문제는 예외 코드 부분이다. 예외 코드는 아주 흉할뿐더러 사실상 Args 클래스에 속하지도 않는다. 게다가 ParseException을 던지지만 ParseException은 Args 클래스에 속하지 않는다. 그러므로 모든 예외를 하나로 모아 ArgsException 클래스를 만든 후 독자 모듈로 옮긴다. 이렇게 되면 Args 모듈에서 예외/오류 처리 코드를 완벽하게 분리할 수 있다. 최종 코드 부분에서 확인해 보자.
+
+
+## 최종 코드
+최종 코드는 다음과 같다.
+
+##### 목록 14-15 ArgsException.java
+```java
+public class ArgsException extends Exception {
+  private char errorArgumentId = '\0';
+  private String errorParameter = "TILT";
+  private ErrorCode errorCode = ErrorCode.OK;
+
+  public ArgsException() {}
+
+  public ArgsException(String message) {super(message);}
+
+  public ArgsException(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+
+  public ArgsException(ErrorCode errorCode, String errorParameter) {
+    this.errorCode = errorCode;
+    this.errorParameter = errorParameter;
+  }
+
+  public ArgsException(ErrorCode errorCode, char errorArgumentId, String errorParameter) {
+    this.errorCode = errorCode;
+    this.errorParameter = errorParameter;
+    this.errorArgumentId = errorArgumentId;
+  }
+
+  public char getErrorArgumentId() {
+    return errorArgumentId;
+  }
+
+  public void setErrorArgumentId(char errorArgumentId) {
+    this.errorArgumentId = errorArgumentId;
+  }
+
+  public String getErrorParameter() {
+    return errorParameter;
+  }
+
+  public void setErrorParameter(String errorParameter) {
+    this.errorParameter = errorParameter;
+  }
+
+  public ErrorCode getErrorCode() {
+    return errorCode;
+  }
+
+  public void setErrorCode(ErrorCode errorCode) {
+    this.errorCode = errorCode;
+  }
+
+  public String errorMessage() throws Exception {
+    switch (errorCode) {
+      case OK:
+        throw new Exception("TILT: Should not get here.");
+      case UNEXPECTED_ARGUMENT:
+        return String.format("Argument -%c unexpected.", errorArgumentId);
+      case MISSING_STRING:
+        return String.format("Could not find string parameter for -%c.", errorArgumentId);
+      case INVALID_INTEGER:
+        return String.format("Argument -%c expects an integer but was '%s'.", errorArgumentId, errorParameter);
+      case MISSING_INTEGER:
+        return String.format("Could not find integer parameter for -%c.", errorArgumentId);
+      case INVALID_DOUBLE:
+        return String.format("Argument -%c expects a double but was '%s'.", errorArgumentId, errorParameter);
+      case MISSING_DOUBLE:
+        return String.format("Could not find double parameter for -%c.", errorArgumentId);
+    }
+    return "";
+  }
+
+  public enum ErrorCode {
+    OK, INVALID_FORMAT, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME, MISSING_STRING,
+    MISSING_INTEGER, INVALID_INTEGER,
+    MISSING_DOUBLE, INVALID_DOUBLE
+  }
+}
+```
+
+##### 목록 14-16 Args.java
+```java
+public class Args {
+  private String schema;
+  private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
+  private Set<Character> argsFound = new HashSet<Character>();
+  private Iterator<String> currentArgument;
+  private List<String> argsList;
+
+  public Args(String schema, String[] args) throws ArgsException {
+    this.schema = schema;
+    argsList = Arrays.asList(args);
+    parse();
+  }
+
+  private void parse() throws ArgsException {
+    parseSchema();
+    parseArguments();
+  }
+
+  private boolean parseSchema() throws ArgsException {
+    for (String element : schema.split(",")) {
+      if (element.length() > 0) {
+        parseSchemaElement(element.trim());
+      }
+    }
+    return true;
+  }
+
+  private void parseSchemaElement(String element) throws ArgsException {
+    char elementId = element.charAt(0);
+    String elementTail = element.substring(1);
+    validateSchemaElementId(elementId);
+    if (elementTail.length() == 0)
+      marshalers.put(elementId, new BooleanArgumentMarshaler());
+    else if (elementTail.equals("*"))
+      marshalers.put(elementId, new StringArgumentMarshaler());
+    else if (elementTail.equals("#"))
+      marshalers.put(elementId, new IntegerArgumentMarshaler());
+    else if (elementTail.equals("##"))
+      marshalers.put(elementId, new DoubleArgumentMarshaler());
+    else
+      throw new ArgsException(ArgsException.ErrorCode.INVALID_FORMAT, elementId, elementTail);
+
+  private void validateSchemaElementId(char elementId) throws ArgsException {
+    if (!Character.isLetter(elementId)) {
+      throw new ArgsException(ArgsException.ErrorCode.INVALID_ARGUMENT_NAME, elementId, null);
+    }
+  }
+
+  private void parseArguments() throws ArgsException {
+    for (currentArgument = argsList.iterator(); currentArgument.hasNext();) {
+      String arg = currentArgument.next();
+      parseArgument(arg);
+    }
+  }
+
+  private void parseArgument(String arg) throws ArgsException {
+    if (arg.startsWith("-"))
+      parseElements(arg);
+  }
+
+  private void parseElements(String arg) throws ArgsException {
+    for (int i = 1; i < arg.length(); i++)
+      parseElement(arg.charAt(i));
+  }
+
+  private void parseElement(char argChar) throws ArgsException {
+    if (setArgument(argChar))
+      argsFound.add(argChar);
+    else
+      throw new ArgsException(ArgsException.ErrorCode.UNEXPECTED_ARGUMENT, argChar, null);
+  }
+
+  private boolean setArgument(char argChar) throws ArgsException {
+    ArgumentMarshaler m = marshalers.get(argChar);
+    if (m == null)
+      return false;
+    try {
+      m.set(currentArgument);
+      return true;
+    } catch (ArgsException e) {
+      e.setErrorArgumentId(argChar);
+      throw e;
+    }
+  }
+
+  public int cardinality() {
+    return argsFound.size();
+  }
+
+  public String usage() {
+    if (schema.length() > 0)
+      return "-[" + schema + "]";
+    else
+      return "";
+  }
+
+  public boolean getBoolean(char arg) {
+    ArgumentMarshaler am = marshalers.get(arg);
+    boolean b = false;
+    try {
+      b = am != null && (Boolean) am.get();
+    } catch (ClassCastException e) {
+      b = false;
+    }
+    return b;
+  }
+
+  public String getString(char arg) {
+    ArgumentMarshaler am = marshalers.get(arg);
+    try {
+      return am == null ? "" : (String) am.get();
+    } catch (ClassCastException e) {
+      return "";
+    }
+  }
+
+  public int getInt(char arg) {
+    ArgumentMarshaler am = marshalers.get(arg);
+    try {
+      return am == null ? 0 : (Integer) am.get();
+    } catch (Exception e) {
+      return 0;
+    }
+  }
+
+  public double getDouble(char arg) {
+    ArgumentMarshaler am = marshalers.get(arg);
+    try {
+      return am == null ? 0 : (Double) am.get();
+    } catch (Exception e) {
+      return 0.0;
+    }
+  }
+
+  public boolean has(char arg) {
+    return argsFound.contains(arg);
+  }
+}
+```
+
+Args 클래스에서 코드 중복을 최소화하고, 상당한 코드를 Args 클래스에서 ArgsException 클래스로 옮겼다. 멋지다. 또한 ArgumentMarshaler 클래스를 통해 여러 인수에 대한 추후 확장성을 꾀했다. 더욱 멋지다!
+
+**소프트웨어 설계는 분할만 잘해도 품질이 크게 높아진다. 적절한 장소를 만들어 코드만 분리해도 설계가 좋아진다. 관심사를 분리하면 코드를 이해하고 보수하기 훨씬 더 쉬워진다.**
+
+특별히 눈여겨볼 코드는 ArgsException의 errorMessage 메서드다. (Args 클래스에 속했던) 이 메서드는 명백히 SRP(Single Responsibility Principle) 위반이었다. Args 클래스가 오류 메서지 형식까지 책임졌기 때문이다. 이 클래스는 인수를 처리하는 클래스지 오류 메시지 관련을 처리하는 클래스가 아니기 때문이다. 하지만 그렇다고 ArgsException 클래스가 오류 메시지 형식을 처리해야 옳을까?
+
+솔직하게 말해, 이것은 절충안이다. ArgsException에게 맡겨서는 안 된다고 생각하는 독자라면 새로운 클래스가 필요하다. 하지만 미리 깔끔하게 만들어진 오류 메시지로 얻는 장점은 무시하기 어렵다.
+
+
+## 결론
+그저 돌아가는 코드만으로는 부족하다. 돌아가는 코드가 심하게 망가지는 사례는 흔하다. 단순히 돌아가는 코드에 만족하는 프로그래머는 전문가 정신이 부족하다. 설계와 구조를 개선할 시간이 없다고 변경할지 모르지만 나로서는 동의하기 어렵다. **나쁜 코드보다 더 오랫동안 더 심각하게 개발 프로젝트에 악영향을 미치는 요인도 없다. 나쁜 일정은 다시 짜면 된다. 나쁜 요구사항은 다시 정의하면 된다. 나쁜 팀 역학은 복구하면 된다. 하지만 나쁜 코드는 썩어 문드러진다.** 점점 무게가 늘어나 팀의 발목을 잡는다. 속도가 점점 느려지다 못해 기어가는 팀도 많이 봤다. 너무 서두르다가 이후로 영원히 자신들의 운명을 지배할 악성 코드라는 굴레를 짊어진다.
+
+물론 나쁜 코드도 깨끗한 코드로 개선할 수 있다. 하지만 비용이 엄청나게 많이 든다. 코드가 썩어가며 모듈은 서로서로 얽히고설켜 뒤엉키고 숨겨진 의존성이 수도 없이 생긴다. 오래된 의존성을 찾아내 깨려면 상당한 시간과 인내심이 필요하다. 반면 처음부터 코드를 깨끗하게 유지하기란 상대적으로 쉽다. 아침에 엉망으로 만든 코드를 오후에 정리하기는 어렵지 않다. 더욱이 5분 전에 엉망으로 만든 코드는 지금 당장 정리하기 아주 쉽다.
+
+그러므로 코드는 언제나 최대한 깔끔하고 단순하게 정리하자. 절대로 썩어가게 방치하면 안 된다.
