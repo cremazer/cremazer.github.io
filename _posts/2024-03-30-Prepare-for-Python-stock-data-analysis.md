@@ -12,8 +12,6 @@ twitter_text: Python stock data analysis.
 introduction: 파이썬으로 증권 데이터 분석하여 일반 직장인을 위한 퀀트 투자 자동매매 플랫폼의 구축을 준비하는 내용입니다.
 ---
 
-![그림1.](/assets/img/python/20240330/stock-data-analysis.png)
-
 # 개요
 
 이 프로젝트는 일반 직장인을 위한 퀀트 투자 자동매매 플랫폼을 구축하는 사이드 프로젝트입니다.

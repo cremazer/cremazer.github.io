@@ -12,8 +12,6 @@ twitter_text: Second preparation for stock data analysis.
 introduction: 주식회사가 발전해 온 과정과 파이썬을 투자에 이용해야 하는지 알아보는 내용입니다.
 ---
 
-![그림1.](/assets/img/python/20240401/stock-data-analysis-graph.png)
-
 # 주식회사와 주식이란
 
 - 전 세계에서 생산되는 부가가치의 90%가 주식회사에 의해서 창출된다.

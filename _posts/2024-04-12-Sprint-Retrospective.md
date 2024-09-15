@@ -12,8 +12,6 @@ twitter_text: Retrospective on the first sprint to build a quantitative investme
 introduction: 퀀트 투자 자동매매 플랫폼 구축을 위한 첫 번째 스프린트 회고. 
 ---
 
-![그림1.](/assets/img/python/20240412/scrum-process.png)
-
 안녕하세요. [퀀트 투자를 위한 자동매매 플랫폼 구축 준비 (1)](https://cremazer.github.io/python/Prepare-for-Python-stock-data-analysis/)를 시작한지 벌써 열흘이 흘렀습니다. 시간이 정말 빠르게 지나갔습니다.
 
 지난 열흘동안 첫 번째 스프린트를 진행했고, 이번 포스팅에서는 첫 번째 스프린트 회고를 작성하려고 합니다.

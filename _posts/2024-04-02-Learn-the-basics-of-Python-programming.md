@@ -12,8 +12,6 @@ twitter_text: Learn the basics of Python programming.
 introduction: 파이썬 프로그래밍의 기초 내용을 학습한다.
 ---
 
-![그림1.](/assets/img/python/20240402/python-programming-beginner.png)
-
 [퀀트 투자를 위한 자동매매 플랫폼 구축 준비 (1)](https://cremazer.github.io/python/Prepare-for-Python-stock-data-analysis/)에서 언급한 내용을 바탕으로 파이썬 프로그래밍의 기초 내용을 학습한다. 
 
 # 개요
