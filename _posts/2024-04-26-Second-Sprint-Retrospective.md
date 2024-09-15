@@ -14,8 +14,6 @@ introduction: 퀀트 투자 자동매매 플랫폼 구축을 위한 두 번째 �
 
 두 번째 스프린트를 진행하면서 느꼈던 부분들에 대해 회고합니다.
 
-![그림1.](/assets/img/python/20240426/second-sprint-retrospective.png)
-
 # Good
 
 - NumPy, Pandas, matplotlib 라이브러리를 활용하여 그래프로 데이터를 표현.
