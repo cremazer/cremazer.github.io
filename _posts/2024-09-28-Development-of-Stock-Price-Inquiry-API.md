@@ -1,7 +1,7 @@
 ---
 title: "퀀트 투자 자동매매 플랫폼 구축 - 증권 시세 DB 구축 및 조회 API 개발 (6)"
 date: 2024-09-28 11:39:00
-image: '/assets/img/python/20240923/005930-candle-chart-last.png'
+image: '/assets/img/python/20240928/market-db-result.png'
 description: In this chapter, we will periodically scrape OHLC data for each stock, store it in a database, build the database so that it can be queried as needed, and develop an API to retrieve stock prices.
 category: 'python'
 tags:
