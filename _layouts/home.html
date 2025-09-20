@@ -5,39 +5,55 @@ refactor: true
 
 {% include lang.html %}
 
-{% assign pinned = site.posts | where: 'pin', 'true' %}
-{% assign default = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
-
 {% assign posts = '' | split: '' %}
 
-<!-- Get pinned posts -->
+{% if paginator %}
+  {% assign pinned = site.posts | where: 'pin', 'true' %}
+  {% assign default = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
 
-{% assign offset = paginator.page | minus: 1 | times: paginator.per_page %}
-{% assign pinned_num = pinned.size | minus: offset %}
+  {% assign offset = paginator.page | minus: 1 | times: paginator.per_page %}
+  {% assign pinned_num = pinned.size | minus: offset %}
 
-{% if pinned_num > 0 %}
-  {% for i in (offset..pinned.size) limit: pinned_num %}
-    {% assign posts = posts | push: pinned[i] %}
-  {% endfor %}
+  {% if pinned_num > 0 %}
+    {% for i in (offset..pinned.size) limit: pinned_num %}
+      {% assign posts = posts | push: pinned[i] %}
+    {% endfor %}
+  {% else %}
+    {% assign pinned_num = 0 %}
+  {% endif %}
+
+  {% assign default_beg = offset | minus: pinned.size %}
+  {% if default_beg < 0 %}
+    {% assign default_beg = 0 %}
+  {% endif %}
+
+  {% assign default_num = paginator.posts | size | minus: pinned_num %}
+  {% assign default_end = default_beg | plus: default_num | minus: 1 %}
+
+  {% if default_num > 0 %}
+    {% for i in (default_beg..default_end) %}
+      {% assign posts = posts | push: default[i] %}
+    {% endfor %}
+  {% endif %}
 {% else %}
-  {% assign pinned_num = 0 %}
-{% endif %}
+  {%- assign per_page = site.paginate | default: 10 -%}
+  {%- assign visible_posts = site.posts | where_exp: 'item', 'item.hidden != true' -%}
+  {%- assign pinned = visible_posts | where: 'pin', 'true' -%}
+  {%- assign default = visible_posts | where_exp: 'item', 'item.pin != true' -%}
 
-<!-- Get default posts -->
+  {%- assign take_pinned = pinned | slice: 0, per_page -%}
+  {%- for p in take_pinned -%}
+    {%- assign posts = posts | push: p -%}
+  {%- endfor -%}
 
-{% assign default_beg = offset | minus: pinned.size %}
-
-{% if default_beg < 0 %}
-  {% assign default_beg = 0 %}
-{% endif %}
-
-{% assign default_num = paginator.posts | size | minus: pinned_num %}
-{% assign default_end = default_beg | plus: default_num | minus: 1 %}
-
-{% if default_num > 0 %}
-  {% for i in (default_beg..default_end) %}
-    {% assign posts = posts | push: default[i] %}
-  {% endfor %}
+  {%- assign pinned_count = take_pinned | size -%}
+  {%- assign remaining = per_page | minus: pinned_count -%}
+  {%- if remaining > 0 -%}
+    {%- assign take_default = default | slice: 0, remaining -%}
+    {%- for d in take_default -%}
+      {%- assign posts = posts | push: d -%}
+    {%- endfor -%}
+  {%- endif -%}
 {% endif %}
 
 <div id="post-list" class="flex-grow-1 px-xl-1">
@@ -113,6 +129,6 @@ refactor: true
 </div>
 <!-- #post-list -->
 
-{% if paginator.total_pages > 1 %}
+{% if paginator and paginator.total_pages > 1 %}
   {% include post-paginator.html %}
 {% endif %}
