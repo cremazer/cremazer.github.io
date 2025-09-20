@@ -122,9 +122,9 @@ assets:
     env: # [development | production]
 
 pwa:
-  enabled: true # the option for PWA feature (installable)
+  enabled: false # fully disable PWA to avoid SW caching stale pages
   cache:
-    enabled: false # disable offline cache to prevent stale home page
+    enabled: false
     # Paths defined here will be excluded from the PWA cache.
     # Usually its value is the `baseurl` of another website that
     # shares the same domain name as the current website.
@@ -136,6 +136,9 @@ paginate_path: /page:num/
 
 # The base URL of your site
 baseurl: ""
+
+# Show posts dated in the future (prevents timezone-related hiding)
+future: true
 
 # ------------ The following options are not recommended to be modified ------------------
 

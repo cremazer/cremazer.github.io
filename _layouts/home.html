@@ -9,7 +9,7 @@ refactor: true
 
 {% if paginator %}
   {% assign pinned = site.posts | where: 'pin', 'true' %}
-  {% assign default = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
+  {% assign default = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true and item.published != false' %}
 
   {% assign offset = paginator.page | minus: 1 | times: paginator.per_page %}
   {% assign pinned_num = pinned.size | minus: offset %}
@@ -37,7 +37,7 @@ refactor: true
   {% endif %}
 {% else %}
   {%- assign per_page = site.paginate | default: 10 -%}
-  {%- assign visible_posts = site.posts | where_exp: 'item', 'item.hidden != true' -%}
+  {%- assign visible_posts = site.posts | where_exp: 'item', 'item.hidden != true and item.published != false' -%}
   {%- assign pinned = visible_posts | where: 'pin', 'true' -%}
   {%- assign default = visible_posts | where_exp: 'item', 'item.pin != true' -%}
 

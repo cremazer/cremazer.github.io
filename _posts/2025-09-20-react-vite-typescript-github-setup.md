@@ -3,7 +3,7 @@ title: "React + TypeScript + Vite 환경 세팅 및 GitHub 연동 (1)"
 date: 2025-09-20 15:30:00
 image: '/assets/img/react/20250920/vite-react-github.png'
 description: In this post, we set up a React + TypeScript project using Vite, troubleshoot issues with Yarn and GitHub authentication, and successfully connect the project to a GitHub repository.
-category: 'react'
+categories: [react]
 tags:
   - react
   - typescript
@@ -12,6 +12,9 @@ tags:
   - setup
 twitter_text: Setting up a React + TypeScript project with Vite, resolving Yarn and GitHub issues, and connecting to a repository.
 introduction: React + TypeScript 프로젝트를 Vite 기반으로 세팅하고, Yarn 설치 문제와 GitHub 인증 충돌을 해결하면서 최종적으로 GitHub 저장소에 성공적으로 연동한 과정을 정리합니다. 
+redirect_from:
+  - /posts/2025-09-20-react-vite-typescript-github-setup.md
+  - /posts/2025-09-20-react-vite-typescript-github-setup/
 ---
 
 # React + TypeScript + Vite 환경 세팅 및 GitHub 연동

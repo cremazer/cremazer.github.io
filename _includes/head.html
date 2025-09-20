@@ -108,4 +108,18 @@
   {% endunless %}
 
   {% include metadata-hook.html %}
+  {% if site.pwa.enabled != true %}
+  <script>
+    (function() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs){
+          regs.forEach(function(reg){ reg.unregister(); });
+        });
+      }
+      if (window.caches && window.caches.keys) {
+        window.caches.keys().then(function(keys){ keys.forEach(function(k){ window.caches.delete(k); }); });
+      }
+    })();
+  </script>
+  {% endif %}
 </head>
